@@ -1,0 +1,13 @@
+{
+  "name": "cinemaproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "npx tailwindcss build ./assets/css/styles.css -o ./public/css/tailwind.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
