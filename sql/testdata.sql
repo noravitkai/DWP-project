@@ -96,3 +96,7 @@ INSERT INTO Event (EventName, EventDate, EventDescription, Discount, ScreeningID
 VALUES
     ('Torretto Tuesday', '2024-10-08', 'Special screenings of all Fast & Furious movies! Win memorabilia!', 10.00, 1),
     ('Family Friday', '2024-10-11', 'Bring the family for a 30% discount on all Fast & Furious screenings!', 30.00, 1);
+
+INSERT INTO User (Email, `Password`, `Role`)
+VALUES
+    ('vitkai.nora@gmail.com', '$2y$10$kcilhapT7/oMgtsqz3xf4.K1IcvMkviTtuHE7p848QtI9/RNx8IrO', 'admin');
