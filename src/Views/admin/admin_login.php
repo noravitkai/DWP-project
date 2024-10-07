@@ -13,7 +13,7 @@
             <p class="mx-auto mt-4 max-w-md text-center text-zinc-300">
                 Please sign in to access the dashboard.
             </p>
-            <form action="../Controllers/AdminController.php?action=login" method="post" class="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8 bg-zinc-800">
+            <form action="../../../src/Controllers/AdminController.php?action=login" method="post" class="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8 bg-zinc-800">    
                 <h2 class="text-center text-lg font-medium text-zinc-200">Sign in to your account</h2>
                 <div>
                     <label for="username" class="sr-only">Username</label>
