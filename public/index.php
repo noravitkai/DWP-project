@@ -20,16 +20,20 @@
         <?php
         include '../config/dbcon.php';
 
-        $sql = "SELECT Title, Subtitle, ReleaseYear FROM Movie";
-        $result = $conn->query($sql);
+        $conn = dbCon();
 
-        if ($result->num_rows > 0) {
+        $sql = "SELECT Title, Subtitle, ReleaseYear FROM Movie";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $movies = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($movies) > 0) {
             echo "<div class='space-y-8'>";
-            while ($row = $result->fetch_assoc()) {
+            foreach ($movies as $row) {
                 echo "<div class='p-6 bg-white rounded shadow-lg'>";
-                echo "<div class='flex items-baseline space-x-2'>";
-                echo "<h3 class='text-xl font-semibold'>" . htmlspecialchars($row["Title"]) . "</h3>";
-                echo "<h4 class='text-lg text-gray-500'>" . htmlspecialchars($row["Subtitle"]) . "</h4>";
+                echo "<div class='flex flex-col'>";
+                echo "<h3 class='text-xl font-semibold text-gray-900'>" . htmlspecialchars($row["Title"]) . "</h3>";
+                echo "<h4 class='text-lg text-gray-900'>" . htmlspecialchars($row["Subtitle"]) . "</h4>";
                 echo "</div>";
                 echo "<p class='text-gray-600'>Release Year: " . htmlspecialchars($row["ReleaseYear"]) . "</p>";
                 echo "</div>";
@@ -39,7 +43,7 @@
             echo "<p class='text-center text-red-500'>No movies found.</p>";
         }
 
-        $conn->close();
+        $conn = null;
         ?>
     </div>
 </body>

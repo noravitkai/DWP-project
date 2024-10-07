@@ -1,12 +1,11 @@
 <?php
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "cinema_db";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+function dbCon($user = 'root', $pass = '', $dbname = 'cinema_db', $host = 'localhost') {
+    try {
+        $dbCon = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
+        $dbCon->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $dbCon;
+    } catch (PDOException $err) {
+        echo "Error!: " . $err->getMessage() . "<br/>";
+        die();
+    }
 }
