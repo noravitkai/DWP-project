@@ -1,7 +1,6 @@
 <?php
 session_start();
 include '../../config/dbcon.php';
-
 $pdo = dbCon();
 
 $action = $_GET['action'] ?? '';
@@ -20,8 +19,14 @@ if ($action === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: ../../src/Views/admin/admin_dashboard.php");
         exit();
     } else {
-        header("Location: ../../Views/admin/admin_login.php?error=invalid_credentials");
+        header("Location: ../../src/Views/admin/admin_login.php?error=invalid_credentials");
         exit();
     }
 }
-?>
+
+if ($action === 'logout') {
+    session_start();
+    session_destroy();
+    header("Location: ../../src/Views/admin/admin_login.php");
+    exit();
+}

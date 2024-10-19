@@ -1,9 +1,5 @@
 <?php
-session_start();
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: admin_login.php");
-    exit();
-}
+include '../../../config/session.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,6 +13,11 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     <div class="container mx-auto py-12">
         <h1 class="text-3xl font-bold text-center text-orange-600">Admin Dashboard</h1>
         <p class="text-center text-zinc-300 mt-4">Welcome, Admin! Here you can manage content and settings.</p>
+        <div class="mt-8 text-center">
+            <a href="../../../src/Controllers/AdminController.php?action=logout" class="inline-block rounded-lg bg-orange-600 px-5 py-3 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300">
+                Logout
+            </a>
+        </div>
     </div>
 </body>
 </html>
