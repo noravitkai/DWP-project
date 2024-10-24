@@ -1,9 +1,30 @@
 <?php
 include '../../../config/session.php';
 require_once '../../Controllers/MovieController.php';
+
 $movieController = new MovieController();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['MovieID'])) {
+    $movieId = $_POST['MovieID'];
+    
+    $data = [
+        'Title' => $_POST['Title'],
+        'Subtitle' => $_POST['Subtitle'],
+        'ReleaseYear' => $_POST['ReleaseYear'],
+        'Genre' => $_POST['Genre'],
+        'Director' => $_POST['Director'],
+        'Duration' => $_POST['Duration'],
+        'MovieDescription' => $_POST['MovieDescription'],
+    ];
+    
+    $movieController->update($movieId, $data);
+    
+    header('Location: admin_dashboard.php?success=MovieUpdated');
+    exit;
+}
 $movies = $movieController->index();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,7 +73,7 @@ $movies = $movieController->index();
                                     </li>
                                 </ul>
                                 <div class="mt-auto mb-4">
-                                    <a href="../../../src/Controllers/AdminController.php?action=logout" class="inline-block rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300">
+                                    <a href="../../../src/Controllers/AdminController.php?action=logout" class="inline-block rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                                         Logout
                                     </a>
                                 </div>
@@ -86,7 +107,7 @@ $movies = $movieController->index();
                             </li>
                         </ul>
                         <div class="mt-auto">
-                            <a href="../../../src/Controllers/AdminController.php?action=logout" class="inline-block rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300">
+                            <a href="../../../src/Controllers/AdminController.php?action=logout" class="inline-block rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                                 Logout
                             </a>
                         </div>
@@ -132,7 +153,7 @@ $movies = $movieController->index();
                                             </svg>
                                             Preview
                                         </button>
-                                        <button type="button" class="flex w-full items-center py-1 text-zinc-600 hover:text-zinc-900 transition ease-in-out duration-300">
+                                        <button type="button" onclick="showEditModal(<?php echo htmlspecialchars(json_encode($movie)); ?>)" class="flex w-full items-center py-1 text-zinc-600 hover:text-zinc-900 transition ease-in-out duration-300">
                                             <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                                 <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
                                                 <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
@@ -154,7 +175,7 @@ $movies = $movieController->index();
                     <div id="previewModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center lg:pl-72 p-4">
                         <div class="relative max-w-2xl bg-zinc-100 rounded-lg shadow p-4 sm:p-5">
                             <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
-                                <h3 class="text-lg font-semibold text-zinc-900" id="movieTitle">Movie Details</h3>
+                                <h3 class="text-lg font-semibold text-zinc-900" id="previewMovieTitle">Movie Details</h3>
                                 <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900 transition ease-in-out duration-300" onclick="hidePreviewModal()">
                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
@@ -164,33 +185,83 @@ $movies = $movieController->index();
                             <div class="grid gap-4 sm:grid-cols-2">
                                 <div>
                                     <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">ID:</label>
-                                    <p id="movieID" class="text-sm text-zinc-900"></p>
+                                    <p id="previewMovieID" class="text-sm text-zinc-900"></p>
                                 </div>
                                 <div>
                                     <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Subtitle:</label>
-                                    <p id="movieSubtitle" class="text-sm text-zinc-900"></p>
+                                    <p id="previewMovieSubtitle" class="text-sm text-zinc-900"></p>
                                 </div>
                                 <div>
                                     <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Duration:</label>
-                                    <p id="movieDuration" class="text-sm text-zinc-900"></p>
+                                    <p id="previewMovieDuration" class="text-sm text-zinc-900"></p>
                                 </div>
                                 <div>
                                     <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Genre:</label>
-                                    <p id="movieGenre" class="text-sm text-zinc-900"></p>
+                                    <p id="previewMovieGenre" class="text-sm text-zinc-900"></p>
                                 </div>
                                 <div>
                                     <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Release Year:</label>
-                                    <p id="movieReleaseYear" class="text-sm text-zinc-900"></p>
+                                    <p id="previewMovieReleaseYear" class="text-sm text-zinc-900"></p>
                                 </div>
                                 <div>
                                     <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Director:</label>
-                                    <p id="movieDirector" class="text-sm text-zinc-900"></p>
+                                    <p id="previewMovieDirector" class="text-sm text-zinc-900"></p>
                                 </div>
                                 <div class="sm:col-span-2">
                                     <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Description:</label>
-                                    <p id="movieDescription" class="text-sm text-zinc-900"></p>
+                                    <p id="previewMovieDescription" class="text-sm text-zinc-900"></p>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div id="editModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center lg:pl-72 p-4">
+                        <div class="relative max-w-2xl w-full bg-zinc-100 rounded-lg shadow p-4 sm:p-5">
+                            <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
+                                <h3 class="text-lg font-semibold text-zinc-900">Edit Movie</h3>
+                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideEditModal()">
+                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <form id="editMovieForm" method="POST">
+                                <input type="hidden" id="editMovieID" name="MovieID">
+                                <div class="grid gap-4 sm:grid-cols-2">
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Title:</label>
+                                        <input type="text" id="editMovieTitle" name="Title" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Subtitle:</label>
+                                        <input type="text" id="editMovieSubtitle" name="Subtitle" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Release Year:</label>
+                                        <input type="text" id="editMovieReleaseYear" name="ReleaseYear" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Genre:</label>
+                                        <input type="text" id="editMovieGenre" name="Genre" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Director:</label>
+                                        <input type="text" id="editMovieDirector" name="Director" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Duration:</label>
+                                        <input type="text" id="editMovieDuration" name="Duration" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Description:</label>
+                                        <textarea id="editMovieDescription" name="MovieDescription" rows="6" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600"></textarea>
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <button type="submit" class="inline-block rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
+                                            Update
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div id="modalBackdrop" class="hidden fixed inset-0 z-40 bg-zinc-900 bg-opacity-50 lg:pl-72"></div>
