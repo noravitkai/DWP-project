@@ -13,4 +13,16 @@ class MovieController {
     public function index() {
         return $this->movie->getAllMovies();
     }
+
+    public function update($id, $data) {
+        return $this->movie->updateMovieById($id, $data);
+    }
+
+    public function delete($id) {
+        return $this->movie->deleteMovieById($id);
+    }
+
+    public function store($data) {
+        return $this->movie->storeMovie($data);
+    }
 }

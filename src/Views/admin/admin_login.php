@@ -41,7 +41,7 @@
                         />
                     </div>
                 </div>
-                <button type="submit" class="block w-full rounded-lg bg-orange-600 px-5 py-3 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
+                <button type="submit" class="block w-full rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                     Sign in
                 </button>
                 <?php if (isset($_GET['error']) && $_GET['error'] === 'invalid_credentials'): ?>
