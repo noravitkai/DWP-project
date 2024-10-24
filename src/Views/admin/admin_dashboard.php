@@ -29,6 +29,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['MovieID'])) {
     header('Location: admin_dashboard.php?success=MovieUpdated');
     exit;
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addNewMovie'])) {
+    $data = [
+        'Title' => $_POST['Title'],
+        'Subtitle' => $_POST['Subtitle'],
+        'ReleaseYear' => $_POST['ReleaseYear'],
+        'Genre' => $_POST['Genre'],
+        'Director' => $_POST['Director'],
+        'Duration' => $_POST['Duration'],
+        'MovieDescription' => $_POST['MovieDescription'],
+    ];
+
+    $movieController->store($data);
+    header('Location: admin_dashboard.php?success=MovieAdded');
+    exit;
+}
+
 $movies = $movieController->index();
 ?>
 
@@ -80,7 +97,7 @@ $movies = $movieController->index();
                                     </li>
                                 </ul>
                                 <div class="mt-auto mb-4">
-                                    <a href="../../../src/Controllers/AdminController.php?action=logout" class="inline-block rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
+                                    <a href="../../../src/Controllers/AdminController.php?action=logout" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                                         Logout
                                     </a>
                                 </div>
@@ -114,7 +131,7 @@ $movies = $movieController->index();
                             </li>
                         </ul>
                         <div class="mt-auto">
-                            <a href="../../../src/Controllers/AdminController.php?action=logout" class="inline-block rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
+                            <a href="../../../src/Controllers/AdminController.php?action=logout" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                                 Logout
                             </a>
                         </div>
@@ -132,8 +149,16 @@ $movies = $movieController->index();
         <div class="py-10 lg:pl-72">
             <main class="px-4 sm:px-6 lg:px-8">
                 <section id="movies" class="mb-10">
-                    <h2 class="text-3xl font-bold text-zinc-900">Movies</h2>
-                    <p class="mt-5 text-base text-zinc-700">Manage the movie listings, schedules, and other movie-related tasks here.</p>
+                <h2 class="text-3xl font-bold text-zinc-900">Movies</h2>
+                <p class="mt-5 text-base text-zinc-700">Manage the movie listings, schedules, and other movie-related tasks here.</p>
+                <div class="mt-5">
+                    <button type="button" onclick="showAddModal()" class="inline-flex items-center rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300">
+                        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+                        Add Movie
+                    </button>
+                </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full my-10 text-zinc-900">
                             <thead>
@@ -179,8 +204,58 @@ $movies = $movieController->index();
                             </tbody>
                         </table>
                     </div>
+                    <div id="addModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center lg:pl-72 p-4">
+                        <div class="relative max-w-2xl w-full bg-zinc-100 rounded-lg shadow p-4 sm:p-5">
+                            <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
+                                <h3 class="text-lg font-semibold text-zinc-900">Add New Movie</h3>
+                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideAddModal()">
+                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <form id="addMovieForm" method="POST">
+                                <input type="hidden" name="addNewMovie" value="1">
+                                <div class="grid gap-4 sm:grid-cols-2">
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Title:</label>
+                                        <input type="text" name="Title" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Subtitle:</label>
+                                        <input type="text" name="Subtitle" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Release Year:</label>
+                                        <input type="text" name="ReleaseYear" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Genre:</label>
+                                        <input type="text" name="Genre" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Director:</label>
+                                        <input type="text" name="Director" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Duration:</label>
+                                        <input type="text" name="Duration" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Description:</label>
+                                        <textarea name="MovieDescription" rows="6" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600"></textarea>
+                                    </div>
+                                    <div class="sm:col-span-2 text-right">
+                                        <button type="submit" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
+                                            Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                     <div id="previewModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center lg:pl-72 p-4">
-                        <div class="relative max-w-2xl bg-zinc-100 rounded-lg shadow p-4 sm:p-5">
+                        <div class="relative max-w-2xl w-full bg-zinc-100 rounded-lg shadow p-4 sm:p-5">
                             <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
                                 <h3 class="text-lg font-semibold text-zinc-900" id="previewMovieTitle">Movie Details</h3>
                                 <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900 transition ease-in-out duration-300" onclick="hidePreviewModal()">
@@ -263,7 +338,7 @@ $movies = $movieController->index();
                                         <textarea id="editMovieDescription" name="MovieDescription" rows="6" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600"></textarea>
                                     </div>
                                     <div class="sm:col-span-2 text-right">
-                                        <button type="submit" class="inline-block rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
+                                        <button type="submit" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                                             Update
                                         </button>
                                     </div>
@@ -286,8 +361,8 @@ $movies = $movieController->index();
                             <form id="deleteMovieForm" method="POST">
                                 <input type="hidden" id="deleteMovieID" name="deleteMovieID">
                                 <div class="flex justify-end gap-4">
-                                    <button type="button" class="rounded-lg bg-zinc-600 px-4 py-2 text-sm font-medium text-zinc-100 hover:bg-zinc-800 transition ease-in-out duration-300" onclick="hideDeleteModal()">Cancel</button>
-                                    <button type="submit" class="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-zinc-100 hover:bg-red-800 transition ease-in-out duration-300">Delete</button>
+                                    <button type="button" class="rounded-lg bg-zinc-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-zinc-800 transition ease-in-out duration-300" onclick="hideDeleteModal()">Cancel</button>
+                                    <button type="submit" class="rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-red-800 transition ease-in-out duration-300">Delete</button>
                                 </div>
                             </form>
                         </div>

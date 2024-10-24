@@ -67,10 +67,19 @@ function hideEditModal() {
 
 function showDeleteModal(movie) {
   document.getElementById("deleteMovieID").value = movie.MovieID;
-  document.getElementById("deleteMovieTitle").textContent = `${movie.Title}`; 
+  document.getElementById("deleteMovieTitle").textContent = `${movie.Title}`;
   showModal("deleteModal");
 }
 
 function hideDeleteModal() {
   hideModal("deleteModal");
+}
+
+function showAddModal() {
+  document.getElementById("addMovieForm").reset();
+  showModal("addModal");
+}
+
+function hideAddModal() {
+  hideModal("addModal");
 }

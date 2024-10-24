@@ -20,5 +20,9 @@ class MovieController {
 
     public function delete($id) {
         return $this->movie->deleteMovieById($id);
-    }    
+    }
+
+    public function store($data) {
+        return $this->movie->storeMovie($data);
+    }
 }
