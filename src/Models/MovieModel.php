@@ -46,4 +46,11 @@ class Movie {
 
         return $stmt->execute();
     }
+
+    public function deleteMovieById($id) {
+        $query = "DELETE FROM Movie WHERE MovieID = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }    
 }

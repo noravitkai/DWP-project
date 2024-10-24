@@ -17,4 +17,8 @@ class MovieController {
     public function update($id, $data) {
         return $this->movie->updateMovieById($id, $data);
     }
+
+    public function delete($id) {
+        return $this->movie->deleteMovieById($id);
+    }    
 }

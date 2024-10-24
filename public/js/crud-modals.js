@@ -64,3 +64,13 @@ function showEditModal(movie) {
 function hideEditModal() {
   hideModal("editModal");
 }
+
+function showDeleteModal(movie) {
+  document.getElementById("deleteMovieID").value = movie.MovieID;
+  document.getElementById("deleteMovieTitle").textContent = `${movie.Title}`; 
+  showModal("deleteModal");
+}
+
+function hideDeleteModal() {
+  hideModal("deleteModal");
+}

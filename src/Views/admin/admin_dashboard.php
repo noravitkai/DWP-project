@@ -4,6 +4,13 @@ require_once '../../Controllers/MovieController.php';
 
 $movieController = new MovieController();
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteMovieID'])) {
+    $movieId = $_POST['deleteMovieID'];
+    $movieController->delete($movieId);
+    header('Location: admin_dashboard.php?success=MovieDeleted');
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['MovieID'])) {
     $movieId = $_POST['MovieID'];
     
@@ -160,7 +167,7 @@ $movies = $movieController->index();
                                             </svg>
                                             Edit
                                         </button>
-                                        <button type="button" class="flex w-full items-center py-1 text-red-600 hover:text-red-800 transition ease-in-out duration-300">
+                                        <button type="button" onclick="showDeleteModal(<?php echo htmlspecialchars(json_encode($movie)); ?>)" class="flex w-full items-center py-1 text-red-600 hover:text-red-800 transition ease-in-out duration-300">
                                             <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                                 <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />
                                             </svg>
@@ -255,7 +262,7 @@ $movies = $movieController->index();
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Description:</label>
                                         <textarea id="editMovieDescription" name="MovieDescription" rows="6" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600"></textarea>
                                     </div>
-                                    <div class="sm:col-span-2">
+                                    <div class="sm:col-span-2 text-right">
                                         <button type="submit" class="inline-block rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                                             Update
                                         </button>
@@ -264,6 +271,28 @@ $movies = $movieController->index();
                             </form>
                         </div>
                     </div>
+                    <div id="deleteModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center lg:pl-72 p-4">
+                        <div class="relative max-w-md w-full bg-zinc-100 rounded-lg shadow p-4 sm:p-5">
+                            <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
+                                <h3 class="text-lg font-semibold text-zinc-900">Delete Movie</h3>
+                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideDeleteModal()">
+                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <p id="deleteMovieTitle" class="mb-4 text-sm font-semibold text-zinc-900"></p>
+                            <p class="mb-4 text-sm text-zinc-600">Are you sure you want to delete this movie? This action cannot be undone.</p>
+                            <form id="deleteMovieForm" method="POST">
+                                <input type="hidden" id="deleteMovieID" name="deleteMovieID">
+                                <div class="flex justify-end gap-4">
+                                    <button type="button" class="rounded-lg bg-zinc-600 px-4 py-2 text-sm font-medium text-zinc-100 hover:bg-zinc-800 transition ease-in-out duration-300" onclick="hideDeleteModal()">Cancel</button>
+                                    <button type="submit" class="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-zinc-100 hover:bg-red-800 transition ease-in-out duration-300">Delete</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
                     <div id="modalBackdrop" class="hidden fixed inset-0 z-40 bg-zinc-900 bg-opacity-50 lg:pl-72"></div>
                 </section>            
             </main>
