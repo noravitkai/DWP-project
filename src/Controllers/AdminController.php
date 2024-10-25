@@ -1,6 +1,7 @@
 <?php
-require_once '../../config/session.php';
-include '../../config/dbcon.php';
+session_start();
+
+require_once '../../config/dbcon.php';
 require_once '../../config/functions.php';
 
 $pdo = dbCon();
@@ -24,8 +25,6 @@ if ($action === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($user && password_verify($password, $user['Password'])) {
         $_SESSION['user_id'] = $user['UserID'];
         $_SESSION['role'] = $user['Role'];
-
-        $_SESSION['session_hash'] = generateSessionHash();
 
         header("Location: ../../src/Views/admin/admin_dashboard.php");
         exit();
