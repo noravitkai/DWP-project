@@ -22,7 +22,7 @@
                             type="text"
                             name="username"
                             id="username"
-                            class="w-full rounded-lg border-zinc-600 p-4 pr-12 text-sm shadow-sm bg-zinc-700 text-zinc-100 placeholder-zinc-400"
+                            class="w-full rounded-lg border-zinc-600 px-5 py-3 text-sm shadow-sm bg-zinc-700 text-zinc-100 placeholder-zinc-300 focus:outline-none focus:ring-1 focus:ring-orange-600"
                             placeholder="Username"
                             required
                         />
@@ -35,13 +35,13 @@
                             type="password"
                             name="password"
                             id="password"
-                            class="w-full rounded-lg border-zinc-600 p-4 pr-12 text-sm shadow-sm bg-zinc-700 text-zinc-100 placeholder-zinc-400"
+                            class="w-full rounded-lg border-zinc-600 px-5 py-3 text-sm shadow-sm bg-zinc-700 text-zinc-100 placeholder-zinc-300 focus:outline-none focus:ring-1 focus:ring-orange-600"
                             placeholder="Password"
                             required
                         />
                     </div>
                 </div>
-                <button type="submit" class="block w-full rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
+                <button type="submit" class="block w-full rounded-lg bg-orange-600 px-5 py-3 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                     Sign in
                 </button>
                 <?php if (isset($_GET['error']) && $_GET['error'] === 'invalid_credentials'): ?>

@@ -1,3 +1,9 @@
+function decodeHtmlEntities(str) {
+  var txt = document.createElement("textarea");
+  txt.innerHTML = str;
+  return txt.value;
+}
+
 function showModal(modalId) {
   const modal = document.getElementById(modalId);
   const backdrop = document.getElementById("modalBackdrop");
@@ -29,25 +35,31 @@ function hideModal(modalId) {
 }
 
 function populateModalFields(modalPrefix, movie) {
-  document.getElementById(modalPrefix + "MovieTitle").textContent =
+  document.getElementById(modalPrefix + "MovieTitle").innerHTML =
     movie.Title || "";
-  document.getElementById(modalPrefix + "MovieID").textContent =
+  document.getElementById(modalPrefix + "MovieID").innerHTML =
     movie.MovieID || "";
-  document.getElementById(modalPrefix + "MovieSubtitle").textContent =
+  document.getElementById(modalPrefix + "MovieSubtitle").innerHTML =
     movie.Subtitle || "";
-  document.getElementById(modalPrefix + "MovieDuration").textContent =
+  document.getElementById(modalPrefix + "MovieDuration").innerHTML =
     movie.Duration ? movie.Duration + " min" : "";
-  document.getElementById(modalPrefix + "MovieGenre").textContent =
+  document.getElementById(modalPrefix + "MovieGenre").innerHTML =
     movie.Genre || "";
-  document.getElementById(modalPrefix + "MovieReleaseYear").textContent =
+  document.getElementById(modalPrefix + "MovieReleaseYear").innerHTML =
     movie.ReleaseYear || "";
-  document.getElementById(modalPrefix + "MovieDirector").textContent =
+  document.getElementById(modalPrefix + "MovieDirector").innerHTML =
     movie.Director || "";
-  document.getElementById(modalPrefix + "MovieDescription").textContent =
+  document.getElementById(modalPrefix + "MovieDescription").innerHTML =
     movie.MovieDescription || "";
 }
 
 function showPreviewModal(movie) {
+  movie.Title = decodeHtmlEntities(movie.Title);
+  movie.Subtitle = decodeHtmlEntities(movie.Subtitle);
+  movie.Genre = decodeHtmlEntities(movie.Genre);
+  movie.Director = decodeHtmlEntities(movie.Director);
+  movie.MovieDescription = decodeHtmlEntities(movie.MovieDescription);
+
   populateModalFields("preview", movie);
   showModal("previewModal");
 }
@@ -57,6 +69,12 @@ function hidePreviewModal() {
 }
 
 function showEditModal(movie) {
+  movie.Title = decodeHtmlEntities(movie.Title);
+  movie.Subtitle = decodeHtmlEntities(movie.Subtitle);
+  movie.Genre = decodeHtmlEntities(movie.Genre);
+  movie.Director = decodeHtmlEntities(movie.Director);
+  movie.MovieDescription = decodeHtmlEntities(movie.MovieDescription);
+
   document.getElementById("editMovieID").value = movie.MovieID;
   document.getElementById("editMovieTitle").value = movie.Title;
   document.getElementById("editMovieSubtitle").value = movie.Subtitle;
@@ -75,8 +93,10 @@ function hideEditModal() {
 }
 
 function showDeleteModal(movie) {
+  movie.Title = decodeHtmlEntities(movie.Title);
+
   document.getElementById("deleteMovieID").value = movie.MovieID;
-  document.getElementById("deleteMovieTitle").textContent = `${movie.Title}`;
+  document.getElementById("deleteMovieTitle").textContent = movie.Title;
   showModal("deleteModal");
 }
 

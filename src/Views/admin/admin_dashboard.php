@@ -1,6 +1,8 @@
 <?php
 include '../../../config/session.php';
 require_once '../../Controllers/MovieController.php';
+require_once '../../../config/functions.php';
+
 
 $movieController = new MovieController();
 
@@ -11,13 +13,13 @@ function verifyCsrfToken($token) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addNewMovie'])) {
     if (verifyCsrfToken($_POST['csrf_token'])) {
         $data = [
-            'Title' => $_POST['Title'],
-            'Subtitle' => $_POST['Subtitle'],
-            'ReleaseYear' => $_POST['ReleaseYear'],
-            'Genre' => $_POST['Genre'],
-            'Director' => $_POST['Director'],
-            'Duration' => $_POST['Duration'],
-            'MovieDescription' => $_POST['MovieDescription'],
+            'Title' => sanitizeInput($_POST['Title']),
+            'Subtitle' => sanitizeInput($_POST['Subtitle']),
+            'ReleaseYear' => sanitizeInput($_POST['ReleaseYear']),
+            'Genre' => sanitizeInput($_POST['Genre']),
+            'Director' => sanitizeInput($_POST['Director']),
+            'Duration' => sanitizeInput($_POST['Duration']),
+            'MovieDescription' => sanitizeInput($_POST['MovieDescription']),
         ];
         $movieController->store($data);
     }
@@ -27,15 +29,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addNewMovie'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['MovieID'])) {
     if (verifyCsrfToken($_POST['csrf_token'])) {
-        $movieId = $_POST['MovieID'];
+        $movieId = sanitizeInput($_POST['MovieID']);
         $data = [
-            'Title' => $_POST['Title'],
-            'Subtitle' => $_POST['Subtitle'],
-            'ReleaseYear' => $_POST['ReleaseYear'],
-            'Genre' => $_POST['Genre'],
-            'Director' => $_POST['Director'],
-            'Duration' => $_POST['Duration'],
-            'MovieDescription' => $_POST['MovieDescription'],
+            'Title' => sanitizeInput($_POST['Title']),
+            'Subtitle' => sanitizeInput($_POST['Subtitle']),
+            'ReleaseYear' => sanitizeInput($_POST['ReleaseYear']),
+            'Genre' => sanitizeInput($_POST['Genre']),
+            'Director' => sanitizeInput($_POST['Director']),
+            'Duration' => sanitizeInput($_POST['Duration']),
+            'MovieDescription' => sanitizeInput($_POST['MovieDescription']),
         ];
         $movieController->update($movieId, $data);
     }
@@ -45,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['MovieID'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteMovieID'])) {
     if (verifyCsrfToken($_POST['csrf_token'])) {
-        $movieId = $_POST['deleteMovieID'];
+        $movieId = sanitizeInput($_POST['deleteMovieID']);
         $movieController->delete($movieId);
     }
     header('Location: admin_dashboard.php');
