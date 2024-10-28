@@ -1,13 +1,22 @@
 <?php
 session_start();
-include '../../config/dbcon.php';
+
+require_once '../../config/dbcon.php';
+require_once '../../config/functions.php';
+
 $pdo = dbCon();
 
-$action = $_GET['action'] ?? '';
+$action = sanitizeInput($_GET['action'] ?? '');
+
+$allowedActions = ['login', 'logout'];
+if (!in_array($action, $allowedActions, true)) {
+    header("Location: ../../src/Views/admin/admin_login.php?error=invalid_action");
+    exit();
+}
 
 if ($action === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $username = sanitizeInput($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
 
     $stmt = $pdo->prepare("SELECT UserID, Password, Role FROM User WHERE Email = :email AND Role = 'admin'");
     $stmt->execute(['email' => $username]);
@@ -16,6 +25,7 @@ if ($action === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($user && password_verify($password, $user['Password'])) {
         $_SESSION['user_id'] = $user['UserID'];
         $_SESSION['role'] = $user['Role'];
+
         header("Location: ../../src/Views/admin/admin_dashboard.php");
         exit();
     } else {
@@ -25,7 +35,7 @@ if ($action === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 if ($action === 'logout') {
-    session_start();
+    session_unset();
     session_destroy();
     header("Location: ../../src/Views/admin/admin_login.php");
     exit();
