@@ -29,14 +29,22 @@ function hideModal(modalId) {
 }
 
 function populateModalFields(modalPrefix, movie) {
-  document.getElementById(modalPrefix + "MovieTitle").textContent = movie.Title || '';
-  document.getElementById(modalPrefix + "MovieID").textContent = movie.MovieID || '';
-  document.getElementById(modalPrefix + "MovieSubtitle").textContent = movie.Subtitle || '';
-  document.getElementById(modalPrefix + "MovieDuration").textContent = movie.Duration ? movie.Duration + " min" : '';
-  document.getElementById(modalPrefix + "MovieGenre").textContent = movie.Genre || '';
-  document.getElementById(modalPrefix + "MovieReleaseYear").textContent = movie.ReleaseYear || '';
-  document.getElementById(modalPrefix + "MovieDirector").textContent = movie.Director || '';
-  document.getElementById(modalPrefix + "MovieDescription").textContent = movie.MovieDescription || '';
+  document.getElementById(modalPrefix + "MovieTitle").textContent =
+    movie.Title || "";
+  document.getElementById(modalPrefix + "MovieID").textContent =
+    movie.MovieID || "";
+  document.getElementById(modalPrefix + "MovieSubtitle").textContent =
+    movie.Subtitle || "";
+  document.getElementById(modalPrefix + "MovieDuration").textContent =
+    movie.Duration ? movie.Duration + " min" : "";
+  document.getElementById(modalPrefix + "MovieGenre").textContent =
+    movie.Genre || "";
+  document.getElementById(modalPrefix + "MovieReleaseYear").textContent =
+    movie.ReleaseYear || "";
+  document.getElementById(modalPrefix + "MovieDirector").textContent =
+    movie.Director || "";
+  document.getElementById(modalPrefix + "MovieDescription").textContent =
+    movie.MovieDescription || "";
 }
 
 function showPreviewModal(movie) {
@@ -56,7 +64,8 @@ function showEditModal(movie) {
   document.getElementById("editMovieGenre").value = movie.Genre;
   document.getElementById("editMovieDirector").value = movie.Director;
   document.getElementById("editMovieDuration").value = movie.Duration;
-  document.getElementById("editMovieDescription").value = movie.MovieDescription;
+  document.getElementById("editMovieDescription").value =
+    movie.MovieDescription;
 
   showModal("editModal");
 }

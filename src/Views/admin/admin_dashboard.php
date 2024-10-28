@@ -4,45 +4,51 @@ require_once '../../Controllers/MovieController.php';
 
 $movieController = new MovieController();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteMovieID'])) {
-    $movieId = $_POST['deleteMovieID'];
-    $movieController->delete($movieId);
-    header('Location: admin_dashboard.php?success=MovieDeleted');
+function verifyCsrfToken($token) {
+    return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addNewMovie'])) {
+    if (verifyCsrfToken($_POST['csrf_token'])) {
+        $data = [
+            'Title' => $_POST['Title'],
+            'Subtitle' => $_POST['Subtitle'],
+            'ReleaseYear' => $_POST['ReleaseYear'],
+            'Genre' => $_POST['Genre'],
+            'Director' => $_POST['Director'],
+            'Duration' => $_POST['Duration'],
+            'MovieDescription' => $_POST['MovieDescription'],
+        ];
+        $movieController->store($data);
+    }
+    header('Location: admin_dashboard.php');
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['MovieID'])) {
-    $movieId = $_POST['MovieID'];
-    
-    $data = [
-        'Title' => $_POST['Title'],
-        'Subtitle' => $_POST['Subtitle'],
-        'ReleaseYear' => $_POST['ReleaseYear'],
-        'Genre' => $_POST['Genre'],
-        'Director' => $_POST['Director'],
-        'Duration' => $_POST['Duration'],
-        'MovieDescription' => $_POST['MovieDescription'],
-    ];
-    
-    $movieController->update($movieId, $data);
-    
-    header('Location: admin_dashboard.php?success=MovieUpdated');
+    if (verifyCsrfToken($_POST['csrf_token'])) {
+        $movieId = $_POST['MovieID'];
+        $data = [
+            'Title' => $_POST['Title'],
+            'Subtitle' => $_POST['Subtitle'],
+            'ReleaseYear' => $_POST['ReleaseYear'],
+            'Genre' => $_POST['Genre'],
+            'Director' => $_POST['Director'],
+            'Duration' => $_POST['Duration'],
+            'MovieDescription' => $_POST['MovieDescription'],
+        ];
+        $movieController->update($movieId, $data);
+    }
+    header('Location: admin_dashboard.php');
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addNewMovie'])) {
-    $data = [
-        'Title' => $_POST['Title'],
-        'Subtitle' => $_POST['Subtitle'],
-        'ReleaseYear' => $_POST['ReleaseYear'],
-        'Genre' => $_POST['Genre'],
-        'Director' => $_POST['Director'],
-        'Duration' => $_POST['Duration'],
-        'MovieDescription' => $_POST['MovieDescription'],
-    ];
-
-    $movieController->store($data);
-    header('Location: admin_dashboard.php?success=MovieAdded');
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteMovieID'])) {
+    if (verifyCsrfToken($_POST['csrf_token'])) {
+        $movieId = $_POST['deleteMovieID'];
+        $movieController->delete($movieId);
+    }
+    header('Location: admin_dashboard.php');
     exit;
 }
 
@@ -215,6 +221,7 @@ $movies = $movieController->index();
                                 </button>
                             </div>
                             <form id="addMovieForm" method="POST">
+                            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                                 <input type="hidden" name="addNewMovie" value="1">
                                 <div class="grid gap-4 sm:grid-cols-2">
                                     <div>
@@ -227,7 +234,7 @@ $movies = $movieController->index();
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Release Year:</label>
-                                        <input type="text" name="ReleaseYear" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
+                                        <input type="number" name="ReleaseYear" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Genre:</label>
@@ -239,7 +246,7 @@ $movies = $movieController->index();
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Duration:</label>
-                                        <input type="text" name="Duration" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+                                        <input type="number" name="Duration" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
                                     </div>
                                     <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Description:</label>
@@ -307,6 +314,7 @@ $movies = $movieController->index();
                                 </button>
                             </div>
                             <form id="editMovieForm" method="POST">
+                            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                                 <input type="hidden" id="editMovieID" name="MovieID">
                                 <div class="grid gap-4 sm:grid-cols-2">
                                     <div>
@@ -319,7 +327,7 @@ $movies = $movieController->index();
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Release Year:</label>
-                                        <input type="text" id="editMovieReleaseYear" name="ReleaseYear" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
+                                        <input type="number" id="editMovieReleaseYear" name="ReleaseYear" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Genre:</label>
@@ -331,7 +339,7 @@ $movies = $movieController->index();
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Duration:</label>
-                                        <input type="text" id="editMovieDuration" name="Duration" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+                                        <input type="number" id="editMovieDuration" name="Duration" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
                                     </div>
                                     <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Description:</label>
@@ -359,6 +367,7 @@ $movies = $movieController->index();
                             <p id="deleteMovieTitle" class="mb-4 text-sm font-semibold text-zinc-900"></p>
                             <p class="mb-4 text-sm text-zinc-600">Are you sure you want to delete this movie? This action cannot be undone.</p>
                             <form id="deleteMovieForm" method="POST">
+                            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                                 <input type="hidden" id="deleteMovieID" name="deleteMovieID">
                                 <div class="flex justify-end gap-4">
                                     <button type="button" class="rounded-lg bg-zinc-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-zinc-800 transition ease-in-out duration-300" onclick="hideDeleteModal()">Cancel</button>
@@ -367,7 +376,6 @@ $movies = $movieController->index();
                             </form>
                         </div>
                     </div>
-
                     <div id="modalBackdrop" class="hidden fixed inset-0 z-40 bg-zinc-900 bg-opacity-50 lg:pl-72"></div>
                 </section>            
             </main>
