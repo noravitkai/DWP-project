@@ -54,6 +54,7 @@ function populateModalFields(modalPrefix, movie) {
 }
 
 function showPreviewModal(movie) {
+  // Decode and populate text fields
   movie.Title = decodeHtmlEntities(movie.Title);
   movie.Subtitle = decodeHtmlEntities(movie.Subtitle);
   movie.Genre = decodeHtmlEntities(movie.Genre);
@@ -61,6 +62,15 @@ function showPreviewModal(movie) {
   movie.MovieDescription = decodeHtmlEntities(movie.MovieDescription);
 
   populateModalFields("preview", movie);
+
+  const previewImage = document.getElementById("previewMovieImage");
+  if (movie.ImageURL) {
+    previewImage.src = movie.ImageURL;
+    previewImage.classList.remove("hidden");
+  } else {
+    previewImage.classList.add("hidden");
+  }
+
   showModal("previewModal");
 }
 
@@ -112,3 +122,15 @@ function showAddModal() {
 function hideAddModal() {
   hideModal("addModal");
 }
+
+document.getElementById("movieImage").addEventListener("change", function (e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      document.getElementById("imagePreview").src = event.target.result;
+      document.getElementById("imagePreview").classList.remove("hidden");
+    };
+    reader.readAsDataURL(file);
+  }
+});
