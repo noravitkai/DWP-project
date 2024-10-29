@@ -19,7 +19,7 @@ class MovieController {
         $movies = $this->movie->getAllMovies();
         foreach ($movies as &$movie) {
             if ($movie['ImageURL']) {
-                $movie['ImageURL'] = '/cinemaProject/uploads/' . basename($movie['ImageURL']);
+                $movie['ImageURL'] = '/DWP-project/uploads/' . basename($movie['ImageURL']);
             }
         }
         return $movies;
@@ -28,7 +28,7 @@ class MovieController {
     public function getMovieById($id) {
         $movie = $this->movie->getMovieById($id);
         if ($movie && $movie['ImageURL']) {
-            $movie['ImageURL'] = '/cinemaProject/uploads/' . basename($movie['ImageURL']);
+            $movie['ImageURL'] = '/DWP-project/uploads/' . basename($movie['ImageURL']);
         }
         return $movie;
     }
@@ -60,7 +60,7 @@ class MovieController {
     public function uploadMovieImage($file, $movieID) {
         if ($file['error'] === UPLOAD_ERR_OK) {
             $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-            $maxFileSize = 2 * 1024 * 1024; // 2 MB
+            $maxFileSize = 2 * 1024 * 1024;
     
             if (!in_array($file['type'], $allowedTypes)) {
                 throw new Exception('Invalid file type. Only JPG, PNG, and GIF are allowed.');
@@ -74,7 +74,7 @@ class MovieController {
             $filePath = $this->uploadDir . $fileName;
     
             if (move_uploaded_file($file['tmp_name'], $filePath)) {
-                $webAccessiblePath = '/cinemaProject/uploads/' . $fileName;
+                $webAccessiblePath = '/DWP-project/uploads/' . $fileName;
                 return $this->movie->addMovieImage($movieID, $webAccessiblePath);
             } else {
                 throw new Exception('Failed to upload file.');
@@ -87,7 +87,7 @@ class MovieController {
     private function deleteAssociatedImage($movieID) {
         $imageData = $this->movie->getImageByMovieId($movieID);
         if ($imageData && file_exists(__DIR__ . '/../../uploads/' . basename($imageData['ImageURL']))) {
-            unlink(__DIR__ . '/../../uploads/' . basename($imageData['ImageURL'])); // Delete the file from the server
+            unlink(__DIR__ . '/../../uploads/' . basename($imageData['ImageURL']));
             $this->movie->deleteMovieImageByMovieId($movieID);
         }
     }
