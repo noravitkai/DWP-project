@@ -8,14 +8,20 @@ class Movie {
     }
 
     public function getAllMovies() {
-        $query = "SELECT * FROM Movie";
+        $query = "SELECT m.*, mi.ImageURL 
+                  FROM Movie m 
+                  LEFT JOIN MovieImage mi ON m.MovieID = mi.MovieID
+                  ORDER BY m.MovieID ASC";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getMovieById($id) {
-        $query = "SELECT * FROM Movie WHERE MovieID = :id";
+        $query = "SELECT m.*, mi.ImageURL 
+                  FROM Movie m 
+                  LEFT JOIN MovieImage mi ON m.MovieID = mi.MovieID 
+                  WHERE m.MovieID = :id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -61,13 +67,43 @@ class Movie {
         $stmt->bindParam(':duration', $data['Duration'], PDO::PARAM_INT);
         $stmt->bindParam(':description', $data['MovieDescription'], PDO::PARAM_STR);
 
-        return $stmt->execute();
+        $stmt->execute();
+        return $this->db->lastInsertId();
     }
 
     public function deleteMovieById($id) {
         $query = "DELETE FROM Movie WHERE MovieID = :id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function addMovieImage($movieID, $filePath) {
+        $existingImage = $this->getImageByMovieId($movieID);
+        if ($existingImage) {
+            $query = "UPDATE MovieImage SET ImageURL = :imageURL WHERE MovieID = :movieID";
+        } else {
+            $query = "INSERT INTO MovieImage (ImageURL, MovieID) VALUES (:imageURL, :movieID)";
+        }
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':imageURL', $filePath, PDO::PARAM_STR);
+        $stmt->bindParam(':movieID', $movieID, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function getImageByMovieId($movieID) {
+        $query = "SELECT * FROM MovieImage WHERE MovieID = :movieID";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':movieID', $movieID, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function deleteMovieImageByMovieId($movieID) {
+        $query = "DELETE FROM MovieImage WHERE MovieID = :movieID";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':movieID', $movieID, PDO::PARAM_INT);
         return $stmt->execute();
     }
 }

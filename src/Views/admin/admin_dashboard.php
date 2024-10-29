@@ -222,7 +222,7 @@ $movies = $movieController->index();
                                     </svg>
                                 </button>
                             </div>
-                            <form id="addMovieForm" method="POST">
+                            <form id="addMovieForm" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                                 <input type="hidden" name="addNewMovie" value="1">
                                 <div class="grid gap-4 sm:grid-cols-2">
@@ -253,6 +253,10 @@ $movies = $movieController->index();
                                     <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Description:</label>
                                         <textarea name="MovieDescription" rows="6" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600"></textarea>
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label for="movieImage">Upload Image:</label>
+                                        <input type="file" name="movieImage" id="movieImage" accept="image/jpeg, image/png, image/gif">
                                     </div>
                                     <div class="sm:col-span-2 text-right">
                                         <button type="submit" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
@@ -302,6 +306,10 @@ $movies = $movieController->index();
                                     <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Description:</label>
                                     <p id="previewMovieDescription" class="text-sm text-zinc-900"></p>
                                 </div>
+                                <div class="sm:col-span-2">
+                                    <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Image:</label>
+                                    <img id="previewMovieImage" src="" alt="Movie Image" class="w-32 h-auto" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -315,7 +323,7 @@ $movies = $movieController->index();
                                     </svg>
                                 </button>
                             </div>
-                            <form id="editMovieForm" method="POST">
+                            <form id="editMovieForm" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                                 <input type="hidden" id="editMovieID" name="MovieID">
                                 <div class="grid gap-4 sm:grid-cols-2">
@@ -346,6 +354,10 @@ $movies = $movieController->index();
                                     <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Description:</label>
                                         <textarea id="editMovieDescription" name="MovieDescription" rows="6" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600"></textarea>
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label for="movieImage">Upload Image:</label>
+                                        <input type="file" name="movieImage" id="movieImage" accept="image/jpeg, image/png, image/gif">
                                     </div>
                                     <div class="sm:col-span-2 text-right">
                                         <button type="submit" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
