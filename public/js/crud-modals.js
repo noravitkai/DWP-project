@@ -34,7 +34,7 @@ function hideModal(modalId) {
   }
 }
 
-function populateModalFields(modalPrefix, movie) {
+function populateMovieModalFields(modalPrefix, movie) {
   document.getElementById(modalPrefix + "MovieTitle").innerHTML =
     movie.Title || "";
   document.getElementById(modalPrefix + "MovieID").innerHTML =
@@ -53,15 +53,14 @@ function populateModalFields(modalPrefix, movie) {
     movie.MovieDescription || "";
 }
 
-function showPreviewModal(movie) {
-  // Decode and populate text fields
+function showPreviewMovieModal(movie) {
   movie.Title = decodeHtmlEntities(movie.Title);
   movie.Subtitle = decodeHtmlEntities(movie.Subtitle);
   movie.Genre = decodeHtmlEntities(movie.Genre);
   movie.Director = decodeHtmlEntities(movie.Director);
   movie.MovieDescription = decodeHtmlEntities(movie.MovieDescription);
 
-  populateModalFields("preview", movie);
+  populateMovieModalFields("preview", movie);
 
   const previewImage = document.getElementById("previewMovieImage");
   if (movie.ImageURL) {
@@ -74,11 +73,11 @@ function showPreviewModal(movie) {
   showModal("previewModal");
 }
 
-function hidePreviewModal() {
+function hidePreviewMovieModal() {
   hideModal("previewModal");
 }
 
-function showEditModal(movie) {
+function showEditMovieModal(movie) {
   movie.Title = decodeHtmlEntities(movie.Title);
   movie.Subtitle = decodeHtmlEntities(movie.Subtitle);
   movie.Genre = decodeHtmlEntities(movie.Genre);
@@ -98,11 +97,11 @@ function showEditModal(movie) {
   showModal("editModal");
 }
 
-function hideEditModal() {
+function hideEditMovieModal() {
   hideModal("editModal");
 }
 
-function showDeleteModal(movie) {
+function showDeleteMovieModal(movie) {
   movie.Title = decodeHtmlEntities(movie.Title);
 
   document.getElementById("deleteMovieID").value = movie.MovieID;
@@ -110,17 +109,89 @@ function showDeleteModal(movie) {
   showModal("deleteModal");
 }
 
-function hideDeleteModal() {
+function hideDeleteMovieModal() {
   hideModal("deleteModal");
 }
 
-function showAddModal() {
+function showAddMovieModal() {
   document.getElementById("addMovieForm").reset();
   showModal("addModal");
 }
 
-function hideAddModal() {
+function hideAddMovieModal() {
   hideModal("addModal");
+}
+
+function populateNewsModalFields(modalPrefix, news) {
+  document.getElementById(modalPrefix + "NewsTitleText").innerHTML =
+    news.Title || "";
+  document.getElementById(modalPrefix + "NewsCategory").innerHTML =
+    news.Category || "";
+  document.getElementById(modalPrefix + "NewsDatePublished").innerHTML =
+    news.DatePublished || "";
+  document.getElementById(modalPrefix + "NewsContent").innerHTML =
+    news.Content || "";
+}
+
+function showPreviewNewsModal(news) {
+  news.Title = decodeHtmlEntities(news.Title);
+  news.Category = decodeHtmlEntities(news.Category);
+  news.Content = decodeHtmlEntities(news.Content);
+
+  populateNewsModalFields("preview", news);
+
+  const previewImage = document.getElementById("previewNewsImage");
+  if (news.ImageURL) {
+    previewImage.src = news.ImageURL;
+    previewImage.classList.remove("hidden");
+  } else {
+    previewImage.classList.add("hidden");
+  }
+
+  showModal("previewNewsModal");
+}
+
+function hidePreviewNewsModal() {
+  hideModal("previewNewsModal");
+}
+
+function showEditNewsModal(news) {
+  news.Title = decodeHtmlEntities(news.Title);
+  news.Category = decodeHtmlEntities(news.Category);
+  news.Content = decodeHtmlEntities(news.Content);
+
+  document.getElementById("editNewsID").value = news.NewsID;
+  document.getElementById("editNewsTitle").value = news.Title;
+  document.getElementById("editNewsCategory").value = news.Category;
+  document.getElementById("editNewsDatePublished").value = news.DatePublished;
+  document.getElementById("editNewsContent").value = news.Content;
+
+  showModal("editNewsModal");
+}
+
+function hideEditNewsModal() {
+  hideModal("editNewsModal");
+}
+
+function showDeleteNewsModal(news) {
+  news.Title = decodeHtmlEntities(news.Title);
+
+  document.getElementById("deleteNewsID").value = news.NewsID;
+  document.getElementById("deleteNewsTitle").textContent = news.Title;
+  showModal("deleteNewsModal");
+}
+
+function hideDeleteNewsModal() {
+  hideModal("deleteNewsModal");
+}
+
+function showAddNewsModal() {
+  document.getElementById("addNewsForm").reset();
+  showModal("addNewsModal");
+}
+
+function hideAddNewsModal() {
+  hideModal("addNewsModal");
 }
 
 document.getElementById("movieImage").addEventListener("change", function (e) {
