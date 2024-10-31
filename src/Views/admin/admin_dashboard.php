@@ -54,6 +54,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteMovieID'])) {
     header('Location: admin_dashboard.php');
     exit;
 }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['NewsID'])) {
+    if (verifyCsrfToken($_POST['csrf_token'])) {
+        $newsId = sanitizeInput($_POST['NewsID']);
+        $data = [
+            'Title' => sanitizeInput($_POST['Title']),
+            'Content' => sanitizeInput($_POST['Content']),
+            'Category' => sanitizeInput($_POST['Category']),
+            'DatePublished' => sanitizeInput($_POST['DatePublished']),
+        ];
+        $newsController->update($newsId, $data);
+    }
+    header('Location: admin_dashboard.php');
+    exit;
+}
 
 $movies = $movieController->index();
 $newsList = $newsController->index();
@@ -311,7 +325,7 @@ $newsList = $newsController->index();
                                 </div>
                                 <div class="sm:col-span-2">
                                     <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Image:</label>
-                                    <img id="previewMovieImage" src="" alt="Movie Image" class="w-32 h-auto" />
+                                    <img id="previewMovieImage" src="" alt="Movie Image" class="w-32 h-auto"/>
                                 </div>
                             </div>
                         </div>
@@ -393,7 +407,6 @@ $newsList = $newsController->index();
                             </form>
                         </div>
                     </div>
-                    <div id="modalBackdrop" class="hidden fixed inset-0 z-40 bg-zinc-900 bg-opacity-50 lg:pl-72"></div>
                 </section>
                 <section id="news" class="mb-10">
                     <h2 class="text-3xl font-bold text-zinc-900">News</h2>
@@ -481,12 +494,60 @@ $newsList = $newsController->index();
                                 </div>
                                 <div class="sm:col-span-2" id="previewNewsImageContainer">
                                     <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Image:</label>
-                                    <img id="previewNewsImage" src="" alt="News Image" class="w-full h-auto rounded-md shadow-md" />
+                                    <img id="previewNewsImage" src="" alt="News Image Preview" class="w-32 h-auto">
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div id="editNewsModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center lg:pl-72 p-4">
+                        <div class="relative max-w-2xl w-full bg-zinc-100 rounded-lg shadow p-4 sm:p-5">
+                            <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
+                                <h3 class="text-lg font-semibold text-zinc-900">Edit News</h3>
+                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideEditNewsModal()">
+                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <form id="editNewsForm" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                                <input type="hidden" id="editNewsID" name="NewsID">
+                                <div class="grid gap-4">
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Title:</label>
+                                        <input type="text" id="editNewsTitle" name="Title" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Category:</label>
+                                        <select id="editNewsCategory" name="Category" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600 bg-white">
+                                            <option value="Announcement" selected>Announcement</option>
+                                            <option value="Event">Event</option>
+                                            <option value="Update">Update</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Date Published:</label>
+                                        <input type="date" id="editNewsDatePublished" name="DatePublished" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Content:</label>
+                                        <textarea id="editNewsContent" name="Content" rows="6" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required></textarea>
+                                    </div>
+                                    <div>
+                                        <label for="newsImage">Upload Image:</label>
+                                        <input type="file" name="newsImage" id="newsImage" accept="image/jpeg, image/png, image/gif">
+                                    </div>
+                                    <div class="text-right">
+                                        <button type="submit" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
+                                            Update
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </section>
+                <div id="modalBackdrop" class="hidden fixed inset-0 z-40 bg-zinc-900 bg-opacity-50 lg:pl-72"></div>
             </main>
         </div>
     </div>

@@ -26,4 +26,52 @@ class News {
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function updateNewsById($id, $data) {
+        $query = "UPDATE News SET 
+                    Title = :title,
+                    Content = :content,
+                    Category = :category,
+                    DatePublished = :datePublished
+                  WHERE NewsID = :id";
+
+        $stmt = $this->db->prepare($query);
+
+        $stmt->bindParam(':title', $data['Title'], PDO::PARAM_STR);
+        $stmt->bindParam(':content', $data['Content'], PDO::PARAM_STR);
+        $stmt->bindParam(':category', $data['Category'], PDO::PARAM_STR);
+        $stmt->bindParam(':datePublished', $data['DatePublished'], PDO::PARAM_STR);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    public function addNewsImage($newsID, $filePath) {
+        $existingImage = $this->getImageByNewsId($newsID);
+        if ($existingImage) {
+            $query = "UPDATE NewsImage SET ImageURL = :imageURL WHERE NewsID = :newsID";
+        } else {
+            $query = "INSERT INTO NewsImage (ImageURL, NewsID) VALUES (:imageURL, :newsID)";
+        }
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':imageURL', $filePath, PDO::PARAM_STR);
+        $stmt->bindParam(':newsID', $newsID, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function getImageByNewsId($newsID) {
+        $query = "SELECT * FROM NewsImage WHERE NewsID = :newsID";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':newsID', $newsID, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function deleteNewsImageByNewsId($newsID) {
+        $query = "DELETE FROM NewsImage WHERE NewsID = :newsID";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':newsID', $newsID, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }
