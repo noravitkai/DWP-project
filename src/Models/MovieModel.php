@@ -1,5 +1,4 @@
 <?php
-
 class Movie {
     private $db;
 

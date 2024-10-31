@@ -54,7 +54,6 @@ function populateModalFields(modalPrefix, movie) {
 }
 
 function showPreviewModal(movie) {
-  // Decode and populate text fields
   movie.Title = decodeHtmlEntities(movie.Title);
   movie.Subtitle = decodeHtmlEntities(movie.Subtitle);
   movie.Genre = decodeHtmlEntities(movie.Genre);
