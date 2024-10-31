@@ -1,5 +1,5 @@
 <?php
-include '../../../config/session.php';
+include '../../../config/user_session.php';
 require_once '../../Controllers/MovieController.php';
 
 $movieController = new MovieController();

@@ -14,9 +14,9 @@ if (!isset($_SESSION['session_hash'])) {
 } elseif ($_SESSION['session_hash'] !== generateSessionHash()) {
     session_unset();
     session_destroy();
-    header("Location: admin_login.php");
     exit();
 }
+
 if (!isset($_SESSION['created']) || time() - $_SESSION['created'] > 300 ) {
     session_regenerate_id(true);
     $_SESSION['created'] = time();
@@ -25,9 +25,4 @@ if (!isset($_SESSION['created']) || time() - $_SESSION['created'] > 300 ) {
 
 if (!isset($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
-
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: admin_login.php");
-    exit();
 }
