@@ -16,14 +16,14 @@
             <form action="../../../src/Controllers/AdminController.php?action=login" method="post" class="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8 bg-zinc-800">    
                 <h2 class="text-center text-lg font-medium text-zinc-200">Sign in to your account</h2>
                 <div>
-                    <label for="username" class="sr-only">Username</label>
+                    <label for="username" class="sr-only">Email</label>
                     <div class="relative">
                         <input
                             type="text"
                             name="username"
                             id="username"
                             class="w-full rounded-lg border-zinc-600 px-5 py-3 text-sm shadow-sm bg-zinc-700 text-zinc-100 placeholder-zinc-300 focus:outline-none focus:ring-1 focus:ring-orange-600"
-                            placeholder="Username"
+                            placeholder="Email"
                             required
                         />
                     </div>
@@ -48,7 +48,7 @@
                 <p class="text-center text-red-600 mt-4">
                     Invalid email or password, please try again.
                 </p>
-            <?php endif; ?>
+                <?php endif; ?>
             </form>
         </div>
     </div>

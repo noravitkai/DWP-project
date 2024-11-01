@@ -15,17 +15,15 @@ if (!in_array($action, $allowedActions, true)) {
 }
 
 if ($action === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = sanitizeInput($_POST['username'] ?? '');
+    $email = sanitizeInput($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
 
-    $stmt = $pdo->prepare("SELECT UserID, Password, Role FROM User WHERE Email = :email AND Role = 'admin'");
-    $stmt->execute(['email' => $username]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare("SELECT AdminID, Password FROM Admin WHERE Email = :email");
+    $stmt->execute(['email' => $email]);
+    $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user && password_verify($password, $user['Password'])) {
-        $_SESSION['user_id'] = $user['UserID'];
-        $_SESSION['role'] = $user['Role'];
-
+    if ($admin && password_verify($password, $admin['Password'])) {
+        $_SESSION['admin_id'] = $admin['AdminID'];
         header("Location: ../../src/Views/admin/admin_dashboard.php");
         exit();
     } else {
