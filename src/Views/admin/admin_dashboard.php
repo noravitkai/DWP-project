@@ -1,5 +1,5 @@
 <?php
-include '../../../config/session.php';
+include '../../../config/admin_session.php';
 require_once '../../Controllers/MovieController.php';
 require_once '../../Controllers/NewsController.php';
 require_once '../../../config/functions.php';

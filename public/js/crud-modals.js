@@ -192,32 +192,12 @@ document.getElementById("movieImage").addEventListener("change", function (e) {
 document.getElementById("newsImage").addEventListener("change", function (e) {
   const file = e.target.files[0];
   if (file) {
-      const reader = new FileReader();
-      reader.onload = function (event) {
-          const previewImage = document.getElementById("previewNewsImage");
-          previewImage.src = event.target.result;
-          previewImage.classList.remove("hidden");
-      };
-      reader.readAsDataURL(file);
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      const previewImage = document.getElementById("previewNewsImage");
+      previewImage.src = event.target.result;
+      previewImage.classList.remove("hidden");
+    };
+    reader.readAsDataURL(file);
   }
 });
-
-function showAddNewsModal() {
-  document.getElementById("addNewsForm").reset();
-  showModal("addNewsModal");
-}
-
-function hideAddNewsModal() {
-  hideModal("addNewsModal");
-}
-
-function showDeleteNewsModal(news) {
-  news.Title = decodeHtmlEntities(news.Title);
-  document.getElementById("deleteNewsID").value = news.NewsID;
-  document.getElementById("deleteNewsTitle").textContent = news.Title;
-  showModal("deleteNewsModal");
-}
-
-function hideDeleteNewsModal() {
-  hideModal("deleteNewsModal");
-}
