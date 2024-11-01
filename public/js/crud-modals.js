@@ -210,3 +210,14 @@ function showAddNewsModal() {
 function hideAddNewsModal() {
   hideModal("addNewsModal");
 }
+
+function showDeleteNewsModal(news) {
+  news.Title = decodeHtmlEntities(news.Title);
+  document.getElementById("deleteNewsID").value = news.NewsID;
+  document.getElementById("deleteNewsTitle").textContent = news.Title;
+  showModal("deleteNewsModal");
+}
+
+function hideDeleteNewsModal() {
+  hideModal("deleteNewsModal");
+}

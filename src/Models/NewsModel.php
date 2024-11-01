@@ -61,6 +61,13 @@ class News {
         return $stmt->execute();
     }
 
+    public function deleteNewsById($id) {
+        $query = "DELETE FROM News WHERE NewsID = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
     public function addNewsImage($newsID, $filePath) {
         $existingImage = $this->getImageByNewsId($newsID);
         if ($existingImage) {

@@ -46,6 +46,11 @@ class NewsController {
         }
     }
 
+    public function delete($id) {
+        $this->deleteAssociatedImage($id);
+        return $this->news->deleteNewsById($id);
+    }
+
     private function uploadNewsImage($file, $newsID) {
         if ($file['error'] === UPLOAD_ERR_OK) {
             $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
