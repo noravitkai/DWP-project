@@ -117,6 +117,7 @@ CREATE TABLE News (
     Title VARCHAR(255),
     Content TEXT,
     DatePublished DATE,
+    Category ENUM('Event', 'Announcement', 'Update') DEFAULT 'Announcement',
     UserID INT,
     FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
 );
@@ -129,4 +130,11 @@ CREATE TABLE Event (
     Discount DECIMAL(5,2),
     ScreeningID INT,
     FOREIGN KEY (ScreeningID) REFERENCES Screening(ScreeningID) ON DELETE CASCADE
+);
+
+CREATE TABLE NewsImage (
+    ImageID INT AUTO_INCREMENT PRIMARY KEY,
+    ImageURL VARCHAR(255),
+    NewsID INT,
+    FOREIGN KEY (NewsID) REFERENCES News(NewsID) ON DELETE CASCADE
 );

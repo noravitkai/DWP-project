@@ -11,9 +11,7 @@ function showModal(modalId) {
   if (modal && backdrop) {
     modal.classList.remove("hidden");
     modal.classList.add("flex");
-
     backdrop.classList.remove("hidden");
-
     document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
   }
@@ -26,41 +24,36 @@ function hideModal(modalId) {
   if (modal && backdrop) {
     modal.classList.add("hidden");
     modal.classList.remove("flex");
-
     backdrop.classList.add("hidden");
-
     document.documentElement.style.overflow = "";
     document.body.style.overflow = "";
   }
 }
 
-function populateModalFields(modalPrefix, movie) {
-  document.getElementById(modalPrefix + "MovieTitle").innerHTML =
-    movie.Title || "";
-  document.getElementById(modalPrefix + "MovieID").innerHTML =
-    movie.MovieID || "";
-  document.getElementById(modalPrefix + "MovieSubtitle").innerHTML =
-    movie.Subtitle || "";
-  document.getElementById(modalPrefix + "MovieDuration").innerHTML =
-    movie.Duration ? movie.Duration + " min" : "";
-  document.getElementById(modalPrefix + "MovieGenre").innerHTML =
-    movie.Genre || "";
-  document.getElementById(modalPrefix + "MovieReleaseYear").innerHTML =
-    movie.ReleaseYear || "";
-  document.getElementById(modalPrefix + "MovieDirector").innerHTML =
-    movie.Director || "";
-  document.getElementById(modalPrefix + "MovieDescription").innerHTML =
-    movie.MovieDescription || "";
+function populateModalFields(modalPrefix, data, fieldMapping) {
+  Object.keys(fieldMapping).forEach((field) => {
+    const element = document.getElementById(modalPrefix + fieldMapping[field]);
+    if (element) {
+      element.innerHTML = data[field] || "";
+    }
+  });
 }
 
-function showPreviewModal(movie) {
-  movie.Title = decodeHtmlEntities(movie.Title);
-  movie.Subtitle = decodeHtmlEntities(movie.Subtitle);
-  movie.Genre = decodeHtmlEntities(movie.Genre);
-  movie.Director = decodeHtmlEntities(movie.Director);
-  movie.MovieDescription = decodeHtmlEntities(movie.MovieDescription);
+function showPreviewMovieModal(movie) {
+  ["Title", "Subtitle", "Genre", "Director", "MovieDescription"].forEach((field) => {
+    movie[field] = decodeHtmlEntities(movie[field]);
+  });
 
-  populateModalFields("preview", movie);
+  populateModalFields("preview", movie, {
+    Title: "MovieTitle",
+    MovieID: "MovieID",
+    Subtitle: "MovieSubtitle",
+    Duration: "MovieDuration",
+    Genre: "MovieGenre",
+    ReleaseYear: "MovieReleaseYear",
+    Director: "MovieDirector",
+    MovieDescription: "MovieDescription"
+  });
 
   const previewImage = document.getElementById("previewMovieImage");
   if (movie.ImageURL) {
@@ -73,16 +66,14 @@ function showPreviewModal(movie) {
   showModal("previewModal");
 }
 
-function hidePreviewModal() {
+function hidePreviewMovieModal() {
   hideModal("previewModal");
 }
 
-function showEditModal(movie) {
-  movie.Title = decodeHtmlEntities(movie.Title);
-  movie.Subtitle = decodeHtmlEntities(movie.Subtitle);
-  movie.Genre = decodeHtmlEntities(movie.Genre);
-  movie.Director = decodeHtmlEntities(movie.Director);
-  movie.MovieDescription = decodeHtmlEntities(movie.MovieDescription);
+function showEditMovieModal(movie) {
+  ["Title", "Subtitle", "Genre", "Director", "MovieDescription"].forEach((field) => {
+    movie[field] = decodeHtmlEntities(movie[field]);
+  });
 
   document.getElementById("editMovieID").value = movie.MovieID;
   document.getElementById("editMovieTitle").value = movie.Title;
@@ -91,35 +82,98 @@ function showEditModal(movie) {
   document.getElementById("editMovieGenre").value = movie.Genre;
   document.getElementById("editMovieDirector").value = movie.Director;
   document.getElementById("editMovieDuration").value = movie.Duration;
-  document.getElementById("editMovieDescription").value =
-    movie.MovieDescription;
+  document.getElementById("editMovieDescription").value = movie.MovieDescription;
 
   showModal("editModal");
 }
 
-function hideEditModal() {
+function hideEditMovieModal() {
   hideModal("editModal");
 }
 
-function showDeleteModal(movie) {
+function showDeleteMovieModal(movie) {
   movie.Title = decodeHtmlEntities(movie.Title);
-
   document.getElementById("deleteMovieID").value = movie.MovieID;
   document.getElementById("deleteMovieTitle").textContent = movie.Title;
   showModal("deleteModal");
 }
 
-function hideDeleteModal() {
+function hideDeleteMovieModal() {
   hideModal("deleteModal");
 }
 
-function showAddModal() {
+function showAddMovieModal() {
   document.getElementById("addMovieForm").reset();
   showModal("addModal");
 }
 
-function hideAddModal() {
+function hideAddMovieModal() {
   hideModal("addModal");
+}
+
+function showPreviewNewsModal(news) {
+  ["Title", "Category", "Content"].forEach((field) => {
+    news[field] = decodeHtmlEntities(news[field]);
+  });
+
+  populateModalFields("preview", news, {
+    Title: "NewsTitleText",
+    Category: "NewsCategory",
+    DatePublished: "NewsDatePublished",
+    Content: "NewsContent"
+  });
+
+  const previewImage = document.getElementById("previewNewsImage");
+  if (news.ImageURL) {
+    previewImage.src = news.ImageURL;
+    previewImage.classList.remove("hidden");
+  } else {
+    previewImage.classList.add("hidden");
+  }
+
+  showModal("previewNewsModal");
+}
+
+function hidePreviewNewsModal() {
+  hideModal("previewNewsModal");
+}
+
+function showEditNewsModal(news) {
+  ["Title", "Category", "Content"].forEach((field) => {
+    news[field] = decodeHtmlEntities(news[field]);
+  });
+
+  document.getElementById("editNewsID").value = news.NewsID;
+  document.getElementById("editNewsTitle").value = news.Title;
+  document.getElementById("editNewsCategory").value = news.Category;
+  document.getElementById("editNewsDatePublished").value = news.DatePublished;
+  document.getElementById("editNewsContent").value = news.Content;
+
+  showModal("editNewsModal");
+}
+
+function hideEditNewsModal() {
+  hideModal("editNewsModal");
+}
+
+function showDeleteNewsModal(news) {
+  news.Title = decodeHtmlEntities(news.Title);
+  document.getElementById("deleteNewsID").value = news.NewsID;
+  document.getElementById("deleteNewsTitle").textContent = news.Title;
+  showModal("deleteNewsModal");
+}
+
+function hideDeleteNewsModal() {
+  hideModal("deleteNewsModal");
+}
+
+function showAddNewsModal() {
+  document.getElementById("addNewsForm").reset();
+  showModal("addNewsModal");
+}
+
+function hideAddNewsModal() {
+  hideModal("addNewsModal");
 }
 
 document.getElementById("movieImage").addEventListener("change", function (e) {
@@ -127,8 +181,22 @@ document.getElementById("movieImage").addEventListener("change", function (e) {
   if (file) {
     const reader = new FileReader();
     reader.onload = function (event) {
-      document.getElementById("imagePreview").src = event.target.result;
-      document.getElementById("imagePreview").classList.remove("hidden");
+      const previewImage = document.getElementById("imagePreview");
+      previewImage.src = event.target.result;
+      previewImage.classList.remove("hidden");
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+document.getElementById("newsImage").addEventListener("change", function (e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      const previewImage = document.getElementById("previewNewsImage");
+      previewImage.src = event.target.result;
+      previewImage.classList.remove("hidden");
     };
     reader.readAsDataURL(file);
   }
