@@ -457,9 +457,9 @@ $newsList = $newsController->index();
                                 <?php foreach ($newsList as $news): ?>
                                 <tr>
                                     <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-200 text-sm"><?php echo $news['NewsID']; ?></td>
-                                    <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-200 text-sm"><?php echo htmlspecialchars($news['Title']); ?></td>
-                                    <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-200 text-sm"><?php echo htmlspecialchars($news['DatePublished']); ?></td>
-                                    <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-200 text-sm"><?php echo htmlspecialchars($news['Category']); ?></td>
+                                    <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-200 text-sm"><?php echo $news['Title']; ?></td>
+                                    <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-200 text-sm"><?php echo $news['DatePublished']; ?></td>
+                                    <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-200 text-sm"><?php echo $news['Category']; ?></td>
 
                                     <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-200 text-sm">
                                         <button type="button" onclick="showPreviewNewsModal(<?php echo htmlspecialchars(json_encode($news)); ?>)" class="flex items-center py-1 text-zinc-600 hover:text-zinc-900 transition ease-in-out duration-300">
