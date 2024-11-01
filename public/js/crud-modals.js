@@ -201,3 +201,12 @@ document.getElementById("newsImage").addEventListener("change", function (e) {
       reader.readAsDataURL(file);
   }
 });
+
+function showAddNewsModal() {
+  document.getElementById("addNewsForm").reset();
+  showModal("addNewsModal");
+}
+
+function hideAddNewsModal() {
+  hideModal("addNewsModal");
+}

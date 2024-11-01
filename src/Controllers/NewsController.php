@@ -27,6 +27,16 @@ class NewsController {
         return $newsList;
     }
 
+    public function store($data) {
+        $newsID = $this->news->storeNews($data);
+    
+        if (isset($_FILES['newsImage']) && $_FILES['newsImage']['error'] === UPLOAD_ERR_OK) {
+            $this->uploadNewsImage($_FILES['newsImage'], $newsID);
+        }
+    
+        return $newsID;
+    }
+
     public function update($id, $data) {
         $this->news->updateNewsById($id, $data);
 
