@@ -9,11 +9,10 @@ CREATE TABLE PostalCode (
     PRIMARY KEY (PostalCode)
 );
 
-CREATE TABLE User (
-    UserID INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Admin (
+    AdminID INT AUTO_INCREMENT PRIMARY KEY,
     Email VARCHAR(255),
-    `Password` VARCHAR(255),
-    `Role` VARCHAR(50)
+    `Password` VARCHAR(255)
 );
 
 CREATE TABLE Movie (
@@ -118,8 +117,8 @@ CREATE TABLE News (
     Content TEXT,
     DatePublished DATE,
     Category ENUM('Event', 'Announcement', 'Update') DEFAULT 'Announcement',
-    UserID INT,
-    FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
+    AdminID INT,
+    FOREIGN KEY (AdminID) REFERENCES Admin(AdminID) ON DELETE CASCADE
 );
 
 CREATE TABLE Event (

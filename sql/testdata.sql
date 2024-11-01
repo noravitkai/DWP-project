@@ -8,11 +8,6 @@ VALUES
     ('John', 'Doe', 'johndoe@example.com', 'password123', '000-1234', '5A', 'Main Street', 'Dreamland', '12345'), 
     ('Jane', 'Smith', 'janesmith@example.com', 'password456', '555-5678', '10B', 'Nowhere Street', 'Wonderland', '56789');
 
-INSERT INTO User (Email, `Password`, `Role`) 
-VALUES
-    ('admin@example.com', 'adminpass', 'admin'),
-    ('editor@example.com', 'editorpass', 'editor');
-
 INSERT INTO Movie (Title, Subtitle, Duration, Genre, ReleaseYear, Director, MovieDescription) 
 VALUES 
     ('Fast & Furious 1', 'Cars, Crime, and Culinary Curiosity', 106, 'Action, Crime', 2001, 'Rob Cohen', 'Brian’s detective work mostly involves eating his way to the top, while Dom shows everyone that racing isn’t as important as being a family man. Brian’s undercover strategy? Pretend to be a guy who loves tuna and illegal street racing. Brilliant plan.'),
@@ -87,16 +82,16 @@ VALUES
     ('Completed', 25.00, '2024-10-03', 1, 1),
     ('Pending', 30.00, '2024-10-03', 2, 2);
 
-INSERT INTO News (Title, Content, DatePublished, Category, UserID) 
+INSERT INTO Admin (Email, `Password`)
+VALUES
+    ('vitkai.nora@gmail.com', '$2y$10$kcilhapT7/oMgtsqz3xf4.K1IcvMkviTtuHE7p848QtI9/RNx8IrO');
+
+INSERT INTO News (Title, Content, DatePublished, Category, AdminID) 
 VALUES
     ('Fast X Breaks Records!', 'The latest Fast & Furious movie has shattered expectations...', '2024-10-01', 'Announcement', 1),
-    ('Upcoming Event: Torretto Tuesday!', 'Join us on Tuesdays when every guest gets a chance to win Fast & Furious memorabilia!', '2024-10-02', 'Event', 2);
+    ('Upcoming Event: Torretto Tuesday!', 'Join us on Tuesdays when every guest gets a chance to win Fast & Furious memorabilia!', '2024-10-02', 'Event', 1);
 
 INSERT INTO Event (EventName, EventDate, EventDescription, Discount, ScreeningID) 
 VALUES
     ('Torretto Tuesday', '2024-10-08', 'Special screenings of all Fast & Furious movies! Win memorabilia!', 10.00, 1),
     ('Family Friday', '2024-10-11', 'Bring the family for a 30% discount on all Fast & Furious screenings!', 30.00, 1);
-
-INSERT INTO User (Email, `Password`, `Role`)
-VALUES
-    ('vitkai.nora@gmail.com', '$2y$10$kcilhapT7/oMgtsqz3xf4.K1IcvMkviTtuHE7p848QtI9/RNx8IrO', 'admin');
