@@ -3,10 +3,14 @@ VALUES
     ('12345', 'Race City'),
     ('56789', 'Speedville');
 
-INSERT INTO Customer (FirstName, LastName, Email, `Password`, PhoneNumber, SuiteNumber, Street, Country, PostalCode) 
+INSERT INTO Admin (Email, `Password`)
 VALUES
-    ('John', 'Doe', 'johndoe@example.com', 'password123', '000-1234', '5A', 'Main Street', 'Dreamland', '12345'), 
-    ('Jane', 'Smith', 'janesmith@example.com', 'password456', '555-5678', '10B', 'Nowhere Street', 'Wonderland', '56789');
+    ('vitkai.nora@gmail.com', '$2y$10$kcilhapT7/oMgtsqz3xf4.K1IcvMkviTtuHE7p848QtI9/RNx8IrO');
+
+INSERT INTO Room (RoomLabel, TotalSeats) 
+VALUES
+    ('Family Lounge', 100),
+    ('Quarter-Tank', 25);
 
 INSERT INTO Movie (Title, Subtitle, Duration, Genre, ReleaseYear, Director, MovieDescription) 
 VALUES 
@@ -54,10 +58,11 @@ VALUES
     (9, 1), (9, 3), (9, 15), (9, 5), (9, 14),
     (10, 1), (10, 16), (10, 3), (10, 13), (10, 17);
 
-INSERT INTO Room (RoomLabel, TotalSeats) 
+INSERT INTO Customer (FirstName, LastName, Email, `Password`, PhoneNumber, SuiteNumber, Street, Country, PostalCode) 
 VALUES
-    ('Family Lounge', 100),
-    ('Quarter-Tank', 25);
+    ('John', 'Doe', 'johndoe@example.com', 'password123', '000-1234', '5A', 'Main Street', 'Dreamland', '12345'), 
+    ('Jane', 'Smith', 'janesmith@example.com', 'password456', '555-5678', '10B', 'Nowhere Street', 'Wonderland', '56789');
+
 
 INSERT INTO Screening (Price, ScreeningDate, ScreeningTime, MovieID, RoomID)
 VALUES
@@ -81,10 +86,6 @@ INSERT INTO Payment (PaymentStatus, TransactionAmount, TransactionDate, Customer
 VALUES
     ('Completed', 25.00, '2024-10-03', 1, 1),
     ('Pending', 30.00, '2024-10-03', 2, 2);
-
-INSERT INTO Admin (Email, `Password`)
-VALUES
-    ('vitkai.nora@gmail.com', '$2y$10$kcilhapT7/oMgtsqz3xf4.K1IcvMkviTtuHE7p848QtI9/RNx8IrO');
 
 INSERT INTO News (Title, Content, DatePublished, Category, AdminID) 
 VALUES
