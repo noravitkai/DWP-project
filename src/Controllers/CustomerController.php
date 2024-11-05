@@ -13,6 +13,14 @@ class CustomerController {
         }
     }
 
+    public function fetchLoggedInCustomerData() {
+        $customerId = $_SESSION['user_id'] ?? null;
+        if ($customerId) {
+            return $this->customerModel->getCustomerById($customerId);
+        }
+        return null;
+    }
+
     public function register($data) {
         $sanitizedData = [
             'firstName' => sanitizeInput($data['firstName']),

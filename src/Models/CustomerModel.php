@@ -1,6 +1,6 @@
 <?php
-require_once '../../config/dbcon.php';
-require_once '../../config/functions.php';
+require_once __DIR__ . '/../../config/dbcon.php';
+require_once __DIR__ . '/../../config/functions.php';
 
 class CustomerModel {
     private $db;
