@@ -58,12 +58,6 @@ VALUES
     (9, 1), (9, 3), (9, 15), (9, 5), (9, 14),
     (10, 1), (10, 16), (10, 3), (10, 13), (10, 17);
 
-INSERT INTO Customer (FirstName, LastName, Email, `Password`, PhoneNumber, SuiteNumber, Street, Country, PostalCode) 
-VALUES
-    ('John', 'Doe', 'johndoe@example.com', 'password123', '000-1234', '5A', 'Main Street', 'Dreamland', '12345'), 
-    ('Jane', 'Smith', 'janesmith@example.com', 'password456', '555-5678', '10B', 'Nowhere Street', 'Wonderland', '56789');
-
-
 INSERT INTO Screening (Price, ScreeningDate, ScreeningTime, MovieID, RoomID)
 VALUES
     (12.50, '2024-10-05', '18:00:00', 1, 1),

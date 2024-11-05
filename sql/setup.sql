@@ -4,9 +4,10 @@ CREATE DATABASE IF NOT EXISTS cinema_db;
 USE cinema_db;
 
 CREATE TABLE PostalCode (
+    PostalCodeID INT AUTO_INCREMENT PRIMARY KEY,
     PostalCode VARCHAR(20) NOT NULL,
     City VARCHAR(100) NOT NULL,
-    PRIMARY KEY (PostalCode)
+    UNIQUE (PostalCode, City)
 );
 
 CREATE TABLE Admin (
@@ -56,16 +57,16 @@ CREATE TABLE MovieImage (
 
 CREATE TABLE Customer (
     CustomerID INT AUTO_INCREMENT PRIMARY KEY,
-    FirstName VARCHAR(50) NOT NULL,
-    LastName VARCHAR(50) NOT NULL,
-    Email VARCHAR(255) NOT NULL UNIQUE,
-    `Password` VARCHAR(255) NOT NULL,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Email VARCHAR(255),
+    `Password` VARCHAR(255),
     PhoneNumber VARCHAR(20),
     SuiteNumber VARCHAR(50),
     Street VARCHAR(255),
-    Country VARCHAR(100) NOT NULL,
-    PostalCode VARCHAR(20) NOT NULL,
-    FOREIGN KEY (PostalCode) REFERENCES PostalCode(PostalCode) ON DELETE CASCADE
+    Country VARCHAR(100),
+    PostalCodeID INT,
+    FOREIGN KEY (PostalCodeID) REFERENCES PostalCode(PostalCodeID) ON DELETE CASCADE
 );
 
 CREATE TABLE Screening (

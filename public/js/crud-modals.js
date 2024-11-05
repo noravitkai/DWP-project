@@ -39,10 +39,14 @@ function populateModalFields(modalPrefix, data, fieldMapping) {
   });
 }
 
+// Movie modals
+
 function showPreviewMovieModal(movie) {
-  ["Title", "Subtitle", "Genre", "Director", "MovieDescription"].forEach((field) => {
-    movie[field] = decodeHtmlEntities(movie[field]);
-  });
+  ["Title", "Subtitle", "Genre", "Director", "MovieDescription"].forEach(
+    (field) => {
+      movie[field] = decodeHtmlEntities(movie[field]);
+    }
+  );
 
   populateModalFields("preview", movie, {
     Title: "MovieTitle",
@@ -52,14 +56,14 @@ function showPreviewMovieModal(movie) {
     Genre: "MovieGenre",
     ReleaseYear: "MovieReleaseYear",
     Director: "MovieDirector",
-    MovieDescription: "MovieDescription"
+    MovieDescription: "MovieDescription",
   });
 
   const previewImage = document.getElementById("previewMovieImage");
-  if (movie.ImageURL) {
+  if (previewImage && movie.ImageURL) {
     previewImage.src = movie.ImageURL;
     previewImage.classList.remove("hidden");
-  } else {
+  } else if (previewImage) {
     previewImage.classList.add("hidden");
   }
 
@@ -71,9 +75,11 @@ function hidePreviewMovieModal() {
 }
 
 function showEditMovieModal(movie) {
-  ["Title", "Subtitle", "Genre", "Director", "MovieDescription"].forEach((field) => {
-    movie[field] = decodeHtmlEntities(movie[field]);
-  });
+  ["Title", "Subtitle", "Genre", "Director", "MovieDescription"].forEach(
+    (field) => {
+      movie[field] = decodeHtmlEntities(movie[field]);
+    }
+  );
 
   document.getElementById("editMovieID").value = movie.MovieID;
   document.getElementById("editMovieTitle").value = movie.Title;
@@ -82,7 +88,8 @@ function showEditMovieModal(movie) {
   document.getElementById("editMovieGenre").value = movie.Genre;
   document.getElementById("editMovieDirector").value = movie.Director;
   document.getElementById("editMovieDuration").value = movie.Duration;
-  document.getElementById("editMovieDescription").value = movie.MovieDescription;
+  document.getElementById("editMovieDescription").value =
+    movie.MovieDescription;
 
   showModal("editModal");
 }
@@ -103,13 +110,16 @@ function hideDeleteMovieModal() {
 }
 
 function showAddMovieModal() {
-  document.getElementById("addMovieForm").reset();
+  const addMovieForm = document.getElementById("addMovieForm");
+  if (addMovieForm) addMovieForm.reset();
   showModal("addModal");
 }
 
 function hideAddMovieModal() {
   hideModal("addModal");
 }
+
+// News modals
 
 function showPreviewNewsModal(news) {
   ["Title", "Category", "Content"].forEach((field) => {
@@ -120,14 +130,14 @@ function showPreviewNewsModal(news) {
     Title: "NewsTitleText",
     Category: "NewsCategory",
     DatePublished: "NewsDatePublished",
-    Content: "NewsContent"
+    Content: "NewsContent",
   });
 
   const previewImage = document.getElementById("previewNewsImage");
-  if (news.ImageURL) {
+  if (previewImage && news.ImageURL) {
     previewImage.src = news.ImageURL;
     previewImage.classList.remove("hidden");
-  } else {
+  } else if (previewImage) {
     previewImage.classList.add("hidden");
   }
 
@@ -168,7 +178,8 @@ function hideDeleteNewsModal() {
 }
 
 function showAddNewsModal() {
-  document.getElementById("addNewsForm").reset();
+  const addNewsForm = document.getElementById("addNewsForm");
+  if (addNewsForm) addNewsForm.reset();
   showModal("addNewsModal");
 }
 
@@ -176,28 +187,74 @@ function hideAddNewsModal() {
   hideModal("addNewsModal");
 }
 
-document.getElementById("movieImage").addEventListener("change", function (e) {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function (event) {
-      const previewImage = document.getElementById("imagePreview");
-      previewImage.src = event.target.result;
-      previewImage.classList.remove("hidden");
-    };
-    reader.readAsDataURL(file);
-  }
-});
+// Image preview handlers
+const movieImageInput = document.getElementById("movieImage");
+if (movieImageInput) {
+  movieImageInput.addEventListener("change", function (e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const previewImage = document.getElementById("imagePreview");
+        if (previewImage) {
+          previewImage.src = event.target.result;
+          previewImage.classList.remove("hidden");
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+}
 
-document.getElementById("newsImage").addEventListener("change", function (e) {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function (event) {
-      const previewImage = document.getElementById("previewNewsImage");
-      previewImage.src = event.target.result;
-      previewImage.classList.remove("hidden");
-    };
-    reader.readAsDataURL(file);
-  }
-});
+const newsImageInput = document.getElementById("newsImage");
+if (newsImageInput) {
+  newsImageInput.addEventListener("change", function (e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const previewImage = document.getElementById("previewNewsImage");
+        if (previewImage) {
+          previewImage.src = event.target.result;
+          previewImage.classList.remove("hidden");
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+}
+
+// Profile modals
+
+function showEditProfileModal(customer) {
+  [
+    "FirstName",
+    "LastName",
+    "Email",
+    "PhoneNumber",
+    "SuiteNumber",
+    "Street",
+    "Country",
+    "PostalCode",
+    "City",
+  ].forEach((field) => {
+    customer[field] = decodeHtmlEntities(customer[field] || "");
+  });
+
+  document.getElementById("editCustomerID").value = customer.CustomerID;
+  document.getElementById("editFirstName").value = customer.FirstName;
+  document.getElementById("editLastName").value = customer.LastName;
+  document.getElementById("editEmail").value = customer.Email;
+  document.getElementById("editPhoneNumber").value = customer.PhoneNumber;
+  document.getElementById("editSuiteNumber").value = customer.SuiteNumber;
+  document.getElementById("editStreet").value = customer.Street;
+  document.getElementById("editCountry").value = customer.Country;
+  document.getElementById("editPostalCode").value = customer.PostalCode;
+  document.getElementById("editCity").value = customer.City;
+
+  showModal("editProfileModal");
+}
+
+function hideEditProfileModal() {
+  hideModal("editProfileModal");
+}
