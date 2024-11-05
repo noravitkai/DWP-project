@@ -3,15 +3,14 @@ VALUES
     ('12345', 'Race City'),
     ('56789', 'Speedville');
 
-INSERT INTO Customer (FirstName, LastName, Email, `Password`, PhoneNumber, SuiteNumber, Street, Country, PostalCode) 
+INSERT INTO Admin (Email, `Password`)
 VALUES
-    ('John', 'Doe', 'johndoe@example.com', 'password123', '000-1234', '5A', 'Main Street', 'Dreamland', '12345'), 
-    ('Jane', 'Smith', 'janesmith@example.com', 'password456', '555-5678', '10B', 'Nowhere Street', 'Wonderland', '56789');
+    ('vitkai.nora@gmail.com', '$2y$10$kcilhapT7/oMgtsqz3xf4.K1IcvMkviTtuHE7p848QtI9/RNx8IrO');
 
-INSERT INTO User (Email, `Password`, `Role`) 
+INSERT INTO Room (RoomLabel, TotalSeats) 
 VALUES
-    ('admin@example.com', 'adminpass', 'admin'),
-    ('editor@example.com', 'editorpass', 'editor');
+    ('Family Lounge', 100),
+    ('Quarter-Tank', 25);
 
 INSERT INTO Movie (Title, Subtitle, Duration, Genre, ReleaseYear, Director, MovieDescription) 
 VALUES 
@@ -59,11 +58,6 @@ VALUES
     (9, 1), (9, 3), (9, 15), (9, 5), (9, 14),
     (10, 1), (10, 16), (10, 3), (10, 13), (10, 17);
 
-INSERT INTO Room (RoomLabel, TotalSeats) 
-VALUES
-    ('Family Lounge', 100),
-    ('Quarter-Tank', 25);
-
 INSERT INTO Screening (Price, ScreeningDate, ScreeningTime, MovieID, RoomID)
 VALUES
     (12.50, '2024-10-05', '18:00:00', 1, 1),
@@ -87,16 +81,12 @@ VALUES
     ('Completed', 25.00, '2024-10-03', 1, 1),
     ('Pending', 30.00, '2024-10-03', 2, 2);
 
-INSERT INTO News (Title, Content, DatePublished, Category, UserID) 
+INSERT INTO News (Title, Content, DatePublished, Category, AdminID) 
 VALUES
     ('Fast X Breaks Records!', 'The latest Fast & Furious movie has shattered expectations...', '2024-10-01', 'Announcement', 1),
-    ('Upcoming Event: Torretto Tuesday!', 'Join us on Tuesdays when every guest gets a chance to win Fast & Furious memorabilia!', '2024-10-02', 'Event', 2);
+    ('Upcoming Event: Torretto Tuesday!', 'Join us on Tuesdays when every guest gets a chance to win Fast & Furious memorabilia!', '2024-10-02', 'Event', 1);
 
 INSERT INTO Event (EventName, EventDate, EventDescription, Discount, ScreeningID) 
 VALUES
     ('Torretto Tuesday', '2024-10-08', 'Special screenings of all Fast & Furious movies! Win memorabilia!', 10.00, 1),
     ('Family Friday', '2024-10-11', 'Bring the family for a 30% discount on all Fast & Furious screenings!', 30.00, 1);
-
-INSERT INTO User (Email, `Password`, `Role`)
-VALUES
-    ('vitkai.nora@gmail.com', '$2y$10$kcilhapT7/oMgtsqz3xf4.K1IcvMkviTtuHE7p848QtI9/RNx8IrO', 'admin');

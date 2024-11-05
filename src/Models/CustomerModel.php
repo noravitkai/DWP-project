@@ -9,28 +9,32 @@ class CustomerModel {
         $this->db = dbCon();
     }
 
-    private function postalCodeExists($postalCode, $city) {
-        $query = "SELECT COUNT(*) FROM PostalCode WHERE PostalCode = :postalCode AND City = :city";
+    private function getPostalCodeID($postalCode, $city) {
+        $query = "SELECT PostalCodeID FROM PostalCode WHERE PostalCode = :postalCode AND City = :city";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':postalCode', $postalCode, PDO::PARAM_STR);
         $stmt->bindParam(':city', $city, PDO::PARAM_STR);
         $stmt->execute();
-        return $stmt->fetchColumn() > 0;
-    }
+        $postalCodeID = $stmt->fetchColumn();
 
-    public function createCustomer($firstName, $lastName, $email, $password, $phone, $suite, $street, $country, $postalCode, $city) {
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
-        if (!$this->postalCodeExists($postalCode, $city)) {
+        if (!$postalCodeID) {
             $query = "INSERT INTO PostalCode (PostalCode, City) VALUES (:postalCode, :city)";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':postalCode', $postalCode, PDO::PARAM_STR);
             $stmt->bindParam(':city', $city, PDO::PARAM_STR);
             $stmt->execute();
+            $postalCodeID = $this->db->lastInsertId();
         }
 
-        $query = "INSERT INTO Customer (FirstName, LastName, Email, `Password`, PhoneNumber, SuiteNumber, Street, Country, PostalCode) 
-                  VALUES (:firstName, :lastName, :email, :password, :phone, :suite, :street, :country, :postalCode)";
+        return $postalCodeID;
+    }
+
+    public function createCustomer($firstName, $lastName, $email, $password, $phone, $suite, $street, $country, $postalCode, $city) {
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+        $postalCodeID = $this->getPostalCodeID($postalCode, $city);
+
+        $query = "INSERT INTO Customer (FirstName, LastName, Email, `Password`, PhoneNumber, SuiteNumber, Street, Country, PostalCodeID) 
+                  VALUES (:firstName, :lastName, :email, :password, :phone, :suite, :street, :country, :postalCodeID)";
         $stmt = $this->db->prepare($query);
 
         $stmt->bindParam(':firstName', $firstName, PDO::PARAM_STR);
@@ -41,7 +45,7 @@ class CustomerModel {
         $stmt->bindParam(':suite', $suite, PDO::PARAM_STR);
         $stmt->bindParam(':street', $street, PDO::PARAM_STR);
         $stmt->bindParam(':country', $country, PDO::PARAM_STR);
-        $stmt->bindParam(':postalCode', $postalCode, PDO::PARAM_STR);
+        $stmt->bindParam(':postalCodeID', $postalCodeID, PDO::PARAM_INT);
 
         return $stmt->execute();
     }
@@ -54,11 +58,66 @@ class CustomerModel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getCustomerById($customerId) {
-        $query = "SELECT * FROM Customer WHERE CustomerID = :customerId";
+    public function getCustomerWithCityById($customerId) {
+        $query = "SELECT Customer.*, PostalCode.PostalCode, PostalCode.City 
+                  FROM Customer 
+                  INNER JOIN PostalCode ON Customer.PostalCodeID = PostalCode.PostalCodeID 
+                  WHERE Customer.CustomerID = :customerId";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':customerId', $customerId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function updateCustomerById($customerId, $data) {
+        $query = "SELECT PostalCodeID FROM Customer WHERE CustomerID = :customerId";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':customerId', $customerId, PDO::PARAM_INT);
+        $stmt->execute();
+        $oldPostalCodeID = $stmt->fetchColumn();
+    
+        $newPostalCodeID = $this->getPostalCodeID($data['PostalCode'], $data['City']);
+    
+        $query = "UPDATE Customer SET 
+                    FirstName = :firstName,
+                    LastName = :lastName,
+                    Email = :email,
+                    PhoneNumber = :phone,
+                    SuiteNumber = :suite,
+                    Street = :street,
+                    Country = :country,
+                    PostalCodeID = :postalCodeID
+                  WHERE CustomerID = :customerId";
+        
+        $stmt = $this->db->prepare($query);
+        
+        $stmt->bindParam(':firstName', $data['FirstName'], PDO::PARAM_STR);
+        $stmt->bindParam(':lastName', $data['LastName'], PDO::PARAM_STR);
+        $stmt->bindParam(':email', $data['Email'], PDO::PARAM_STR);
+        $stmt->bindParam(':phone', $data['PhoneNumber'], PDO::PARAM_STR);
+        $stmt->bindParam(':suite', $data['SuiteNumber'], PDO::PARAM_STR);
+        $stmt->bindParam(':street', $data['Street'], PDO::PARAM_STR);
+        $stmt->bindParam(':country', $data['Country'], PDO::PARAM_STR);
+        $stmt->bindParam(':postalCodeID', $newPostalCodeID, PDO::PARAM_INT);
+        $stmt->bindParam(':customerId', $customerId, PDO::PARAM_INT);
+        
+        $updateResult = $stmt->execute();
+    
+        if ($oldPostalCodeID && $oldPostalCodeID != $newPostalCodeID) {
+            $query = "SELECT COUNT(*) FROM Customer WHERE PostalCodeID = :oldPostalCodeID";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':oldPostalCodeID', $oldPostalCodeID, PDO::PARAM_INT);
+            $stmt->execute();
+            $count = $stmt->fetchColumn();
+    
+            if ($count == 0) {
+                $query = "DELETE FROM PostalCode WHERE PostalCodeID = :oldPostalCodeID";
+                $stmt = $this->db->prepare($query);
+                $stmt->bindParam(':oldPostalCodeID', $oldPostalCodeID, PDO::PARAM_INT);
+                $stmt->execute();
+            }
+        }
+    
+        return $updateResult;
     }
 }
