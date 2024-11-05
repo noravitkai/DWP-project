@@ -85,4 +85,8 @@ class NewsController {
             $this->news->deleteNewsImageByNewsId($newsID);
         }
     }
+
+    public function getNewsById($id) {
+        return $this->news->getNewsById($id);
+    }
 }

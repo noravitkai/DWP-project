@@ -91,7 +91,7 @@ $newsList = $newsController->index();
                                         break;
                                 }
                                 ?>
-                                <span class="inline-block <?php echo $categoryClass; ?> text-xs text-zinc-100 px-1 py-1 self-start">
+                                <span class="inline-block <?php echo $categoryClass; ?> text-xs text-zinc-100 px-2 py-1 self-start">
                                     <?php echo $news['Category']; ?>
                                 </span>
                                 <time datetime="<?php echo $news['DatePublished']; ?>" class="block text-xs text-zinc-300 mt-2">
@@ -104,8 +104,8 @@ $newsList = $newsController->index();
                                     <?php echo $news['Content']; ?>
                                 </p>
                             </div>
-                            <a href="#" class="inline-flex items-center gap-1 mt-4 text-orange-600 hover:text-orange-500 text-sm font-medium transition ease-in-out duration-300">
-                                Read more
+                            <a href="news_page.php?id=<?php echo $news['NewsID']; ?>" class="inline-flex items-center gap-1 mt-4 text-orange-600 hover:text-orange-500 text-sm font-medium transition ease-in-out duration-300">
+                                Read more 
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                                 </svg>
@@ -119,3 +119,4 @@ $newsList = $newsController->index();
 </section>
 </body>
 </html>
+
