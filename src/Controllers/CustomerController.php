@@ -26,31 +26,18 @@ class CustomerController {
     }
 
     public function register($data) {
-        $sanitizedData = [
-            'firstName' => sanitizeInput($data['firstName']),
-            'lastName' => sanitizeInput($data['lastName']),
-            'email' => sanitizeInput($data['email']),
-            'password' => $data['password'],
-            'phone' => sanitizeInput($data['phone']),
-            'suite' => sanitizeInput($data['suite']),
-            'street' => sanitizeInput($data['street']),
-            'country' => sanitizeInput($data['country']),
-            'postalCode' => sanitizeInput($data['postalCode']),
-            'city' => sanitizeInput($data['city']),
-        ];
-
         try {
             $result = $this->customerModel->createCustomer(
-                $sanitizedData['firstName'],
-                $sanitizedData['lastName'],
-                $sanitizedData['email'],
-                $sanitizedData['password'],
-                $sanitizedData['phone'],
-                $sanitizedData['suite'],
-                $sanitizedData['street'],
-                $sanitizedData['country'],
-                $sanitizedData['postalCode'],
-                $sanitizedData['city']
+                $data['firstName'],
+                $data['lastName'],
+                $data['email'],
+                $data['password'],
+                $data['phone'],
+                $data['suite'],
+                $data['street'],
+                $data['country'],
+                $data['postalCode'],
+                $data['city']
             );
             if ($result) {
                 $this->redirect('../../src/Views/frontend/user_login.php');
@@ -90,18 +77,16 @@ class CustomerController {
             if (!isset($data['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $data['csrf_token'])) {
                 die('Invalid CSRF token.');
             }
-    
-            $sanitizedData = array_map('sanitizeInput', $data);
-    
-            $updateResult = $this->customerModel->updateCustomerById($customerId, $sanitizedData);
-    
+
+            $updateResult = $this->customerModel->updateCustomerById($customerId, $data);
+
             if ($updateResult) {
-                $_SESSION['user_name'] = $sanitizedData['FirstName'];
+                $_SESSION['user_name'] = $data['FirstName'];
             }
-    
+
             unset($_SESSION['csrf_token']);
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-    
+
             $this->redirect('../../Views/frontend/profile_page.php');
         }
     }
