@@ -1,7 +1,6 @@
 INSERT INTO PostalCode (PostalCode, City) 
 VALUES 
-    ('12345', 'Race City'),
-    ('56789', 'Speedville');
+    ('12345', 'Race City');
 
 INSERT INTO Admin (Email, `Password`)
 VALUES
@@ -33,11 +32,11 @@ VALUES
     ('Jordana', 'Brewster', 'Mia Toretto'),
     ('Tyrese', 'Gibson', 'Roman Pearce'),
     ('Eva', 'Mendes', 'Monica Fuentes'),
-    ('Ludacris', '', 'Tej Parker'),
+    ('Ludacris', NULL, 'Tej Parker'),
     ('Lucas', 'Black', 'Sean Boswell'),
     ('Nathalie', 'Kelley', 'Neela'),
     ('Sung', 'Kang', 'Han Lue'),
-    ('Bow Wow', '', 'Twinkie'),
+    ('Bow Wow', NULL, 'Twinkie'),
     ('Dwayne', 'Johnson', 'Luke Hobbs'),
     ('Jason', 'Statham', 'Deckard Shaw'),
     ('Charlize', 'Theron', 'Cipher'),
@@ -58,11 +57,9 @@ VALUES
     (9, 1), (9, 3), (9, 15), (9, 5), (9, 14),
     (10, 1), (10, 16), (10, 3), (10, 13), (10, 17);
 
-INSERT INTO Customer (FirstName, LastName, Email, `Password`, PhoneNumber, SuiteNumber, Street, Country, PostalCode) 
+INSERT INTO Customer (FirstName, LastName, Email, `Password`, PhoneNumber, SuiteNumber, Street, Country, PostalCodeID) 
 VALUES
-    ('John', 'Doe', 'johndoe@example.com', 'password123', '000-1234', '5A', 'Main Street', 'Dreamland', '12345'), 
-    ('Jane', 'Smith', 'janesmith@example.com', 'password456', '555-5678', '10B', 'Nowhere Street', 'Wonderland', '56789');
-
+    ('John', 'Doe', 'johndoe@example.com', 'password123', '000-1234', '5A', 'Main Street', 'Dreamland', 1);
 
 INSERT INTO Screening (Price, ScreeningDate, ScreeningTime, MovieID, RoomID)
 VALUES
@@ -73,7 +70,7 @@ VALUES
 INSERT INTO Reservation (NumberOfSeats, ReservationDate, ReservationStatus, ScreeningID, CustomerID)
 VALUES
     (2, '2024-10-03', 'Confirmed', 1, 1),
-    (3, '2024-10-04', 'Pending', 2, 2);
+    (3, '2024-10-04', 'Pending', 2, 1);
 
 INSERT INTO Ticket (`Row`, SeatNumber, ReservationID, ScreeningID) 
 VALUES
@@ -85,7 +82,7 @@ VALUES
 INSERT INTO Payment (PaymentStatus, TransactionAmount, TransactionDate, CustomerID, ReservationID)
 VALUES
     ('Completed', 25.00, '2024-10-03', 1, 1),
-    ('Pending', 30.00, '2024-10-03', 2, 2);
+    ('Pending', 30.00, '2024-10-03', 1, 2);
 
 INSERT INTO News (Title, Content, DatePublished, Category, AdminID) 
 VALUES
