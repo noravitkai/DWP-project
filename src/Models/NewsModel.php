@@ -30,14 +30,13 @@ class News {
     public function storeNews($data) {
         $query = "INSERT INTO News (Title, Content, Category, DatePublished) 
                   VALUES (:title, :content, :category, :datePublished)";
-    
+        
         $stmt = $this->db->prepare($query);
-    
         $stmt->bindParam(':title', $data['Title'], PDO::PARAM_STR);
         $stmt->bindParam(':content', $data['Content'], PDO::PARAM_STR);
         $stmt->bindParam(':category', $data['Category'], PDO::PARAM_STR);
         $stmt->bindParam(':datePublished', $data['DatePublished'], PDO::PARAM_STR);
-    
+        
         $stmt->execute();
         return $this->db->lastInsertId();
     }
