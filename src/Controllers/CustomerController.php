@@ -77,18 +77,23 @@ class CustomerController {
             if (!isset($data['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $data['csrf_token'])) {
                 die('Invalid CSRF token.');
             }
-
             $updateResult = $this->customerModel->updateCustomerById($customerId, $data);
-
             if ($updateResult) {
                 $_SESSION['user_name'] = $data['FirstName'];
             }
-
             unset($_SESSION['csrf_token']);
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-
             $this->redirect('../../Views/frontend/profile_page.php');
         }
+    }
+
+    public function updatePassword($customerId, $currentPassword, $newPassword) {
+        $customer = $this->customerModel->getCustomerWithCityById($customerId);
+        if ($customer && password_verify($currentPassword, $customer['Password'])) {
+            $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+            return $this->customerModel->updateCustomerPassword($customerId, $hashedPassword);
+        }
+        return false;
     }
 
     private function redirect($url) {
@@ -113,7 +118,6 @@ if (isset($_GET['action'])) {
             'postalCode' => $_POST['postal_code'] ?? null,
             'city' => $_POST['city'] ?? null
         ];
-
         $controller->register($registrationData);
     }
 
@@ -131,3 +135,4 @@ if (isset($_GET['action'])) {
         $controller->updateCustomer($_POST);
     }
 }
+?>

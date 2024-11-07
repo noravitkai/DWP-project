@@ -75,7 +75,7 @@ class CustomerModel {
         $stmt->bindParam(':customerId', $customerId, PDO::PARAM_INT);
         $stmt->execute();
         $oldPostalCodeID = $stmt->fetchColumn();
-    
+
         $newPostalCodeID = $this->getPostalCodeID($data['PostalCode'], $data['City']);
     
         $query = "UPDATE Customer SET 
@@ -119,5 +119,13 @@ class CustomerModel {
         }
     
         return $updateResult;
+    }
+
+    public function updateCustomerPassword($customerId, $hashedPassword) {
+        $query = "UPDATE Customer SET `Password` = :password WHERE CustomerID = :customerId";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
+        $stmt->bindParam(':customerId', $customerId, PDO::PARAM_INT);
+        return $stmt->execute();
     }
 }
