@@ -117,9 +117,7 @@ CREATE TABLE News (
     Title VARCHAR(255) NOT NULL,
     Content TEXT NOT NULL,
     DatePublished DATE NOT NULL,
-    Category ENUM('Event', 'Announcement', 'Update') DEFAULT 'Announcement',
-    AdminID INT NOT NULL,
-    FOREIGN KEY (AdminID) REFERENCES Admin(AdminID) ON DELETE CASCADE
+    Category ENUM('Event', 'Announcement', 'Update') DEFAULT 'Announcement'
 );
 
 CREATE TABLE Event (
