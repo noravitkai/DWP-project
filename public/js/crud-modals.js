@@ -188,6 +188,7 @@ function hideAddNewsModal() {
 }
 
 // Image preview handlers
+
 const movieImageInput = document.getElementById("movieImage");
 if (movieImageInput) {
   movieImageInput.addEventListener("change", function (e) {
@@ -257,4 +258,12 @@ function showEditProfileModal(customer) {
 
 function hideEditProfileModal() {
   hideModal("editProfileModal");
+}
+
+function showUpdatePasswordModal() {
+  showModal("updatePasswordModal");
+}
+
+function hideUpdatePasswordModal() {
+  hideModal("updatePasswordModal");
 }

@@ -16,7 +16,7 @@
             <form action="../../../src/Controllers/CustomerController.php?action=register" method="post" class="mb-0 mt-6 rounded-lg p-6 shadow-lg sm:p-8 lg:p-10 bg-zinc-800">
                 <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token'] ?? '';?>">
                 <p class="text-sm text-zinc-400 mb-4">
-                    Fields marked with * are required to complete.
+                    Fields marked with * are required to complete. Password must be at least 8 characters long.
                 </p>
                 <div class="space-y-4 mb-4">
                     <h2 class="text-lg font-medium text-zinc-200">Account Details</h2>
@@ -25,7 +25,7 @@
                             <input type="email" name="email" id="email" placeholder="Email *" required autocomplete="email" class="w-full rounded-lg border-zinc-600 px-5 py-3 text-sm shadow-sm bg-zinc-700 text-zinc-100 placeholder-zinc-300 focus:outline-none focus:ring-1 focus:ring-orange-600">
                         </div>
                         <div>
-                            <input type="password" name="password" id="password" placeholder="Password *" required autocomplete="new-password" class="w-full rounded-lg border-zinc-600 px-5 py-3 text-sm shadow-sm bg-zinc-700 text-zinc-100 placeholder-zinc-300 focus:outline-none focus:ring-1 focus:ring-orange-600">
+                            <input type="password" name="password" id="password" placeholder="Password *" required minlength="8" autocomplete="new-password" class="w-full rounded-lg border-zinc-600 px-5 py-3 text-sm shadow-sm bg-zinc-700 text-zinc-100 placeholder-zinc-300 focus:outline-none focus:ring-1 focus:ring-orange-600">
                         </div>
                     </div>
                 </div>
