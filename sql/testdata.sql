@@ -84,10 +84,10 @@ VALUES
     ('Completed', 25.00, '2024-10-03', 1, 1),
     ('Pending', 30.00, '2024-10-03', 1, 2);
 
-INSERT INTO News (Title, Content, DatePublished, Category, AdminID) 
+INSERT INTO News (Title, Content, DatePublished, Category) 
 VALUES
-    ('Fast X Breaks Records!', 'The latest Fast & Furious movie has shattered expectations...', '2024-10-01', 'Announcement', 1),
-    ('Upcoming Event: Torretto Tuesday!', 'Join us on Tuesdays when every guest gets a chance to win Fast & Furious memorabilia!', '2024-10-02', 'Event', 1);
+    ('Fast X Breaks Records!', 'The latest Fast & Furious movie has shattered expectations...', '2024-10-01', 'Announcement'),
+    ('Upcoming Event: Torretto Tuesday!', 'Join us on Tuesdays when every guest gets a chance to win Fast & Furious memorabilia!', '2024-10-02', 'Event');
 
 INSERT INTO Event (EventName, EventDate, EventDescription, Discount, ScreeningID) 
 VALUES
