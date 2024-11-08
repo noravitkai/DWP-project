@@ -30,49 +30,68 @@ class MovieController {
         if ($movie && $movie['ImageURL']) {
             $movie['ImageURL'] = '/DWP-project/uploads/' . basename($movie['ImageURL']);
         }
+        $movie['Actors'] = $this->movie->getActorsByMovieId($id);
         return $movie;
     }
 
+    public function store($data) {
+        $movieID = $this->movie->storeMovie($data);
+    
+        if (isset($_FILES['movieImage']) && $_FILES['movieImage']['error'] === UPLOAD_ERR_OK) {
+            $this->uploadMovieImage($_FILES['movieImage'], $movieID);
+        }
+    
+        if (isset($data['Actors'])) {
+            foreach ($data['Actors'] as $actor) {
+                if (!empty($actor['FullName']) && !empty($actor['Role'])) {
+                    $this->movie->addActorToMovie($movieID, $actor['FullName'], $actor['Role']);
+                }
+            }
+        }
+    
+        return $movieID;
+    }
+    
     public function update($id, $data) {
         $this->movie->updateMovieById($id, $data);
-        
+    
         if (isset($_FILES['movieImage']) && $_FILES['movieImage']['error'] === UPLOAD_ERR_OK) {
             $this->deleteAssociatedImage($id);
             $this->uploadMovieImage($_FILES['movieImage'], $id);
+        }
+    
+        $this->movie->removeActorsFromMovie($id);
+        if (isset($data['Actors'])) {
+            foreach ($data['Actors'] as $actor) {
+                if (!empty($actor['FullName']) && !empty($actor['Role'])) {
+                    $this->movie->addActorToMovie($id, $actor['FullName'], $actor['Role']);
+                }
+            }
         }
     }
 
     public function delete($id) {
         $this->deleteAssociatedImage($id);
+        $this->movie->removeActorsFromMovie($id);
         return $this->movie->deleteMovieById($id);
     }
 
-    public function store($data) {
-        $movieID = $this->movie->storeMovie($data);
-        
-        if (isset($_FILES['movieImage']) && $_FILES['movieImage']['error'] === UPLOAD_ERR_OK) {
-            $this->uploadMovieImage($_FILES['movieImage'], $movieID);
-        }
-    
-        return $movieID;
-    }
-
-    public function uploadMovieImage($file, $movieID) {
+    private function uploadMovieImage($file, $movieID) {
         if ($file['error'] === UPLOAD_ERR_OK) {
             $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
             $maxFileSize = 2 * 1024 * 1024;
-    
+
             if (!in_array($file['type'], $allowedTypes)) {
                 throw new Exception('Invalid file type. Only JPG, PNG, and GIF are allowed.');
             }
             if ($file['size'] > $maxFileSize) {
                 throw new Exception('File is too large. Maximum size is 2MB.');
             }
-    
+
             $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
             $fileName = uniqid() . '.' . $fileExtension;
             $filePath = $this->uploadDir . $fileName;
-    
+
             if (move_uploaded_file($file['tmp_name'], $filePath)) {
                 $webAccessiblePath = '/DWP-project/uploads/' . $fileName;
                 return $this->movie->addMovieImage($movieID, $webAccessiblePath);
@@ -83,7 +102,7 @@ class MovieController {
             throw new Exception('File upload error.');
         }
     }
-    
+
     private function deleteAssociatedImage($movieID) {
         $imageData = $this->movie->getImageByMovieId($movieID);
         if ($imageData && file_exists(__DIR__ . '/../../uploads/' . basename($imageData['ImageURL']))) {

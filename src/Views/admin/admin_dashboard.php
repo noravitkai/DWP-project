@@ -22,6 +22,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addNewMovie'])) {
             'Duration' => sanitizeInput($_POST['Duration']),
             'MovieDescription' => sanitizeInput($_POST['MovieDescription']),
         ];
+
+        if (isset($_POST['ActorNames']) && isset($_POST['ActorRoles'])) {
+            $data['Actors'] = [];
+            foreach ($_POST['ActorNames'] as $index => $fullName) {
+                $data['Actors'][] = [
+                    'FullName' => sanitizeInput($fullName),
+                    'Role' => sanitizeInput($_POST['ActorRoles'][$index])
+                ];
+            }
+        }
+
         $movieController->store($data);
     }
     header('Location: admin_dashboard.php');
@@ -252,11 +263,11 @@ $newsList = $newsController->index();
                             </tbody>
                         </table>
                     </div>
-                    <div id="addModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center lg:pl-72 p-4">
-                        <div class="relative max-w-2xl w-full bg-zinc-100 rounded-lg shadow p-4 sm:p-5">
+                    <div id="addModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center p-4">
+                        <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
                             <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
                                 <h3 class="text-lg font-semibold text-zinc-900">Add New Movie</h3>
-                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideAddMovieModal()">
+                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900" onclick="hideAddMovieModal()">
                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
                                     </svg>
@@ -293,6 +304,23 @@ $newsList = $newsController->index();
                                     <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Description:</label>
                                         <textarea name="MovieDescription" rows="6" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600"></textarea>
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Cast:</label>
+                                        <div id="actorContainer" class="flex flex-col gap-2">
+                                            <div class="actor-entry flex gap-2">
+                                                <input type="text" name="ActorNames[]" placeholder="Name" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+                                                <input type="text" name="ActorRoles[]" placeholder="Role" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+                                                <button type="button" id="addActorBtn" class="text-zinc-600 hover:text-zinc-900 transition ease-in-out duration-300">
+                                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z" clip-rule="evenodd" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div id="actorLimitMessage" class="text-sm text-red-600 mt-2 hidden">
+                                            You can only add up to 10 actors.
+                                        </div>
                                     </div>
                                     <div class="sm:col-span-2">
                                         <label for="movieImage">Upload Image:</label>

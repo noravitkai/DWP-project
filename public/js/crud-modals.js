@@ -119,6 +119,55 @@ function hideAddMovieModal() {
   hideModal("addModal");
 }
 
+let actorCount = 1;
+const MAX_ACTORS = 10;
+
+function addActorField() {
+  if (actorCount >= MAX_ACTORS) {
+    document.getElementById("actorLimitMessage").classList.remove("hidden");
+    return;
+  }
+
+  actorCount++;
+
+  const container = document.getElementById("actorContainer");
+
+  const actorEntry = document.createElement("div");
+  actorEntry.classList.add("actor-entry", "flex", "gap-2");
+
+  actorEntry.innerHTML = `
+    <input type="text" name="ActorNames[]" placeholder="Full Name" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+    <input type="text" name="ActorRoles[]" placeholder="Role" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+    <button type="button" class="remove-actor-btn text-zinc-600 hover:text-zinc-900">
+      <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm3 10.5a.75.75 0 0 0 0-1.5H9a.75.75 0 0 0 0 1.5h6Z" clip-rule="evenodd" />
+      </svg>
+    </button>
+  `;
+
+  container.appendChild(actorEntry);
+
+  actorEntry
+    .querySelector(".remove-actor-btn")
+    .addEventListener("click", () => {
+      container.removeChild(actorEntry);
+      actorCount--;
+
+      document.getElementById("actorLimitMessage").classList.add("hidden");
+      document.getElementById("addActorBtn").disabled = false;
+    });
+
+  if (actorCount >= MAX_ACTORS) {
+    document.getElementById("addActorBtn").disabled = true;
+    document.getElementById("actorLimitMessage").classList.remove("hidden");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document
+    .getElementById("addActorBtn")
+    .addEventListener("click", addActorField);
+});
 // News modals
 
 function showPreviewNewsModal(news) {
@@ -267,3 +316,9 @@ function showUpdatePasswordModal() {
 function hideUpdatePasswordModal() {
   hideModal("updatePasswordModal");
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".add-actor-btn").forEach((button) => {
+    button.addEventListener("click", addActorField);
+  });
+});
