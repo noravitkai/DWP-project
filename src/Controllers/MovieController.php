@@ -63,6 +63,7 @@ class MovieController {
     
         if (isset($data['Actors']) && !empty($data['Actors'])) {
             $this->movie->removeActorsFromMovie($id);
+    
             foreach ($data['Actors'] as $actor) {
                 if (!empty($actor['FullName']) && !empty($actor['Role'])) {
                     $this->movie->addActorToMovie($id, $actor['FullName'], $actor['Role']);

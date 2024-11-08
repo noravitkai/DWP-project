@@ -152,15 +152,24 @@ class Movie {
         $actorIDsStmt->bindParam(':movieID', $movieID, PDO::PARAM_INT);
         $actorIDsStmt->execute();
         $actorIDs = $actorIDsStmt->fetchAll(PDO::FETCH_COLUMN);
-
+    
         $featuresQuery = "DELETE FROM Features WHERE MovieID = :movieID";
         $featuresStmt = $this->db->prepare($featuresQuery);
         $featuresStmt->bindParam(':movieID', $movieID, PDO::PARAM_INT);
         $featuresStmt->execute();
-
-        if (!empty($actorIDs)) {
-            $actorDeleteQuery = "DELETE FROM Actor WHERE ActorID IN (" . implode(',', array_map('intval', $actorIDs)) . ")";
-            $this->db->prepare($actorDeleteQuery)->execute();
+    
+        foreach ($actorIDs as $actorID) {
+            $checkActorQuery = "SELECT COUNT(*) FROM Features WHERE ActorID = :actorID";
+            $checkActorStmt = $this->db->prepare($checkActorQuery);
+            $checkActorStmt->bindParam(':actorID', $actorID, PDO::PARAM_INT);
+            $checkActorStmt->execute();
+    
+            if ($checkActorStmt->fetchColumn() == 0) {
+                $actorDeleteQuery = "DELETE FROM Actor WHERE ActorID = :actorID";
+                $actorDeleteStmt = $this->db->prepare($actorDeleteQuery);
+                $actorDeleteStmt->bindParam(':actorID', $actorID, PDO::PARAM_INT);
+                $actorDeleteStmt->execute();
+            }
         }
     }
 }
