@@ -35,8 +35,7 @@ CREATE TABLE Movie (
 
 CREATE TABLE Actor (
     ActorID INT AUTO_INCREMENT PRIMARY KEY,
-    FirstName VARCHAR(50) NOT NULL,
-    LastName VARCHAR(50),
+    FullName VARCHAR(100) NOT NULL,
     `Role` VARCHAR(255)
 );
 

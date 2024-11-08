@@ -24,39 +24,6 @@ VALUES
     ('Fast & Furious 9', 'Magnetic Car Nonsense', 143, 'Action, Adventure', 2021, 'Justin Lin', 'Magnets defy physics, logic, and all storytelling sense. Also, Dom’s brother shows up out of nowhere.'),
     ('Fast & Furious 10', 'World DOMination', 142, 'Action, Adventure', 2023, 'Louis Leterrier', 'Dom must face his toughest enemy yet: a plot that makes less sense than his moral code. But the answer is still fast cars and family.');
 
-INSERT INTO Actor (FirstName, LastName, `Role`)
-VALUES 
-    ('Vin', 'Diesel', 'Dominic Toretto'),
-    ('Paul', 'Walker', 'Brian O''Conner'),
-    ('Michelle', 'Rodriguez', 'Letty Ortiz'),
-    ('Jordana', 'Brewster', 'Mia Toretto'),
-    ('Tyrese', 'Gibson', 'Roman Pearce'),
-    ('Eva', 'Mendes', 'Monica Fuentes'),
-    ('Ludacris', NULL, 'Tej Parker'),
-    ('Lucas', 'Black', 'Sean Boswell'),
-    ('Nathalie', 'Kelley', 'Neela'),
-    ('Sung', 'Kang', 'Han Lue'),
-    ('Bow Wow', NULL, 'Twinkie'),
-    ('Dwayne', 'Johnson', 'Luke Hobbs'),
-    ('Jason', 'Statham', 'Deckard Shaw'),
-    ('Charlize', 'Theron', 'Cipher'),
-    ('John', 'Cena', 'Jakob Toretto'),
-    ('Jason', 'Momoa', 'Dante Reyes'),
-    ('Brie', 'Larson', 'Tess');
-
-INSERT INTO Features (MovieID, ActorID) 
-VALUES 
-    (1, 1), (1, 2), (1, 3), (1, 4),
-    (2, 2), (2, 5), (2, 6), (2, 7),
-    (3, 8), (3, 9), (3, 10), (3, 11),
-    (4, 1), (4, 2), (4, 3), (4, 4),
-    (5, 1), (5, 2), (5, 12), (5, 4),
-    (6, 1), (6, 2), (6, 12), (6, 3),
-    (7, 1), (7, 2), (7, 13), (7, 3),
-    (8, 1), (8, 12), (8, 14), (8, 3),
-    (9, 1), (9, 3), (9, 15), (9, 5), (9, 14),
-    (10, 1), (10, 16), (10, 3), (10, 13), (10, 17);
-
 INSERT INTO Customer (FirstName, LastName, Email, `Password`, PhoneNumber, SuiteNumber, Street, Country, PostalCodeID) 
 VALUES
     ('John', 'Doe', 'johndoe@example.com', 'password123', '000-1234', '5A', 'Main Street', 'Dreamland', 1);
