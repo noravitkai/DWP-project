@@ -21,6 +21,7 @@ class MovieController {
             if ($movie['ImageURL']) {
                 $movie['ImageURL'] = '/DWP-project/uploads/' . basename($movie['ImageURL']);
             }
+            $movie['Actors'] = $this->movie->getActorsByMovieId($movie['MovieID']);
         }
         return $movies;
     }
@@ -60,8 +61,8 @@ class MovieController {
             $this->uploadMovieImage($_FILES['movieImage'], $id);
         }
     
-        $this->movie->removeActorsFromMovie($id);
-        if (isset($data['Actors'])) {
+        if (isset($data['Actors']) && !empty($data['Actors'])) {
+            $this->movie->removeActorsFromMovie($id);
             foreach ($data['Actors'] as $actor) {
                 if (!empty($actor['FullName']) && !empty($actor['Role'])) {
                     $this->movie->addActorToMovie($id, $actor['FullName'], $actor['Role']);

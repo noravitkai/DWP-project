@@ -67,6 +67,21 @@ function showPreviewMovieModal(movie) {
     previewImage.classList.add("hidden");
   }
 
+  const castList = document.getElementById("previewMovieCast");
+  castList.innerHTML = "";
+
+  if (movie.Actors && movie.Actors.length > 0) {
+    movie.Actors.forEach((actor) => {
+      const listItem = document.createElement("li");
+      listItem.textContent = `${actor.FullName} as ${actor.Role}`;
+      castList.appendChild(listItem);
+    });
+  } else {
+    const listItem = document.createElement("li");
+    listItem.textContent = "No cast information available.";
+    castList.appendChild(listItem);
+  }
+
   showModal("previewModal");
 }
 

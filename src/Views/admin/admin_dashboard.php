@@ -105,7 +105,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteNewsID'])) {
 
 $movies = $movieController->index();
 $newsList = $newsController->index();
-
 ?>
 
 <!DOCTYPE html>
@@ -374,7 +373,11 @@ $newsList = $newsController->index();
                                     <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Description:</label>
                                     <p id="previewMovieDescription" class="text-sm text-zinc-900"></p>
                                 </div>
-                                <div class="sm:col-span-2">
+                                <div>
+                                    <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Cast:</label>
+                                    <ul id="previewMovieCast" class="list-none pl-0 text-sm text-zinc-900"></ul>
+                                </div>
+                                <div>
                                     <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Image:</label>
                                     <img id="previewMovieImage" src="" alt="Movie Image" class="w-32 h-auto"/>
                                 </div>
