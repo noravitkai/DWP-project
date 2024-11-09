@@ -242,16 +242,16 @@ function showEditProfileModal(customer) {
     customer[field] = decodeHtmlEntities(customer[field] || "");
   });
 
-  document.getElementById("editCustomerID").value = customer.CustomerID;
-  document.getElementById("editFirstName").value = customer.FirstName;
-  document.getElementById("editLastName").value = customer.LastName;
-  document.getElementById("editEmail").value = customer.Email;
-  document.getElementById("editPhoneNumber").value = customer.PhoneNumber;
-  document.getElementById("editSuiteNumber").value = customer.SuiteNumber;
-  document.getElementById("editStreet").value = customer.Street;
-  document.getElementById("editCountry").value = customer.Country;
-  document.getElementById("editPostalCode").value = customer.PostalCode;
-  document.getElementById("editCity").value = customer.City;
+  document.getElementById("editCustomerID").value = customer.CustomerID || "";
+  document.getElementById("editFirstName").value = customer.FirstName || "";
+  document.getElementById("editLastName").value = customer.LastName || "";
+  document.getElementById("editEmail").value = customer.Email || "";
+  document.getElementById("editPhoneNumber").value = customer.PhoneNumber || "";
+  document.getElementById("editSuiteNumber").value = customer.SuiteNumber || "";
+  document.getElementById("editStreet").value = customer.Street || "";
+  document.getElementById("editCountry").value = customer.Country || "";
+  document.getElementById("editPostalCode").value = customer.PostalCode || "";
+  document.getElementById("editCity").value = customer.City || "";
 
   showModal("editProfileModal");
 }
