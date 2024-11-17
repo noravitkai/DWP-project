@@ -13,4 +13,12 @@ class ScreeningController {
     public function index() {
         return $this->screening->getAllScreenings();
     }
+
+    public function store($data) {
+        return $this->screening->storeScreening($data);
+    }
+
+    public function getRooms() {
+        return $this->screening->getAllRooms();
+    }
 }

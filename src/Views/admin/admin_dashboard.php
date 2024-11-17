@@ -13,7 +13,7 @@ function verifyCsrfToken($token) {
     return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addNewMovie'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addMovieBtn'])) {
     if (verifyCsrfToken($_POST['csrf_token'])) {
         $data = [
             'Title' => sanitizeInput($_POST['Title']),
@@ -37,11 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addNewMovie'])) {
 
         $movieController->store($data);
     }
-    header('Location: admin_dashboard.php');
+    header('Location: admin_dashboard.php#movies');
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['MovieID'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateMovieBtn'])) {
     if (verifyCsrfToken($_POST['csrf_token'])) {
         $movieId = sanitizeInput($_POST['MovieID']);
         $data = [
@@ -66,19 +66,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['MovieID'])) {
 
         $movieController->update($movieId, $data);
     }
-    header('Location: admin_dashboard.php');
+    header('Location: admin_dashboard.php#movies');
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteMovieID'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteMovieBtn'])) {
     if (verifyCsrfToken($_POST['csrf_token'])) {
         $movieId = sanitizeInput($_POST['deleteMovieID']);
         $movieController->delete($movieId);
     }
-    header('Location: admin_dashboard.php');
+    header('Location: admin_dashboard.php#movies');
     exit;
 }
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['NewsID'])) {
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addScreeningBtn'])) {
+    if (verifyCsrfToken($_POST['csrf_token'])) {
+        $data = [
+            'MovieID' => sanitizeInput($_POST['MovieID']),
+            'ScreeningDate' => sanitizeInput($_POST['ScreeningDate']),
+            'ScreeningTime' => sanitizeInput($_POST['ScreeningTime']),
+            'RoomID' => sanitizeInput($_POST['RoomID']),
+            'Price' => sanitizeInput($_POST['Price']),
+        ];
+        $screeningController->store($data);
+    }
+    header('Location: admin_dashboard.php#screenings');
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addNewsBtn'])) {
+    if (verifyCsrfToken($_POST['csrf_token'])) {
+        $data = [
+            'Title' => sanitizeInput($_POST['Title']),
+            'Content' => sanitizeInput($_POST['Content']),
+            'Category' => sanitizeInput($_POST['Category']),
+            'DatePublished' => sanitizeInput($_POST['DatePublished']),
+        ];
+        $newsController->store($data);
+    }
+    header('Location: admin_dashboard.php#news');
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateNewsBtn'])) {
     if (verifyCsrfToken($_POST['csrf_token'])) {
         $newsId = sanitizeInput($_POST['NewsID']);
         $data = [
@@ -89,36 +119,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['NewsID'])) {
         ];
         $newsController->update($newsId, $data);
     }
-    header('Location: admin_dashboard.php');
+    header('Location: admin_dashboard.php#news');
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addNewNews'])) {
-    if (verifyCsrfToken($_POST['csrf_token'])) {
-        $data = [
-            'Title' => sanitizeInput($_POST['Title']),
-            'Content' => sanitizeInput($_POST['Content']),
-            'Category' => sanitizeInput($_POST['Category']),
-            'DatePublished' => sanitizeInput($_POST['DatePublished']),
-        ];
-        $newsController->store($data);
-    }
-    header('Location: admin_dashboard.php');
-    exit;
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteNewsID'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteNewsBtn'])) {
     if (verifyCsrfToken($_POST['csrf_token'])) {
         $newsId = sanitizeInput($_POST['deleteNewsID']);
         $newsController->delete($newsId);
     }
-    header('Location: admin_dashboard.php');
+    header('Location: admin_dashboard.php#news');
     exit;
 }
 
 $movies = $movieController->index();
 $newsList = $newsController->index();
 $screenings = $screeningController->index();
+$rooms = $screeningController->getRooms();
 ?>
 
 <!DOCTYPE html>
@@ -292,7 +309,7 @@ $screenings = $screeningController->index();
                             </tbody>
                         </table>
                     </div>
-                    <div id="addMovieModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center p-4">
+                    <div id="addMovieModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center lg:pl-72 p-4">
                         <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
                             <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
                                 <h3 class="text-lg font-semibold text-zinc-900">Add New Movie</h3>
@@ -347,7 +364,7 @@ $screenings = $screeningController->index();
                                         <input type="file" name="movieImage" id="movieImage" accept="image/jpeg, image/png, image/gif">
                                     </div>
                                     <div class="sm:col-span-2 text-right">
-                                        <button type="submit" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
+                                        <button type="submit" name="addMovieBtn" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                                             Add
                                         </button>
                                     </div>
@@ -460,7 +477,7 @@ $screenings = $screeningController->index();
                                         <input type="file" name="movieImage" id="movieImage" accept="image/jpeg, image/png, image/gif">
                                     </div>
                                     <div class="sm:col-span-2 text-right">
-                                        <button type="submit" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
+                                        <button type="submit" name="updateMovieBtn" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                                             Update
                                         </button>
                                     </div>
@@ -485,7 +502,7 @@ $screenings = $screeningController->index();
                                 <input type="hidden" id="deleteMovieID" name="deleteMovieID">
                                 <div class="flex justify-end gap-4">
                                     <button type="button" class="rounded-lg bg-zinc-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-zinc-800 transition ease-in-out duration-300" onclick="hideModal('deleteMovieModal')">Cancel</button>
-                                    <button type="submit" class="rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-red-800 transition ease-in-out duration-300">Delete</button>
+                                    <button type="submit" name="deleteMovieBtn" class="rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-red-800 transition ease-in-out duration-300">Delete</button>
                                 </div>
                             </form>
                         </div>
@@ -495,7 +512,7 @@ $screenings = $screeningController->index();
                     <h2 class="text-3xl font-bold text-zinc-900">Screenings</h2>
                     <p class="mt-5 text-base text-zinc-700">Manage movie schedules here.</p>
                     <div class="mt-5">
-                        <button type="button" class="inline-flex items-center rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300">
+                        <button type="button" onclick="showAddScreeningModal()" class="inline-flex items-center rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300">
                             <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
@@ -549,6 +566,59 @@ $screenings = $screeningController->index();
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
+                    </div>
+                    <div id="addScreeningModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center lg:pl-72 p-4">
+                        <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
+                            <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
+                                <h3 class="text-lg font-semibold text-zinc-900">Add New Screening</h3>
+                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900" onclick="hideModal('addScreeningModal')">
+                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <form id="addScreeningForm" method="POST">
+                                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                                <input type="hidden" name="addNewScreening" value="1">
+                                <div class="grid gap-4 sm:grid-cols-2">
+                                    <div class="sm:col-span-2">
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Movie:</label>
+                                        <select name="MovieID" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 bg-white focus:outline-none focus:ring-1 focus:ring-orange-600" required>
+                                            <option value="" disabled selected>Select movie</option>
+                                            <?php foreach ($movies as $movie): ?>
+                                                <option value="<?php echo $movie['MovieID']; ?>"><?php echo $movie['Title']; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Screening Date:</label>
+                                        <input type="date" name="ScreeningDate" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Screening Time:</label>
+                                        <input type="time" name="ScreeningTime" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Room:</label>
+                                        <select name="RoomID" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 bg-white focus:outline-none focus:ring-1 focus:ring-orange-600" required>
+                                            <option value="" disabled selected>Select room</option>
+                                            <?php foreach ($rooms as $room): ?>
+                                                <option value="<?php echo htmlspecialchars($room['RoomID']); ?>"><?php echo htmlspecialchars($room['RoomLabel']); ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Price:</label>
+                                        <input type="number" step="0.01" name="Price" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
+                                    </div>
+                                    <div class="sm:col-span-2 text-right">
+                                        <button type="submit" name="addScreeningBtn" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300">
+                                            Add Screening
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </section>
                 <section id="news" class="mb-10">
@@ -647,7 +717,7 @@ $screenings = $screeningController->index();
                                         <input type="file" name="newsImage" id="newsImage" accept="image/jpeg, image/png, image/gif">
                                     </div>
                                     <div class="text-right">
-                                        <button type="submit" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
+                                        <button type="submit" name="addNewsBtn" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                                             Add News
                                         </button>
                                     </div>
@@ -728,7 +798,7 @@ $screenings = $screeningController->index();
                                         <input type="file" name="newsImage" id="newsImage" accept="image/jpeg, image/png, image/gif">
                                     </div>
                                     <div class="text-right">
-                                        <button type="submit" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
+                                        <button type="submit" name="updateNewsBtn" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                                             Update
                                         </button>
                                     </div>
@@ -753,7 +823,7 @@ $screenings = $screeningController->index();
                                 <input type="hidden" id="deleteNewsID" name="deleteNewsID">
                                 <div class="flex justify-end gap-4">
                                     <button type="button" class="rounded-lg bg-zinc-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-zinc-800 transition ease-in-out duration-300" onclick="hideModal('deleteNewsModal')">Cancel</button>
-                                    <button type="submit" class="rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-red-800 transition ease-in-out duration-300">Delete</button>
+                                    <button type="submit" name="deleteNewsBtn" class="rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-red-800 transition ease-in-out duration-300">Delete</button>
                                 </div>
                             </form>
                         </div>

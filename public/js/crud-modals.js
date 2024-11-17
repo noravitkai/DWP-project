@@ -181,6 +181,12 @@ function showAddMovieModal() {
   showModal("addMovieModal");
 }
 
+function showAddScreeningModal() {
+  const addScreeningForm = document.getElementById("addScreeningForm");
+  if (addScreeningForm) addScreeningForm.reset();
+  showModal("addScreeningModal");
+}
+
 function showPreviewNewsModal(news) {
   ["Title", "Category", "Content"].forEach((field) => {
     news[field] = decodeHtmlEntities(news[field]);
