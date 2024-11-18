@@ -208,6 +208,24 @@ function showPreviewScreeningModal(screening) {
   showModal("previewScreeningModal");
 }
 
+function showEditScreeningModal(screening) {
+  screening.MovieTitle = decodeHtmlEntities(screening.MovieTitle || "Unknown");
+
+  document.getElementById("editScreeningMovieTitle").textContent =
+    screening.MovieTitle;
+
+  document.getElementById("editScreeningID").value =
+    screening.ScreeningID || "";
+  document.getElementById("editScreeningDate").value =
+    screening.ScreeningDate || "";
+  document.getElementById("editScreeningTime").value =
+    screening.ScreeningTime || "";
+  document.getElementById("editScreeningRoomID").value = screening.RoomID || "";
+  document.getElementById("editScreeningPrice").value = screening.Price || "";
+
+  showModal("editScreeningModal");
+}
+
 function showPreviewNewsModal(news) {
   ["Title", "Category", "Content"].forEach((field) => {
     news[field] = decodeHtmlEntities(news[field]);

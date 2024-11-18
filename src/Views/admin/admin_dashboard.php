@@ -94,6 +94,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addScreeningBtn'])) {
     exit;
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateScreeningBtn'])) {
+    if (verifyCsrfToken($_POST['csrf_token'])) {
+        $screeningId = sanitizeInput($_POST['ScreeningID']);
+        $data = [
+            'Price' => sanitizeInput($_POST['Price']),
+            'ScreeningDate' => sanitizeInput($_POST['ScreeningDate']),
+            'ScreeningTime' => sanitizeInput($_POST['ScreeningTime']),
+            'RoomID' => sanitizeInput($_POST['RoomID']),
+        ];
+        $screeningController->update($screeningId, $data);
+    }
+    header('Location: admin_dashboard.php#screenings');
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addNewsBtn'])) {
     if (verifyCsrfToken($_POST['csrf_token'])) {
         $data = [
@@ -656,6 +671,51 @@ $rooms = $screeningController->getRooms();
                                     <p id="previewScreeningPrice" class="text-sm text-zinc-900"></p>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div id="editScreeningModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center lg:pl-72 p-4">
+                        <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
+                            <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
+                                <h3 class="text-lg font-semibold text-zinc-900">Edit Screening</h3>
+                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('editScreeningModal')">
+                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <p id="editScreeningMovieTitle" class="mb-4 text-sm font-semibold text-zinc-900"></p>
+                            <form id="editScreeningForm" method="POST">
+                                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                                <input type="hidden" id="editScreeningID" name="ScreeningID">
+                                <div class="grid gap-4 sm:grid-cols-2">
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Screening Date:</label>
+                                        <input type="date" id="editScreeningDate" name="ScreeningDate" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Screening Time:</label>
+                                        <input type="time" id="editScreeningTime" name="ScreeningTime" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Room:</label>
+                                        <select id="editScreeningRoomID" name="RoomID" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600 bg-white" required>
+                                            <option value="" disabled>Select room</option>
+                                            <?php foreach ($rooms as $room): ?>
+                                                <option value="<?php echo htmlspecialchars($room['RoomID']); ?>"><?php echo htmlspecialchars($room['RoomLabel']); ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Price:</label>
+                                        <input type="number" step="0.01" id="editScreeningPrice" name="Price" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
+                                    </div>
+                                    <div class="sm:col-span-2 text-right">
+                                        <button type="submit" name="updateScreeningBtn" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
+                                            Update
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </section>

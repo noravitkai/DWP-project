@@ -36,4 +36,31 @@ class Screening {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getScreeningById($id) {
+        $query = "SELECT Screening.*, Movie.Title AS MovieTitle 
+                  FROM Screening 
+                  INNER JOIN Movie ON Screening.MovieID = Movie.MovieID
+                  WHERE ScreeningID = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
+    public function updateScreening($id, $data) {
+        $query = "UPDATE Screening 
+                  SET Price = :price, ScreeningDate = :date, ScreeningTime = :time, 
+                      RoomID = :roomID 
+                  WHERE ScreeningID = :id";
+    
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':price', $data['Price']);
+        $stmt->bindParam(':date', $data['ScreeningDate']);
+        $stmt->bindParam(':time', $data['ScreeningTime']);
+        $stmt->bindParam(':roomID', $data['RoomID']);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    
+        return $stmt->execute();
+    }
 }

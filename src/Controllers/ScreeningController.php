@@ -21,4 +21,12 @@ class ScreeningController {
     public function getRooms() {
         return $this->screening->getAllRooms();
     }
+
+    public function getScreeningById($id) {
+        return $this->screening->getScreeningById($id);
+    }
+    
+    public function update($id, $data) {
+        return $this->screening->updateScreening($id, $data);
+    }
 }
