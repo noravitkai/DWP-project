@@ -226,6 +226,15 @@ function showEditScreeningModal(screening) {
   showModal("editScreeningModal");
 }
 
+function showDeleteScreeningModal(screening) {
+  screening.MovieTitle = decodeHtmlEntities(screening.MovieTitle);
+  document.getElementById("deleteScreeningID").value = screening.ScreeningID;
+  document.getElementById(
+    "deleteScreeningMovieTitle"
+  ).textContent = `Screening of "${screening.MovieTitle}" on ${screening.ScreeningDate} at ${screening.ScreeningTime}`;
+  showModal("deleteScreeningModal");
+}
+
 function showPreviewNewsModal(news) {
   ["Title", "Category", "Content"].forEach((field) => {
     news[field] = decodeHtmlEntities(news[field]);

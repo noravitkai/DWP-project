@@ -109,6 +109,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateScreeningBtn'])
     exit;
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteScreeningBtn'])) {
+    if (verifyCsrfToken($_POST['csrf_token'])) {
+        $screeningId = sanitizeInput($_POST['deleteScreeningID']);
+        $screeningController->delete($screeningId);
+    }
+    header('Location: admin_dashboard.php#screenings');
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addNewsBtn'])) {
     if (verifyCsrfToken($_POST['csrf_token'])) {
         $data = [
@@ -714,6 +723,28 @@ $rooms = $screeningController->getRooms();
                                             Update
                                         </button>
                                     </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div id="deleteScreeningModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center lg:pl-72 p-4">
+                        <div class="relative max-w-md w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
+                            <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
+                                <h3 class="text-lg font-semibold text-zinc-900">Delete Screening</h3>
+                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('deleteScreeningModal')">
+                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <p id="deleteScreeningMovieTitle" class="mb-4 text-sm font-semibold text-zinc-900"></p>
+                            <p class="mb-4 text-sm text-zinc-600">Are you sure you want to delete this screening? This action cannot be undone.</p>
+                            <form id="deleteScreeningForm" method="POST">
+                                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                                <input type="hidden" id="deleteScreeningID" name="deleteScreeningID">
+                                <div class="flex justify-end gap-4">
+                                    <button type="button" class="rounded-lg bg-zinc-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-zinc-800 transition ease-in-out duration-300" onclick="hideModal('deleteScreeningModal')">Cancel</button>
+                                    <button type="submit" name="deleteScreeningBtn" class="rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-red-800 transition ease-in-out duration-300">Delete</button>
                                 </div>
                             </form>
                         </div>

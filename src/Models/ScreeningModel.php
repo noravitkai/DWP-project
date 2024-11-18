@@ -63,4 +63,11 @@ class Screening {
     
         return $stmt->execute();
     }
+
+    public function deleteScreeningById($id) {
+        $query = "DELETE FROM Screening WHERE ScreeningID = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }

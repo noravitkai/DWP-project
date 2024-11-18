@@ -29,4 +29,8 @@ class ScreeningController {
     public function update($id, $data) {
         return $this->screening->updateScreening($id, $data);
     }
+
+    public function delete($id) {
+        return $this->screening->deleteScreeningById($id);
+    }
 }
