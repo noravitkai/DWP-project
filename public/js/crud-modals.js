@@ -181,6 +181,60 @@ function showAddMovieModal() {
   showModal("addMovieModal");
 }
 
+function showAddScreeningModal() {
+  const addScreeningForm = document.getElementById("addScreeningForm");
+  if (addScreeningForm) addScreeningForm.reset();
+  showModal("addScreeningModal");
+}
+
+function showPreviewScreeningModal(screening) {
+  ["MovieTitle", "RoomLabel"].forEach((field) => {
+    screening[field] = decodeHtmlEntities(screening[field]);
+  });
+
+  if (screening.Price) {
+    screening.Price = `${screening.Price} DKK`;
+  }
+
+  populateModalFields("previewScreening", screening, {
+    ScreeningID: "ID",
+    MovieTitle: "MovieTitle",
+    ScreeningDate: "Date",
+    ScreeningTime: "Time",
+    RoomLabel: "Room",
+    Price: "Price",
+  });
+
+  showModal("previewScreeningModal");
+}
+
+function showEditScreeningModal(screening) {
+  screening.MovieTitle = decodeHtmlEntities(screening.MovieTitle || "Unknown");
+
+  document.getElementById("editScreeningMovieTitle").textContent =
+    screening.MovieTitle;
+
+  document.getElementById("editScreeningID").value =
+    screening.ScreeningID || "";
+  document.getElementById("editScreeningDate").value =
+    screening.ScreeningDate || "";
+  document.getElementById("editScreeningTime").value =
+    screening.ScreeningTime || "";
+  document.getElementById("editScreeningRoomID").value = screening.RoomID || "";
+  document.getElementById("editScreeningPrice").value = screening.Price || "";
+
+  showModal("editScreeningModal");
+}
+
+function showDeleteScreeningModal(screening) {
+  screening.MovieTitle = decodeHtmlEntities(screening.MovieTitle);
+  document.getElementById("deleteScreeningID").value = screening.ScreeningID;
+  document.getElementById(
+    "deleteScreeningMovieTitle"
+  ).textContent = `Screening of "${screening.MovieTitle}" on ${screening.ScreeningDate} at ${screening.ScreeningTime}`;
+  showModal("deleteScreeningModal");
+}
+
 function showPreviewNewsModal(news) {
   ["Title", "Category", "Content"].forEach((field) => {
     news[field] = decodeHtmlEntities(news[field]);
