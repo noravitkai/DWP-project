@@ -337,7 +337,7 @@ $rooms = $screeningController->getRooms();
                         <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
                             <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
                                 <h3 class="text-lg font-semibold text-zinc-900">Add New Movie</h3>
-                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900" onclick="hideModal('addMovieModal')">
+                                <button type="button" class="text-zinc-600 text-sm hover:text-zinc-900" onclick="hideModal('addMovieModal')">
                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
                                     </svg>
@@ -400,7 +400,7 @@ $rooms = $screeningController->getRooms();
                         <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
                             <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
                                 <h3 class="text-lg font-semibold text-zinc-900" id="previewMovieTitle">Movie Details</h3>
-                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('previewMovieModal')">
+                                <button type="button" class="text-zinc-600 text-sm hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('previewMovieModal')">
                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
                                     </svg>
@@ -450,7 +450,7 @@ $rooms = $screeningController->getRooms();
                         <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
                             <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
                                 <h3 class="text-lg font-semibold text-zinc-900">Edit Movie</h3>
-                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('editMovieModal')">
+                                <button type="button" class="text-zinc-600 text-sm hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('editMovieModal')">
                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
                                     </svg>
@@ -513,7 +513,7 @@ $rooms = $screeningController->getRooms();
                         <div class="relative max-w-md w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
                         <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
                                 <h3 class="text-lg font-semibold text-zinc-900">Delete Movie</h3>
-                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('deleteMovieModal')">
+                                <button type="button" class="text-zinc-600 text-sm hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('deleteMovieModal')">
                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
                                     </svg>
@@ -595,7 +595,7 @@ $rooms = $screeningController->getRooms();
                         <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
                             <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
                                 <h3 class="text-lg font-semibold text-zinc-900">Add New Screening</h3>
-                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900" onclick="hideModal('addScreeningModal')">
+                                <button type="button" class="text-zinc-600 text-sm hover:text-zinc-900" onclick="hideModal('addScreeningModal')">
                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
                                     </svg>
@@ -648,7 +648,7 @@ $rooms = $screeningController->getRooms();
                         <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
                             <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
                                 <h3 class="text-lg font-semibold text-zinc-900">Screening Details</h3>
-                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900" onclick="hideModal('previewScreeningModal')">
+                                <button type="button" class="text-zinc-600 text-sm hover:text-zinc-900" onclick="hideModal('previewScreeningModal')">
                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
                                     </svg>
@@ -686,7 +686,7 @@ $rooms = $screeningController->getRooms();
                         <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
                             <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
                                 <h3 class="text-lg font-semibold text-zinc-900">Edit Screening</h3>
-                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('editScreeningModal')">
+                                <button type="button" class="text-zinc-600 text-sm hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('editScreeningModal')">
                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
                                     </svg>
@@ -731,7 +731,7 @@ $rooms = $screeningController->getRooms();
                         <div class="relative max-w-md w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
                             <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
                                 <h3 class="text-lg font-semibold text-zinc-900">Delete Screening</h3>
-                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('deleteScreeningModal')">
+                                <button type="button" class="text-zinc-600 text-sm hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('deleteScreeningModal')">
                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
                                     </svg>
@@ -811,7 +811,7 @@ $rooms = $screeningController->getRooms();
                         <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
                             <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
                                 <h3 class="text-lg font-semibold text-zinc-900">Add New News</h3>
-                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('addNewsModal')">
+                                <button type="button" class="text-zinc-600 text-sm hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('addNewsModal')">
                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
                                     </svg>
@@ -820,8 +820,8 @@ $rooms = $screeningController->getRooms();
                             <form id="addNewsForm" method="POST" enctype="multipart/form-data">
                                 <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                                 <input type="hidden" name="addNewNews" value="1">
-                                <div class="grid gap-4">
-                                    <div>
+                                <div class="grid gap-4 sm:grid-cols-2">
+                                    <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Title:</label>
                                         <input type="text" name="Title" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
                                     </div>
@@ -837,15 +837,15 @@ $rooms = $screeningController->getRooms();
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Date Published:</label>
                                         <input type="date" name="DatePublished" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
                                     </div>
-                                    <div>
+                                    <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Content:</label>
                                         <textarea name="Content" rows="6" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required></textarea>
                                     </div>
-                                    <div>
+                                    <div class="sm:col-span-2">
                                         <label for="newsImage">Upload Image:</label>
                                         <input type="file" name="newsImage" id="newsImage" accept="image/jpeg, image/png, image/gif">
                                     </div>
-                                    <div class="text-right">
+                                    <div class="sm:col-span-2 text-right">
                                         <button type="submit" name="addNewsBtn" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                                             Add News
                                         </button>
@@ -858,7 +858,7 @@ $rooms = $screeningController->getRooms();
                         <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
                             <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
                                 <h3 class="text-lg font-semibold text-zinc-900" id="previewNewsTitle">News Details</h3>
-                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('previewNewsModal')">
+                                <button type="button" class="text-zinc-600 text-sm hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('previewNewsModal')">
                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
                                     </svg>
@@ -892,7 +892,7 @@ $rooms = $screeningController->getRooms();
                         <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
                             <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
                                 <h3 class="text-lg font-semibold text-zinc-900">Edit News</h3>
-                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('editNewsModal')">
+                                <button type="button" class="text-zinc-600 text-sm hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('editNewsModal')">
                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
                                     </svg>
@@ -901,8 +901,8 @@ $rooms = $screeningController->getRooms();
                             <form id="editNewsForm" method="POST" enctype="multipart/form-data">
                                 <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                                 <input type="hidden" id="editNewsID" name="NewsID">
-                                <div class="grid gap-4">
-                                    <div>
+                                <div class="grid gap-4 sm:grid-cols-2">
+                                    <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Title:</label>
                                         <input type="text" id="editNewsTitle" name="Title" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
                                     </div>
@@ -918,15 +918,15 @@ $rooms = $screeningController->getRooms();
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Date Published:</label>
                                         <input type="date" id="editNewsDatePublished" name="DatePublished" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
                                     </div>
-                                    <div>
+                                    <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Content:</label>
                                         <textarea id="editNewsContent" name="Content" rows="6" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required></textarea>
                                     </div>
-                                    <div>
+                                    <div class="sm:col-span-2">
                                         <label for="newsImage">Upload Image:</label>
                                         <input type="file" name="newsImage" id="newsImage" accept="image/jpeg, image/png, image/gif">
                                     </div>
-                                    <div class="text-right">
+                                    <div class="sm:col-span-2 text-right">
                                         <button type="submit" name="updateNewsBtn" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                                             Update
                                         </button>
@@ -939,7 +939,7 @@ $rooms = $screeningController->getRooms();
                         <div class="relative max-w-md w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
                             <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
                                 <h3 class="text-lg font-semibold text-zinc-900">Delete News</h3>
-                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('deleteNewsModal')">
+                                <button type="button" class="text-zinc-600 text-sm hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('deleteNewsModal')">
                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
                                     </svg>
