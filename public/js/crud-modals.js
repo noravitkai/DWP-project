@@ -187,6 +187,27 @@ function showAddScreeningModal() {
   showModal("addScreeningModal");
 }
 
+function showPreviewScreeningModal(screening) {
+  ["MovieTitle", "RoomLabel"].forEach((field) => {
+    screening[field] = decodeHtmlEntities(screening[field]);
+  });
+
+  if (screening.Price) {
+    screening.Price = `${screening.Price} DKK`;
+  }
+
+  populateModalFields("previewScreening", screening, {
+    ScreeningID: "ID",
+    MovieTitle: "MovieTitle",
+    ScreeningDate: "Date",
+    ScreeningTime: "Time",
+    RoomLabel: "Room",
+    Price: "Price",
+  });
+
+  showModal("previewScreeningModal");
+}
+
 function showPreviewNewsModal(news) {
   ["Title", "Category", "Content"].forEach((field) => {
     news[field] = decodeHtmlEntities(news[field]);

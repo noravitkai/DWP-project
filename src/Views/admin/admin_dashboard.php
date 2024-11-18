@@ -620,6 +620,44 @@ $rooms = $screeningController->getRooms();
                             </form>
                         </div>
                     </div>
+                    <div id="previewScreeningModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center lg:pl-72 p-4">
+                        <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
+                            <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
+                                <h3 class="text-lg font-semibold text-zinc-900">Screening Details</h3>
+                                <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900" onclick="hideModal('previewScreeningModal')">
+                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="grid gap-4 sm:grid-cols-2">
+                                <div>
+                                    <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Screening ID:</label>
+                                    <p id="previewScreeningID" class="text-sm text-zinc-900"></p>
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Movie Title:</label>
+                                    <p id="previewScreeningMovieTitle" class="text-sm text-zinc-900"></p>
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Date:</label>
+                                    <p id="previewScreeningDate" class="text-sm text-zinc-900"></p>
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Time:</label>
+                                    <p id="previewScreeningTime" class="text-sm text-zinc-900"></p>
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Room:</label>
+                                    <p id="previewScreeningRoom" class="text-sm text-zinc-900"></p>
+                                </div>
+                                <div>
+                                    <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Price:</label>
+                                    <p id="previewScreeningPrice" class="text-sm text-zinc-900"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
                 <section id="news" class="mb-10">
                     <h2 class="text-3xl font-bold text-zinc-900">News</h2>
