@@ -29,7 +29,7 @@ $newsList = $newsController->index();
             <ul class="mt-8 grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
                 <?php foreach ($movies as $movie): ?>
                     <li>
-                        <a href="#" class="group block">
+                        <a href="single_movie.php?id=<?php echo $movie['MovieID']; ?>" class="group block">
                             <div class="aspect-w-2 aspect-h-3 w-full overflow-hidden">
                                 <img
                                     src="<?php echo $movie['ImageURL']; ?>"
