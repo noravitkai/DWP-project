@@ -3,11 +3,13 @@ include '../../../config/admin_session.php';
 require_once '../../Controllers/MovieController.php';
 require_once '../../Controllers/NewsController.php';
 require_once '../../Controllers/ScreeningController.php';
+require_once '../../Controllers/CinemaController.php';
 require_once '../../../config/functions.php';
 
 $newsController = new NewsController();
 $movieController = new MovieController();
 $screeningController = new ScreeningController();
+$cinemaController = new CinemaController();
 
 function verifyCsrfToken($token) {
     return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
@@ -160,6 +162,7 @@ $movies = $movieController->index();
 $newsList = $newsController->index();
 $screenings = $screeningController->index();
 $rooms = $screeningController->getRooms();
+$cinemas = $cinemaController->index();
 ?>
 
 <!DOCTYPE html>
@@ -956,6 +959,52 @@ $rooms = $screeningController->getRooms();
                                 </div>
                             </form>
                         </div>
+                    </div>
+                </section>
+                <section id="cinema" class="mb-10">
+                    <h2 class="text-3xl font-bold text-zinc-900">Cinema Details</h2>
+                    <p class="mt-5 text-base text-zinc-700">Manage the company presentation here.</p>
+                    <div class="mt-5">
+                        <button type="button" onclick="#" class="inline-flex items-center rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300">
+                            <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                            </svg>
+                            Edit Details
+                        </button>
+                    </div>
+                    <div class="mt-10">
+                        <dl class="text-sm text-zinc-900">
+                            <?php foreach ($cinemas as $cinema): ?>
+                                <div class="divide-y divide-zinc-200">
+                                    <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-2">
+                                        <dt class="text-xs font-semibold text-zinc-600 uppercase">Title</dt>
+                                        <dd><?php echo htmlspecialchars($cinema['Tagline']); ?></dd>
+                                    </div>
+                                    <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-2">
+                                        <dt class="text-xs font-semibold text-zinc-600 uppercase">Description</dt>
+                                        <dd><?php echo htmlspecialchars($cinema['Description']); ?></dd>
+                                    </div>
+                                    <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-2">
+                                        <dt class="text-xs font-semibold text-zinc-600 uppercase">Phone</dt>
+                                        <dd><?php echo htmlspecialchars($cinema['PhoneNumber']); ?></dd>
+                                    </div>
+                                    <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-2">
+                                        <dt class="text-xs font-semibold text-zinc-600 uppercase">Email</dt>
+                                        <dd><?php echo htmlspecialchars($cinema['Email']); ?></dd>
+                                    </div>
+                                    <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-2">
+                                        <dt class="text-xs font-semibold text-zinc-600 uppercase">Image</dt>
+                                        <dd>
+                                            <?php if (!empty($cinema['ImageURL'])): ?>
+                                                <img src="<?php echo htmlspecialchars($cinema['ImageURL']); ?>" alt="Cinema Image" class="w-32 h-auto">
+                                            <?php else: ?>
+                                                <span>No image available</span>
+                                            <?php endif; ?>
+                                        </dd>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </dl>
                     </div>
                 </section>
                 <div id="modalBackdrop" class="hidden fixed inset-0 z-40 bg-zinc-900 bg-opacity-50 lg:pl-72"></div>
