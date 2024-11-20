@@ -33,4 +33,8 @@ class ScreeningController {
     public function delete($id) {
         return $this->screening->deleteScreeningById($id);
     }
+
+    public function getScreeningsByMovieId($movieId) {
+        return $this->screening->getScreeningsByMovieId($movieId);
+    }
 }
