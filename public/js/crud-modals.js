@@ -281,6 +281,21 @@ function showAddNewsModal() {
   showModal("addNewsModal");
 }
 
+function showEditCinemaModal(cinema) {
+  ["Tagline", "Description", "PhoneNumber", "Email"].forEach((field) => {
+    cinema[field] = decodeHtmlEntities(cinema[field] || "");
+  });
+
+  document.getElementById("editCinemaID").value = cinema.CinemaID || "";
+  document.getElementById("editCinemaTitle").value = cinema.Tagline || "";
+  document.getElementById("editCinemaDescription").value =
+    cinema.Description || "";
+  document.getElementById("editCinemaPhone").value = cinema.PhoneNumber || "";
+  document.getElementById("editCinemaEmail").value = cinema.Email || "";
+
+  showModal("editCinemaModal");
+}
+
 function showEditProfileModal(customer) {
   [
     "FirstName",
