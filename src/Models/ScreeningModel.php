@@ -70,4 +70,17 @@ class Screening {
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+    public function getScreeningsByMovieId($movieId) {
+        $query = "SELECT s.ScreeningID, s.Price, s.ScreeningDate, s.ScreeningTime, 
+                         r.RoomLabel, r.TotalSeats 
+                  FROM Screening s
+                  JOIN Room r ON s.RoomID = r.RoomID
+                  WHERE s.MovieID = :movieId
+                  ORDER BY s.ScreeningDate, s.ScreeningTime";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':movieId', $movieId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
