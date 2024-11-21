@@ -8,7 +8,8 @@ CREATE TABLE Cinema (
     Tagline VARCHAR(255) NOT NULL,
     `Description` TEXT NOT NULL,
     PhoneNumber VARCHAR(20),
-    Email VARCHAR(255) NOT NULL
+    Email VARCHAR(255) NOT NULL,
+    OpeningHours TEXT NOT NULL
 );
 
 CREATE TABLE CinemaImage (

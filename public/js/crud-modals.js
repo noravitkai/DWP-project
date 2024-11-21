@@ -282,16 +282,16 @@ function showAddNewsModal() {
 }
 
 function showEditCinemaModal(cinema) {
-  ["Tagline", "Description", "PhoneNumber", "Email"].forEach((field) => {
-    cinema[field] = decodeHtmlEntities(cinema[field] || "");
+  ["Tagline", "Description", "PhoneNumber", "Email", "OpeningHours"].forEach((field) => {
+      cinema[field] = decodeHtmlEntities(cinema[field] || "");
   });
 
   document.getElementById("editCinemaID").value = cinema.CinemaID || "";
   document.getElementById("editCinemaTitle").value = cinema.Tagline || "";
-  document.getElementById("editCinemaDescription").value =
-    cinema.Description || "";
+  document.getElementById("editCinemaDescription").value = cinema.Description || "";
   document.getElementById("editCinemaPhone").value = cinema.PhoneNumber || "";
   document.getElementById("editCinemaEmail").value = cinema.Email || "";
+  document.getElementById("editCinemaOpeningHours").value = cinema.OpeningHours || "";
 
   showModal("editCinemaModal");
 }

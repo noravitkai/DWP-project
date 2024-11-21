@@ -165,7 +165,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateCinemaBtn'])) {
             'Tagline' => sanitizeInput($_POST['Tagline']),
             'Description' => sanitizeInput($_POST['Description']),
             'PhoneNumber' => sanitizeInput($_POST['PhoneNumber']),
-            'Email' => sanitizeInput($_POST['Email'])
+            'Email' => sanitizeInput($_POST['Email']),
+            'OpeningHours' => sanitizeInput($_POST['OpeningHours'])
         ];
 
         $cinemaController->update($cinemaId, $data);
@@ -1012,6 +1013,10 @@ $cinemas = $cinemaController->index();
                                             <dd><?php echo htmlspecialchars($cinema['Email']); ?></dd>
                                         </div>
                                         <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-2">
+                                            <dt class="text-xs font-semibold text-zinc-600 uppercase">Opening Hours</dt>
+                                            <dd><?php echo htmlspecialchars($cinema['OpeningHours']); ?></dd>
+                                        </div>
+                                        <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-2">
                                             <dt class="text-xs font-semibold text-zinc-600 uppercase">Image</dt>
                                             <dd>
                                                 <?php if (!empty($cinema['ImageURL'])): ?>
@@ -1054,6 +1059,10 @@ $cinemas = $cinemaController->index();
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Email:</label>
                                         <input type="email" id="editCinemaEmail" name="Email" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Opening Hours:</label>
+                                        <textarea id="editCinemaOpeningHours" name="OpeningHours" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600"></textarea>
                                     </div>
                                     <div class="sm:col-span-2">
                                         <label for="cinemaImage">Upload Image:</label>

@@ -28,29 +28,32 @@ class Cinema {
     }
 
     public function storeCinema($data) {
-        $query = "INSERT INTO Cinema (Tagline, Description, PhoneNumber, Email) 
-                  VALUES (:tagline, :description, :phoneNumber, :email)";
+        $query = "INSERT INTO Cinema (Tagline, Description, PhoneNumber, Email, OpeningHours) 
+                  VALUES (:tagline, :description, :phoneNumber, :email, :openingHours)";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':tagline', $data['Tagline'], PDO::PARAM_STR);
         $stmt->bindParam(':description', $data['Description'], PDO::PARAM_STR);
         $stmt->bindParam(':phoneNumber', $data['PhoneNumber'], PDO::PARAM_STR);
         $stmt->bindParam(':email', $data['Email'], PDO::PARAM_STR);
+        $stmt->bindParam(':openingHours', $data['OpeningHours'], PDO::PARAM_STR);
         $stmt->execute();
         return $this->db->lastInsertId();
     }
 
     public function updateCinemaById($id, $data) {
         $query = "UPDATE Cinema SET 
-                    Tagline = :tagline,
-                    Description = :description,
-                    PhoneNumber = :phoneNumber,
-                    Email = :email
-                  WHERE CinemaID = :id";
+        Tagline = :tagline,
+        Description = :description,
+        PhoneNumber = :phoneNumber,
+        Email = :email,
+        OpeningHours = :openingHours
+      WHERE CinemaID = :id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':tagline', $data['Tagline'], PDO::PARAM_STR);
         $stmt->bindParam(':description', $data['Description'], PDO::PARAM_STR);
         $stmt->bindParam(':phoneNumber', $data['PhoneNumber'], PDO::PARAM_STR);
         $stmt->bindParam(':email', $data['Email'], PDO::PARAM_STR);
+        $stmt->bindParam(':openingHours', $data['OpeningHours'], PDO::PARAM_STR);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }

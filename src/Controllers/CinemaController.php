@@ -26,15 +26,34 @@ class CinemaController {
     }
 
     public function store($data) {
+        $data = [
+            'Tagline' => $_POST['Tagline'],
+            'Description' => $_POST['Description'],
+            'PhoneNumber' => $_POST['PhoneNumber'],
+            'Email' => $_POST['Email'],
+            'OpeningHours' => $_POST['OpeningHours']
+        ];
+
         $cinemaID = $this->cinema->storeCinema($data);
+
         if (isset($_FILES['cinemaImage']) && $_FILES['cinemaImage']['error'] === UPLOAD_ERR_OK) {
             $this->uploadCinemaImage($_FILES['cinemaImage'], $cinemaID);
         }
+
         return $cinemaID;
     }
 
     public function update($id, $data) {
+        $data = [
+            'Tagline' => $_POST['Tagline'],
+            'Description' => $_POST['Description'],
+            'PhoneNumber' => $_POST['PhoneNumber'],
+            'Email' => $_POST['Email'],
+            'OpeningHours' => $_POST['OpeningHours']
+        ];
+
         $this->cinema->updateCinemaById($id, $data);
+
         if (isset($_FILES['cinemaImage']) && $_FILES['cinemaImage']['error'] === UPLOAD_ERR_OK) {
             $this->deleteAssociatedImage($id);
             $this->uploadCinemaImage($_FILES['cinemaImage'], $id);
@@ -54,6 +73,7 @@ class CinemaController {
             if (!in_array($file['type'], $allowedTypes)) {
                 throw new Exception('Invalid file type. Only JPG, PNG, and GIF are allowed.');
             }
+
             if ($file['size'] > $maxFileSize) {
                 throw new Exception('File is too large. Maximum size is 2MB.');
             }
