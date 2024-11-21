@@ -11,6 +11,22 @@ VALUES
     ('Family Lounge', 100),
     ('Quarter-Tank', 25);
 
+INSERT INTO Seat (RowLabel, SeatNumber, RoomID)
+SELECT 
+    r.RowLabel, s.SeatNumber, 1 
+FROM 
+    (SELECT 'A' AS RowLabel UNION SELECT 'B' UNION SELECT 'C' UNION SELECT 'D' UNION SELECT 'E'
+     UNION SELECT 'F' UNION SELECT 'G' UNION SELECT 'H' UNION SELECT 'I' UNION SELECT 'J') r,
+    (SELECT n AS SeatNumber FROM (SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 
+                                  UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) s) s;
+
+INSERT INTO Seat (RowLabel, SeatNumber, RoomID)
+SELECT 
+    r.RowLabel, s.SeatNumber, 2 
+FROM 
+    (SELECT 'A' AS RowLabel UNION SELECT 'B' UNION SELECT 'C' UNION SELECT 'D' UNION SELECT 'E') r,
+    (SELECT n AS SeatNumber FROM (SELECT 1 n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5) s) s;
+
 INSERT INTO Movie (Title, Subtitle, Duration, Genre, ReleaseYear, Director, MovieDescription) 
 VALUES 
     ('Fast & Furious 1', 'Cars, Crime, and Culinary Curiosity', 106, 'Action, Crime', 2001, 'Rob Cohen', 'Brian’s detective work mostly involves eating his way to the top, while Dom shows everyone that racing isn’t as important as being a family man. Brian’s undercover strategy? Pretend to be a guy who loves tuna and illegal street racing. Brilliant plan.'),
@@ -39,12 +55,22 @@ VALUES
     (2, '2024-10-03', 'Confirmed', 1, 1),
     (3, '2024-10-04', 'Pending', 2, 1);
 
-INSERT INTO Ticket (`Row`, SeatNumber, ReservationID, ScreeningID) 
+INSERT INTO Allocations (ReservationID, SeatID)
 VALUES
-    ('A', 1, 1, 1),
-    ('A', 2, 1, 1),
-    ('B', 1, 2, 2),
-    ('B', 2, 2, 2);
+    (1, 1),
+    (1, 2);
+
+INSERT INTO Allocations (ReservationID, SeatID)
+VALUES
+    (2, 26),
+    (2, 27);
+
+INSERT INTO Ticket (SeatID, ReservationID, ScreeningID) 
+VALUES
+    (1, 1, 1),
+    (2, 1, 1),
+    (26, 2, 2),
+    (27, 2, 2);
 
 INSERT INTO Payment (PaymentStatus, TransactionAmount, TransactionDate, CustomerID, ReservationID)
 VALUES
@@ -60,3 +86,11 @@ INSERT INTO Event (EventName, EventDate, EventDescription, Discount, ScreeningID
 VALUES
     ('Torretto Tuesday', '2024-10-08', 'Special screenings of all Fast & Furious movies! Win memorabilia!', 10.00, 1),
     ('Family Friday', '2024-10-11', 'Bring the family for a 30% discount on all Fast & Furious screenings!', 30.00, 1);
+
+INSERT INTO Cinema (Tagline, `Description`, PhoneNumber, Email, OpeningHours)
+VALUES
+    ('Fast Cars, Furious Movies!', 'Welcome to the ultimate destination for Fast & Furious movie fans. Experience high-octane entertainment and immersive cinema.', '123-456-7890', 'contact@fastlanecine.com', 'Monday-Friday: 10:00 AM - 10:00 PM\nSaturday-Sunday: 9:00 AM - 11:00 PM');
+
+INSERT INTO CinemaImage (ImageURL, CinemaID)
+VALUES 
+    ('/DWP-project/uploads/family.jpg', 1);

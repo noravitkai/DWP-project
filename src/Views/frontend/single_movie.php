@@ -65,11 +65,11 @@ $screenings = $screeningController->getScreeningsByMovieId($movie['MovieID']);
                 <div class="sm:col-span-2 mt-10">
                     <h3 class="block text-xs sm:text-sm text-orange-600 uppercase mb-0.5">Screenings:</h3>
                     <?php if (!empty($screenings)): ?>
-                        <form class="flex flex-col sm:flex-row items-start sm:items-center gap-y-2 sm:gap-y-0 sm:gap-x-2">
+                        <form action="seat_reservation.php" method="GET" class="flex flex-col sm:flex-row items-start sm:items-center gap-y-2 sm:gap-y-0 sm:gap-x-2">
                             <label for="screening_select" class="sr-only">Select a screening</label>
                             <div class="relative w-full sm:w-auto flex-grow">
-                                <select id="screening_select" name="screening_id" class="mb-4 sm:mb-0 block py-2.5 px-0 w-full text-sm text-zinc-300 bg-transparent border-0 border-b border-zinc-200 appearance-none focus:outline-none focus:ring-0 focus:border-orange-600 peer">
-                                    <option disabled selected>Select a screening</option>
+                                <select id="screening_select" name="screening_id" class="mb-4 sm:mb-0 block py-2.5 px-0 w-full text-sm text-zinc-300 bg-transparent border-0 border-b border-zinc-200 appearance-none focus:outline-none focus:ring-0 focus:border-orange-600 peer" required>
+                                    <option disabled selected value="">Select a screening</option>
                                     <?php foreach ($screenings as $screening): ?>
                                         <option value="<?php echo $screening['ScreeningID']; ?>">
                                             <?php echo $screening['ScreeningDate'] . ' | ' . $screening['ScreeningTime'] . ' | Room: ' . $screening['RoomLabel'] . ' | ' . $screening['Price'] . ' DKK'; ?>
@@ -80,7 +80,7 @@ $screenings = $screeningController->getScreeningsByMovieId($movie['MovieID']);
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                 </svg>
                             </div>
-                            <button type="button" class="inline-flex items-center rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300 w-auto">
+                            <button type="submit" class="inline-flex items-center rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300 w-auto">
                                 <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
                                 </svg>

@@ -98,7 +98,7 @@ CREATE TABLE Screening (
 CREATE TABLE Reservation (
     ReservationID INT AUTO_INCREMENT PRIMARY KEY,
     NumberOfSeats INT UNSIGNED NOT NULL CHECK (NumberOfSeats > 0),
-    ReservationDate DATE NOT NULL,
+    ReservationDate DATE NOT NULL DEFAULT CURRENT_DATE,
     ReservationStatus ENUM('Confirmed', 'Pending', 'Cancelled') DEFAULT 'Pending',
     ScreeningID INT NOT NULL,
     CustomerID INT NOT NULL,
@@ -106,12 +106,29 @@ CREATE TABLE Reservation (
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE CASCADE
 );
 
+CREATE TABLE Seat (
+    SeatID INT AUTO_INCREMENT PRIMARY KEY,
+    RowLabel CHAR(1) NOT NULL,
+    SeatNumber INT UNSIGNED NOT NULL CHECK (SeatNumber > 0),
+    RoomID INT NOT NULL,
+    FOREIGN KEY (RoomID) REFERENCES Room(RoomID) ON DELETE CASCADE,
+    UNIQUE (RowLabel, SeatNumber, RoomID)
+);
+
+CREATE TABLE Allocations (
+    ReservationID INT NOT NULL,
+    SeatID INT NOT NULL,
+    PRIMARY KEY (ReservationID, SeatID),
+    FOREIGN KEY (ReservationID) REFERENCES Reservation(ReservationID) ON DELETE CASCADE,
+    FOREIGN KEY (SeatID) REFERENCES Seat(SeatID) ON DELETE CASCADE
+);
+
 CREATE TABLE Ticket (
     TicketID INT AUTO_INCREMENT PRIMARY KEY,
-    `Row` VARCHAR(10) NOT NULL,
-    SeatNumber INT UNSIGNED NOT NULL CHECK (SeatNumber > 0),
+    SeatID INT NOT NULL,
     ReservationID INT NOT NULL,
     ScreeningID INT NOT NULL,
+    FOREIGN KEY (SeatID) REFERENCES Seat(SeatID) ON DELETE CASCADE,
     FOREIGN KEY (ReservationID) REFERENCES Reservation(ReservationID) ON DELETE CASCADE,
     FOREIGN KEY (ScreeningID) REFERENCES Screening(ScreeningID) ON DELETE CASCADE
 );
