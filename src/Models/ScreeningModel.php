@@ -83,4 +83,18 @@ class Screening {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getTodayScreenings() {
+        $query = "SELECT s.ScreeningID, s.ScreeningTime, 
+                         m.MovieID, m.Title AS MovieTitle, 
+                         mi.ImageURL
+                  FROM Screening s
+                  JOIN Movie m ON s.MovieID = m.MovieID
+                  LEFT JOIN MovieImage mi ON m.MovieID = mi.MovieID
+                  WHERE DATE(s.ScreeningDate) = CURDATE()
+                  ORDER BY s.ScreeningTime";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
