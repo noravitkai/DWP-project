@@ -2,12 +2,15 @@
 include '../../../config/user_session.php';
 require_once '../../Controllers/MovieController.php';
 require_once '../../Controllers/NewsController.php';
+require_once '../../Controllers/ScreeningController.php';
 
 $movieController = new MovieController();
 $newsController = new NewsController();
+$screeningController = new ScreeningController();
 
 $movies = $movieController->index();
 $newsList = $newsController->index();
+$todaysScreenings = $screeningController->getTodayScreenings();
 ?>
 
 <!DOCTYPE html>
@@ -22,35 +25,57 @@ $newsList = $newsController->index();
         <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
             <header>
                 <h2 class="text-xl font-bold text-orange-600 sm:text-3xl">Daily Showings</h2>
-                <p class="mt-4 max-w-lg text-base text-zinc-300">
-                    Browse through our collection of Fast & Furious movies. Book your seats and join the Family!
+                <p class="mt-4 max-w-lg text-sm sm:text-base text-zinc-300">
+                    See what’s playing today at our cinema and enjoy the best movies!
                 </p>
             </header>
-            <ul class="mt-8 grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-                <?php foreach ($movies as $movie): ?>
-                    <li>
-                        <a href="single_movie.php?id=<?php echo $movie['MovieID']; ?>" class="group block">
-                            <div class="aspect-w-2 aspect-h-3 w-full overflow-hidden">
-                                <img
-                                    src="<?php echo $movie['ImageURL']; ?>"
-                                    alt="<?php echo $movie['Title']; ?>"
-                                    class="w-full h-full object-cover transition duration-500 group-hover:scale-105"
-                                />
+            <ul class="mt-8 grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+                <?php if (!empty($todaysScreenings)): ?>
+                    <?php foreach ($todaysScreenings as $screening): ?>
+                        <li>
+                            <a href="single_movie.php?id=<?php echo $screening['MovieID']; ?>" class="group block">
+                                <div class="aspect-w-2 aspect-h-3 w-full overflow-hidden">
+                                    <img
+                                        src="<?php echo !empty($screening['ImageURL']) ? $screening['ImageURL'] : '/path/to/default-image.jpg'; ?>"
+                                        alt="<?php echo $screening['MovieTitle']; ?>"
+                                        class="w-full h-full object-cover transition duration-500 group-hover:scale-105"
+                                    />
+                                </div>
+                                <div class="relative bg-zinc-800 pt-3">
+                                    <h3 class="text-base text-orange-600 group-hover:text-orange-500">
+                                        <?php echo $screening['MovieTitle']; ?>
+                                    </h3>
+                                    <p class="mt-2 text-sm sm:text-base text-zinc-200">
+                                        Starting at: <?php echo date('g:i A', strtotime($screening['ScreeningTime'])); ?>
+                                    </p>
+                                </div>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <li class="col-span-5">
+                        <div class="bg-zinc-700 p-6 shadow-lg" role="alert">
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-orange-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M12 18.75H4.5a2.25 2.25 0 0 1-2.25-2.25V9m12.841 9.091L16.5 19.5m-1.409-1.409c.407-.407.659-.97.659-1.591v-9a2.25 2.25 0 0 0-2.25-2.25h-9c-.621 0-1.184.252-1.591.659m12.182 12.182L2.909 5.909M1.5 4.5l1.409 1.409" />
+                                </svg>
+                                <p class="text-lg font-medium text-zinc-100">No movies scheduled for today!</p>
                             </div>
-                            <div class="relative bg-zinc-800 pt-3">
-                                <h3 class="text-base text-orange-600 group">
-                                    <?php echo $movie['Title']; ?>:
-                                </h3>
-                                <h4 class="text-base text-zinc-200 group-hover:text-orange-600 transition ease-in-out duration-300">
-                                    <?php echo $movie['Subtitle']; ?>
-                                </h4>
-                                <p class="mt-2 text-sm text-zinc-200">
-                                    <?php echo $movie['ReleaseYear']; ?> | <?php echo $movie['Duration']; ?> mins
-                                </p>
+                            <p class="mt-4 text-zinc-400 text-sm sm:text-base">
+                                We don't have any movie screenings for today. 
+                                Please check back tomorrow or explore our list of movies!
+                            </p>
+                            <div class="mt-6 flex gap-4">
+                                <a
+                                    href="#movie-collection"
+                                    class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300"
+                                >
+                                    Browse Collection
+                                </a>
                             </div>
-                        </a>
+                        </div>
                     </li>
-                <?php endforeach; ?>
+                <?php endif; ?>
             </ul>
         </div>
     </section>
@@ -58,7 +83,7 @@ $newsList = $newsController->index();
         <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
             <header>
                 <h2 class="text-xl font-bold text-orange-600 sm:text-3xl">Latest News</h2>
-                <p class="mt-4 max-w-lg text-base text-zinc-300">
+                <p class="mt-4 max-w-lg text-sm sm:text-base text-zinc-300">
                     Stay updated with the latest announcements, events, and updates from Fast Lane Cine.
                 </p>
             </header>
@@ -100,7 +125,7 @@ $newsList = $newsController->index();
                                     <h3 class="text-lg text-zinc-200 mt-1 line-clamp-2">
                                         <?php echo $news['Title']; ?>
                                     </h3>
-                                    <p class="text-sm text-zinc-200 line-clamp-2">
+                                    <p class="text-sm sm:text-base text-zinc-200 line-clamp-2">
                                         <?php echo $news['Content']; ?>
                                     </p>
                                 </div>
@@ -112,6 +137,42 @@ $newsList = $newsController->index();
                                 </a>
                             </div>
                         </article>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    </section>
+    <section id="movie-collection">
+        <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+            <header>
+                <h2 class="text-xl font-bold text-orange-600 sm:text-3xl">Movie Collection</h2>
+                <p class="mt-4 max-w-lg text-sm sm:text-base text-zinc-300">
+                    Browse through our collection of Fast & Furious movies.
+                </p>
+            </header>
+            <ul class="mt-8 grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+                <?php foreach ($movies as $movie): ?>
+                    <li>
+                        <a href="single_movie.php?id=<?php echo $movie['MovieID']; ?>" class="group block">
+                            <div class="aspect-w-2 aspect-h-3 w-full overflow-hidden">
+                                <img
+                                    src="<?php echo $movie['ImageURL']; ?>"
+                                    alt="<?php echo $movie['Title']; ?>"
+                                    class="w-full h-full object-cover transition duration-500 group-hover:scale-105"
+                                />
+                            </div>
+                            <div class="relative bg-zinc-800 pt-3">
+                                <h3 class="text-base text-orange-600 group">
+                                    <?php echo $movie['Title']; ?>:
+                                </h3>
+                                <h4 class="text-base text-zinc-200 group-hover:text-orange-600 transition ease-in-out duration-300">
+                                    <?php echo $movie['Subtitle']; ?>
+                                </h4>
+                                <p class="mt-2 text-sm text-zinc-200">
+                                    <?php echo $movie['ReleaseYear']; ?> | <?php echo $movie['Duration']; ?> mins
+                                </p>
+                            </div>
+                        </a>
                     </li>
                 <?php endforeach; ?>
             </ul>
@@ -147,7 +208,7 @@ $newsList = $newsController->index();
                                 <h2 class="text-xl font-bold text-orange-600 sm:text-3xl">
                                     <?php echo htmlspecialchars($cinema['Tagline']); ?>
                                 </h2>
-                                <p class="mt-4 text-zinc-300 text-lg">
+                                <p class="mt-4 text-zinc-300 text-sm sm:text-base">
                                     <?php echo htmlspecialchars($cinema['Description']); ?>
                                 </p>
                                 <div class="grid sm:grid-cols-2 gap-6 mt-10">
@@ -209,7 +270,7 @@ $newsList = $newsController->index();
         }
         ?>
     </div>
-</section>
+    </section>
 
 </body>
 </html>
