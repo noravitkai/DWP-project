@@ -72,15 +72,15 @@ CREATE TABLE MovieImage (
 
 CREATE TABLE Customer (
     CustomerID INT AUTO_INCREMENT PRIMARY KEY,
-    FirstName VARCHAR(50),
-    LastName VARCHAR(50),
-    Email VARCHAR(255),
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    Email VARCHAR(255) NOT NULL UNIQUE,
     `Password` VARCHAR(255),
     PhoneNumber VARCHAR(20),
     SuiteNumber VARCHAR(50),
     Street VARCHAR(255),
-    Country VARCHAR(100),
-    PostalCodeID INT,
+    Country VARCHAR(100) NOT NULL,
+    PostalCodeID INT NOT NULL,
     FOREIGN KEY (PostalCodeID) REFERENCES PostalCode(PostalCodeID) ON DELETE CASCADE
 );
 
@@ -98,20 +98,45 @@ CREATE TABLE Screening (
 CREATE TABLE Reservation (
     ReservationID INT AUTO_INCREMENT PRIMARY KEY,
     NumberOfSeats INT UNSIGNED NOT NULL CHECK (NumberOfSeats > 0),
-    ReservationDate DATE NOT NULL,
-    ReservationStatus ENUM('Confirmed', 'Pending', 'Cancelled') DEFAULT 'Pending',
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    GuestFirstName VARCHAR(50),
+    GuestLastName VARCHAR(50),
+    GuestEmail VARCHAR(255),
+    GuestPhoneNumber VARCHAR(20),
     ScreeningID INT NOT NULL,
-    CustomerID INT NOT NULL,
+    CustomerID INT,
     FOREIGN KEY (ScreeningID) REFERENCES Screening(ScreeningID) ON DELETE CASCADE,
-    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE CASCADE
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE CASCADE,
+    CHECK (
+        (CustomerID IS NOT NULL AND GuestFirstName IS NULL AND GuestLastName IS NULL AND GuestEmail IS NULL AND GuestPhoneNumber IS NULL) OR
+        (CustomerID IS NULL AND GuestFirstName IS NOT NULL AND GuestLastName IS NOT NULL AND GuestEmail IS NOT NULL)
+    )
+);
+
+CREATE TABLE Seat (
+    SeatID INT AUTO_INCREMENT PRIMARY KEY,
+    RowLabel CHAR(1) NOT NULL,
+    SeatNumber INT UNSIGNED NOT NULL CHECK (SeatNumber > 0),
+    SeatStatus ENUM('Available', 'Reserved') NOT NULL DEFAULT 'Available',
+    RoomID INT NOT NULL,
+    FOREIGN KEY (RoomID) REFERENCES Room(RoomID) ON DELETE CASCADE,
+    UNIQUE (RowLabel, SeatNumber, RoomID)
+);
+
+CREATE TABLE Allocations (
+    ReservationID INT NOT NULL,
+    SeatID INT NOT NULL,
+    PRIMARY KEY (ReservationID, SeatID),
+    FOREIGN KEY (ReservationID) REFERENCES Reservation(ReservationID) ON DELETE CASCADE,
+    FOREIGN KEY (SeatID) REFERENCES Seat(SeatID) ON DELETE CASCADE
 );
 
 CREATE TABLE Ticket (
     TicketID INT AUTO_INCREMENT PRIMARY KEY,
-    `Row` VARCHAR(10) NOT NULL,
-    SeatNumber INT UNSIGNED NOT NULL CHECK (SeatNumber > 0),
+    SeatID INT NOT NULL,
     ReservationID INT NOT NULL,
     ScreeningID INT NOT NULL,
+    FOREIGN KEY (SeatID) REFERENCES Seat(SeatID) ON DELETE CASCADE,
     FOREIGN KEY (ReservationID) REFERENCES Reservation(ReservationID) ON DELETE CASCADE,
     FOREIGN KEY (ScreeningID) REFERENCES Screening(ScreeningID) ON DELETE CASCADE
 );
@@ -121,7 +146,7 @@ CREATE TABLE Payment (
     PaymentStatus VARCHAR(50) NOT NULL,
     TransactionAmount DECIMAL(10, 2) NOT NULL CHECK (TransactionAmount > 0),
     TransactionDate DATE NOT NULL,
-    CustomerID INT NOT NULL,
+    CustomerID INT,
     ReservationID INT NOT NULL,
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE CASCADE,
     FOREIGN KEY (ReservationID) REFERENCES Reservation(ReservationID) ON DELETE CASCADE

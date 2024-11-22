@@ -38,9 +38,10 @@ class Screening {
     }
 
     public function getScreeningById($id) {
-        $query = "SELECT Screening.*, Movie.Title AS MovieTitle 
-                  FROM Screening 
+        $query = "SELECT Screening.*, Movie.Title AS MovieTitle, Room.RoomLabel
+                  FROM Screening
                   INNER JOIN Movie ON Screening.MovieID = Movie.MovieID
+                  INNER JOIN Room ON Screening.RoomID = Room.RoomID
                   WHERE ScreeningID = :id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);

@@ -12,10 +12,6 @@ $customerController = new CustomerController();
 $customerData = $customerController->getCustomerProfile($_SESSION['user_id']);
 $statusMessage = '';
 
-function verifyCsrfToken($token) {
-    return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_SESSION['password_change_attempts'])) {
         $_SESSION['password_change_attempts'] = 0;
