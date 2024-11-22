@@ -50,33 +50,6 @@ VALUES
     (10.00, '2024-10-06', '20:00:00', 2, 2),
     (15.00, '2024-10-07', '19:30:00', 5, 1);
 
-INSERT INTO Reservation (NumberOfSeats, ReservationDate, ReservationStatus, ScreeningID, CustomerID)
-VALUES
-    (2, '2024-10-03', 'Confirmed', 1, 1),
-    (3, '2024-10-04', 'Pending', 2, 1);
-
-INSERT INTO Allocations (ReservationID, SeatID)
-VALUES
-    (1, 1),
-    (1, 2);
-
-INSERT INTO Allocations (ReservationID, SeatID)
-VALUES
-    (2, 26),
-    (2, 27);
-
-INSERT INTO Ticket (SeatID, ReservationID, ScreeningID) 
-VALUES
-    (1, 1, 1),
-    (2, 1, 1),
-    (26, 2, 2),
-    (27, 2, 2);
-
-INSERT INTO Payment (PaymentStatus, TransactionAmount, TransactionDate, CustomerID, ReservationID)
-VALUES
-    ('Completed', 25.00, '2024-10-03', 1, 1),
-    ('Pending', 30.00, '2024-10-03', 1, 2);
-
 INSERT INTO News (Title, Content, DatePublished, Category) 
 VALUES
     ('Fast X Breaks Records!', 'The latest Fast & Furious movie has shattered expectations...', '2024-10-01', 'Announcement'),

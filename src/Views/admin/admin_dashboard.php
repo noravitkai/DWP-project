@@ -11,10 +11,6 @@ $movieController = new MovieController();
 $screeningController = new ScreeningController();
 $cinemaController = new CinemaController();
 
-function verifyCsrfToken($token) {
-    return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addMovieBtn'])) {
     if (verifyCsrfToken($_POST['csrf_token'])) {
         $data = [
