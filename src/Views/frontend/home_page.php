@@ -21,7 +21,8 @@ $todaysScreenings = $screeningController->getTodayScreenings();
     <link href="../../../public/css/tailwind.css" rel="stylesheet">
 </head>
 <body class="bg-zinc-800">
-    <section>
+    <?php include '../frontend/frontend_navigation.php'; ?>
+    <section id="daily-showings">
         <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
             <header>
                 <h2 class="text-xl font-bold text-orange-600 sm:text-3xl">Daily Showings</h2>
@@ -79,7 +80,7 @@ $todaysScreenings = $screeningController->getTodayScreenings();
             </ul>
         </div>
     </section>
-    <section>
+    <section id="news">
         <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
             <header>
                 <h2 class="text-xl font-bold text-orange-600 sm:text-3xl">Latest News</h2>
@@ -178,83 +179,84 @@ $todaysScreenings = $screeningController->getTodayScreenings();
             </ul>
         </div>
     </section>
-    <section>
-    <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-        <?php
-        require_once __DIR__ . '/../../Controllers/CinemaController.php';
-        $cinemaController = new CinemaController();
-        $cinemas = $cinemaController->index();
+    <section id="about">
+        <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+            <?php
+            require_once __DIR__ . '/../../Controllers/CinemaController.php';
+            $cinemaController = new CinemaController();
+            $cinemas = $cinemaController->index();
 
-        if (!empty($cinemas)) {
-            foreach ($cinemas as $cinema) {
-                ?>
-                <div class="grid grid-cols-1 lg:grid-cols-2">
-                    <div class="relative z-10 lg:py-16">
-                        <div class="relative h-64 sm:h-80 lg:h-96">
-                            <img
-                                src="<?php echo $cinema['ImageURL'] ?? '/DWP-project/assets/images/default-cinema.jpg'; ?>"
-                                alt="Cinema Image"
-                                class="absolute inset-0 h-full w-full object-cover"
-                            />
+            if (!empty($cinemas)) {
+                foreach ($cinemas as $cinema) {
+                    ?>
+                    <div class="grid grid-cols-1 lg:grid-cols-2">
+                        <div class="relative z-10 lg:py-16">
+                            <div class="relative h-64 sm:h-80 lg:h-96">
+                                <img
+                                    src="<?php echo $cinema['ImageURL'] ?? '/DWP-project/assets/images/default-cinema.jpg'; ?>"
+                                    alt="Cinema Image"
+                                    class="absolute inset-0 h-full w-full object-cover"
+                                />
+                            </div>
                         </div>
-                    </div>
-                    <div class="relative flex items-center bg-zinc-700">
-                        <span
-                            class="hidden lg:absolute lg:inset-y-0 lg:-start-16 lg:block lg:w-16 bg-zinc-700"
-                        ></span>
                         <div class="relative flex items-center bg-zinc-700">
-                            <span class="hidden lg:absolute lg:inset-y-0 lg:-start-16 lg:block lg:w-16 bg-zinc-700"></span>
-                            <div class="p-8 sm:p-12 lg:p-12">
-                                <h2 class="text-xl font-bold text-orange-600 sm:text-3xl">
-                                    <?php echo htmlspecialchars($cinema['Tagline']); ?>
-                                </h2>
-                                <p class="mt-4 text-zinc-300 text-sm sm:text-base">
-                                    <?php echo htmlspecialchars($cinema['Description']); ?>
-                                </p>
-                                <div class="grid sm:grid-cols-2 gap-6 mt-10">
-                                    <div class="space-y-6">
-                                        <div class="flex flex-col">
-                                            <div class="flex items-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c-.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
-                                                </svg>
-                                                <span class="ml-2 font-semibold text-zinc-200">Phone Number:</span>
-                                            </div>
-                                            <div class="mt-1">
-                                                <p>
-                                                    <a href="tel:<?php echo htmlspecialchars($cinema['PhoneNumber']); ?>" class="text-orange-600 hover:underline">
-                                                        <?php echo htmlspecialchars($cinema['PhoneNumber']); ?>
-                                                    </a>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col">
-                                            <div class="flex items-center">
+                            <span
+                                class="hidden lg:absolute lg:inset-y-0 lg:-start-16 lg:block lg:w-16 bg-zinc-700"
+                            ></span>
+                            <div class="relative flex items-center bg-zinc-700">
+                                <span class="hidden lg:absolute lg:inset-y-0 lg:-start-16 lg:block lg:w-16 bg-zinc-700"></span>
+                                <div class="p-8 sm:p-12 lg:p-12">
+                                    <h2 class="text-xl font-bold text-orange-600 sm:text-3xl">
+                                        <?php echo htmlspecialchars($cinema['Tagline']); ?>
+                                    </h2>
+                                    <p class="mt-4 text-zinc-300 text-sm sm:text-base">
+                                        <?php echo htmlspecialchars($cinema['Description']); ?>
+                                    </p>
+                                    <div class="grid sm:grid-cols-2 gap-6 mt-10">
+                                        <div class="space-y-6">
+                                            <div class="flex flex-col">
+                                                <div class="flex items-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c-.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
                                                     </svg>
-                                                    <span class="ml-2 font-semibold text-zinc-200">Email Address:</span>
+                                                    <span class="ml-2 font-semibold text-zinc-200">Phone Number:</span>
                                                 </div>
                                                 <div class="mt-1">
                                                     <p>
-                                                        <a href="mailto:<?php echo htmlspecialchars($cinema['Email']); ?>" class="text-orange-600 hover:underline">
-                                                            <?php echo htmlspecialchars($cinema['Email']); ?>
+                                                        <a href="tel:<?php echo htmlspecialchars($cinema['PhoneNumber']); ?>" class="text-orange-600 hover:underline">
+                                                            <?php echo htmlspecialchars($cinema['PhoneNumber']); ?>
                                                         </a>
                                                     </p>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="flex flex-col">
-                                            <div class="flex items-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
-                                                </svg>
-                                                <span class="ml-2 font-semibold text-zinc-200">Opening Hours:</span>
+                                            <div class="flex flex-col">
+                                                <div class="flex items-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
+                                                        </svg>
+                                                        <span class="ml-2 font-semibold text-zinc-200">Email Address:</span>
+                                                    </div>
+                                                    <div class="mt-1">
+                                                        <p>
+                                                            <a href="mailto:<?php echo htmlspecialchars($cinema['Email']); ?>" class="text-orange-600 hover:underline">
+                                                                <?php echo htmlspecialchars($cinema['Email']); ?>
+                                                            </a>
+                                                        </p>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="mt-1">
-                                                <p class="text-orange-600">
-                                                    <?php echo nl2br(htmlspecialchars($cinema['OpeningHours'])); ?>
-                                                </p>
+                                            <div class="flex flex-col">
+                                                <div class="flex items-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
+                                                    </svg>
+                                                    <span class="ml-2 font-semibold text-zinc-200">Opening Hours:</span>
+                                                </div>
+                                                <div class="mt-1">
+                                                    <p class="text-orange-600">
+                                                        <?php echo nl2br(htmlspecialchars($cinema['OpeningHours'])); ?>
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -262,15 +264,13 @@ $todaysScreenings = $screeningController->getTodayScreenings();
                             </div>
                         </div>
                     </div>
-                </div>
-                <?php
+                    <?php
+                }
+            } else {
+                echo '<p class="text-center text-zinc-500">No cinema details available at the moment.</p>';
             }
-        } else {
-            echo '<p class="text-center text-zinc-500">No cinema details available at the moment.</p>';
-        }
-        ?>
-    </div>
+            ?>
+        </div>
     </section>
-
 </body>
 </html>
