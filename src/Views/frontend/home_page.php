@@ -29,22 +29,22 @@ $todaysScreenings = $screeningController->getTodayScreenings();
                     See what’s playing today at our cinema and enjoy the best movies!
                 </p>
             </header>
-            <ul class="mt-8 grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+            <ul class="mt-8 grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
                 <?php if (!empty($todaysScreenings)): ?>
                     <?php foreach ($todaysScreenings as $screening): ?>
                         <li>
-                            <a href="single_movie.php?id=<?php echo $screening['MovieID']; ?>" class="group block">
+                            <a href="seat_reservation.php?screening_id=<?php echo urlencode($screening['ScreeningID']); ?>" class="group block">
                                 <div class="aspect-w-2 aspect-h-3 w-full overflow-hidden">
                                     <img
-                                        src="<?php echo !empty($screening['ImageURL']) ? $screening['ImageURL'] : '/path/to/default-image.jpg'; ?>"
+                                        src="<?php echo $screening['ImageURL']; ?>"
                                         alt="<?php echo $screening['MovieTitle']; ?>"
                                         class="w-full h-full object-cover transition duration-500 group-hover:scale-105"
                                     />
                                 </div>
                                 <div class="relative bg-zinc-800 pt-3">
-                                    <h3 class="text-base text-orange-600 group-hover:text-orange-500">
+                                    <h2 class="text-base text-orange-600 group-hover:text-orange-500">
                                         <?php echo $screening['MovieTitle']; ?>
-                                    </h3>
+                                    </h2>
                                     <p class="mt-2 text-sm sm:text-base text-zinc-200">
                                         Starting at: <?php echo date('g:i A', strtotime($screening['ScreeningTime'])); ?>
                                     </p>
