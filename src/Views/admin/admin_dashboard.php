@@ -23,11 +23,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addMovieBtn'])) {
             'MovieDescription' => sanitizeInput($_POST['MovieDescription']),
         ];
 
-        if (isset($_POST['ActorNames']) && isset($_POST['ActorRoles'])) {
+        if (isset($_POST['ActorFirstNames'], $_POST['ActorLastNames'], $_POST['ActorRoles'])) {
             $data['Actors'] = [];
-            foreach ($_POST['ActorNames'] as $index => $fullName) {
+            foreach ($_POST['ActorFirstNames'] as $index => $firstName) {
                 $data['Actors'][] = [
-                    'FullName' => sanitizeInput($fullName),
+                    'FirstName' => sanitizeInput($firstName),
+                    'LastName' => sanitizeInput($_POST['ActorLastNames'][$index]),
                     'Role' => sanitizeInput($_POST['ActorRoles'][$index])
                 ];
             }
@@ -52,11 +53,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateMovieBtn'])) {
             'MovieDescription' => sanitizeInput($_POST['MovieDescription']),
         ];
 
-        if (isset($_POST['ActorNames']) && isset($_POST['ActorRoles'])) {
+        if (isset($_POST['ActorFirstNames'], $_POST['ActorLastNames'], $_POST['ActorRoles'])) {
             $data['Actors'] = [];
-            foreach ($_POST['ActorNames'] as $index => $fullName) {
+            foreach ($_POST['ActorFirstNames'] as $index => $firstName) {
                 $data['Actors'][] = [
-                    'FullName' => sanitizeInput($fullName),
+                    'FirstName' => sanitizeInput($firstName),
+                    'LastName' => sanitizeInput($_POST['ActorLastNames'][$index]),
                     'Role' => sanitizeInput($_POST['ActorRoles'][$index])
                 ];
             }
@@ -550,7 +552,7 @@ $cinemas = $cinemaController->index();
                 </section>
                 <section id="screenings" class="mb-10">
                     <h2 class="text-3xl font-bold text-zinc-900">Screenings</h2>
-                    <p class="mt-5 text-base text-zinc-700">Manage movie schedules here.</p>
+                    <p class="mt-5 text-base text-zinc-700">Manage the screening schedules along with room assignments here.</p>
                     <div class="mt-5">
                         <button type="button" onclick="showAddScreeningModal()" class="inline-flex items-center rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300">
                             <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -768,7 +770,7 @@ $cinemas = $cinemaController->index();
                 </section>
                 <section id="news" class="mb-10">
                     <h2 class="text-3xl font-bold text-zinc-900">News</h2>
-                    <p class="mt-5 text-base text-zinc-700">Manage news here.</p>
+                    <p class="mt-5 text-base text-zinc-700">Manage news articles about the latest events, offers, and announcements related to the cinema here.</p>
                     <div class="mt-5">
                         <button type="button" onclick="showAddNewsModal()" class="inline-flex items-center rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300">
                             <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -826,7 +828,7 @@ $cinemas = $cinemaController->index();
                     <div id="addNewsModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center lg:pl-72 p-4">
                         <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
                             <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
-                                <h3 class="text-lg font-semibold text-zinc-900">Add New News</h3>
+                                <h3 class="text-lg font-semibold text-zinc-900">Add News Article</h3>
                                 <button type="button" class="text-zinc-600 text-sm hover:text-zinc-900 transition ease-in-out duration-300" onclick="hideModal('addNewsModal')">
                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                         <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
@@ -976,7 +978,7 @@ $cinemas = $cinemaController->index();
                 </section>
                 <section id="cinema" class="mb-10">
                     <h2 class="text-3xl font-bold text-zinc-900">Cinema Details</h2>
-                    <p class="mt-5 text-base text-zinc-700">Manage the company presentation here.</p>
+                    <p class="mt-5 text-base text-zinc-700">Manage the company presentation such as contact details and other essential information here.</p>
                     <?php foreach ($cinemas as $cinema): ?>
                         <div class="mt-5">
                                 <button 

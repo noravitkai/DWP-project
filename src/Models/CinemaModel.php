@@ -1,105 +1,89 @@
 <?php
-require_once __DIR__ . '/../../config/dbcon.php';
-require_once __DIR__ . '/../../config/functions.php';
-
-class CustomerModel {
+class Cinema {
     private $db;
 
-    public function __construct() {
-        $this->db = dbCon();
+    public function __construct($dbConnection) {
+        $this->db = $dbConnection;
     }
 
-    private function getPostalCodeID($postalCode, $city) {
-        $query = "SELECT PostalCodeID FROM PostalCode WHERE PostalCode = :postalCode AND City = :city";
+    public function getAllCinemas() {
+        $query = "SELECT * FROM CinemaDetails ORDER BY CinemaID ASC";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':postalCode', $postalCode, PDO::PARAM_STR);
-        $stmt->bindParam(':city', $city, PDO::PARAM_STR);
         $stmt->execute();
-        $postalCodeID = $stmt->fetchColumn();
-
-        if (!$postalCodeID) {
-            $query = "INSERT INTO PostalCode (PostalCode, City) VALUES (:postalCode, :city)";
-            $stmt = $this->db->prepare($query);
-            $stmt->bindParam(':postalCode', $postalCode, PDO::PARAM_STR);
-            $stmt->bindParam(':city', $city, PDO::PARAM_STR);
-            $stmt->execute();
-            $postalCodeID = $this->db->lastInsertId();
-        }
-
-        return $postalCodeID;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function createCustomer($firstName, $lastName, $email, $password, $phone, $suite, $street, $country, $postalCode, $city) {
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-        $postalCodeID = $this->getPostalCodeID($postalCode, $city);
-
-        $query = "INSERT INTO Customer (FirstName, LastName, Email, `Password`, PhoneNumber, SuiteNumber, Street, Country, PostalCodeID) 
-                  VALUES (:firstName, :lastName, :email, :password, :phone, :suite, :street, :country, :postalCodeID)";
+    public function getCinemaById($id) {
+        $query = "SELECT * FROM CinemaDetails WHERE CinemaID = :id";
         $stmt = $this->db->prepare($query);
-
-        $stmt->bindParam(':firstName', $firstName, PDO::PARAM_STR);
-        $stmt->bindParam(':lastName', $lastName, PDO::PARAM_STR);
-        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-        $stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
-        $stmt->bindParam(':phone', $phone, PDO::PARAM_STR);
-        $stmt->bindParam(':suite', $suite, PDO::PARAM_STR);
-        $stmt->bindParam(':street', $street, PDO::PARAM_STR);
-        $stmt->bindParam(':country', $country, PDO::PARAM_STR);
-        $stmt->bindParam(':postalCodeID', $postalCodeID, PDO::PARAM_INT);
-
-        return $stmt->execute();
-    }
-
-    public function getCustomerByEmail($email) {
-        $query = "SELECT * FROM CustomerDetails WHERE Email = :email";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getCustomerWithCityById($customerId) {
-        $query = "SELECT * FROM CustomerDetails WHERE CustomerID = :customerId";
+    public function storeCinema($data) {
+        $query = "INSERT INTO Cinema (Tagline, Description, PhoneNumber, Email, OpeningHours) 
+                  VALUES (:tagline, :description, :phoneNumber, :email, :openingHours)";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':customerId', $customerId, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function updateCustomerById($customerId, $data) {
-        $newPostalCodeID = $this->getPostalCodeID($data['PostalCode'], $data['City']);
-
-        $query = "UPDATE Customer SET 
-                    FirstName = :firstName,
-                    LastName = :lastName,
-                    Email = :email,
-                    PhoneNumber = :phone,
-                    SuiteNumber = :suite,
-                    Street = :street,
-                    Country = :country,
-                    PostalCodeID = :postalCodeID
-                  WHERE CustomerID = :customerId";
-        
-        $stmt = $this->db->prepare($query);
-        
-        $stmt->bindParam(':firstName', $data['FirstName'], PDO::PARAM_STR);
-        $stmt->bindParam(':lastName', $data['LastName'], PDO::PARAM_STR);
+        $stmt->bindParam(':tagline', $data['Tagline'], PDO::PARAM_STR);
+        $stmt->bindParam(':description', $data['Description'], PDO::PARAM_STR);
+        $stmt->bindParam(':phoneNumber', $data['PhoneNumber'], PDO::PARAM_STR);
         $stmt->bindParam(':email', $data['Email'], PDO::PARAM_STR);
-        $stmt->bindParam(':phone', $data['PhoneNumber'], PDO::PARAM_STR);
-        $stmt->bindParam(':suite', $data['SuiteNumber'], PDO::PARAM_STR);
-        $stmt->bindParam(':street', $data['Street'], PDO::PARAM_STR);
-        $stmt->bindParam(':country', $data['Country'], PDO::PARAM_STR);
-        $stmt->bindParam(':postalCodeID', $newPostalCodeID, PDO::PARAM_INT);
-        $stmt->bindParam(':customerId', $customerId, PDO::PARAM_INT);
-        
+        $stmt->bindParam(':openingHours', $data['OpeningHours'], PDO::PARAM_STR);
+        $stmt->execute();
+        return $this->db->lastInsertId();
+    }
+
+    public function updateCinemaById($id, $data) {
+        $query = "UPDATE Cinema SET 
+        Tagline = :tagline,
+        Description = :description,
+        PhoneNumber = :phoneNumber,
+        Email = :email,
+        OpeningHours = :openingHours
+      WHERE CinemaID = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':tagline', $data['Tagline'], PDO::PARAM_STR);
+        $stmt->bindParam(':description', $data['Description'], PDO::PARAM_STR);
+        $stmt->bindParam(':phoneNumber', $data['PhoneNumber'], PDO::PARAM_STR);
+        $stmt->bindParam(':email', $data['Email'], PDO::PARAM_STR);
+        $stmt->bindParam(':openingHours', $data['OpeningHours'], PDO::PARAM_STR);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
 
-    public function updateCustomerPassword($customerId, $hashedPassword) {
-        $query = "UPDATE Customer SET `Password` = :password WHERE CustomerID = :customerId";
+    public function deleteCinemaById($id) {
+        $query = "DELETE FROM Cinema WHERE CinemaID = :id";
         $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
-        $stmt->bindParam(':customerId', $customerId, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function addCinemaImage($cinemaID, $filePath) {
+        $existingImage = $this->getImageByCinemaId($cinemaID);
+        if ($existingImage) {
+            $query = "UPDATE CinemaImage SET ImageURL = :imageURL WHERE CinemaID = :cinemaID";
+        } else {
+            $query = "INSERT INTO CinemaImage (ImageURL, CinemaID) VALUES (:imageURL, :cinemaID)";
+        }
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':imageURL', $filePath, PDO::PARAM_STR);
+        $stmt->bindParam(':cinemaID', $cinemaID, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function getImageByCinemaId($cinemaID) {
+        $query = "SELECT * FROM CinemaImage WHERE CinemaID = :cinemaID";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':cinemaID', $cinemaID, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function deleteCinemaImageByCinemaId($cinemaID) {
+        $query = "DELETE FROM CinemaImage WHERE CinemaID = :cinemaID";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':cinemaID', $cinemaID, PDO::PARAM_INT);
         return $stmt->execute();
     }
 }

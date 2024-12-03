@@ -51,7 +51,7 @@ class CustomerModel {
     }
 
     public function getCustomerByEmail($email) {
-        $query = "SELECT * FROM Customer WHERE Email = :email";
+        $query = "SELECT * FROM CustomerDetails WHERE Email = :email";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);
         $stmt->execute();
@@ -59,10 +59,7 @@ class CustomerModel {
     }
 
     public function getCustomerWithCityById($customerId) {
-        $query = "SELECT Customer.*, PostalCode.PostalCode, PostalCode.City 
-                  FROM Customer 
-                  INNER JOIN PostalCode ON Customer.PostalCodeID = PostalCode.PostalCodeID 
-                  WHERE Customer.CustomerID = :customerId";
+        $query = "SELECT * FROM CustomerDetails WHERE CustomerID = :customerId";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':customerId', $customerId, PDO::PARAM_INT);
         $stmt->execute();
