@@ -53,8 +53,12 @@ $screenings = $screeningController->getScreeningsByMovieId($movie['MovieID']);
                         <ul>
                             <?php foreach ($movie['Actors'] as $actor): ?>
                                 <li class="grid gap-0 sm:gap-4 sm:grid-cols-2 sm:items-center mb-2 md:mb-0">
-                                    <span class="text-sm sm:text-base text-zinc-300"><?php echo $actor['FullName']; ?></span>
-                                    <span class="text-sm sm:text-base text-zinc-300 italic"><?php echo $actor['Role']; ?></span>
+                                    <span class="text-sm sm:text-base text-zinc-300">
+                                        <?php echo $actor['FirstName'] . ' ' . $actor['LastName']; ?>
+                                    </span>
+                                    <span class="text-sm sm:text-base text-zinc-300 italic">
+                                        <?php echo $actor['Role']; ?>
+                                    </span>
                                 </li>
                             <?php endforeach; ?>
                         </ul>

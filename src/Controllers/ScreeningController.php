@@ -38,7 +38,7 @@ class ScreeningController {
         return $this->screening->getScreeningsByMovieId($movieId);
     }
 
-    public function getTodayScreenings() {
-        return $this->screening->getTodayScreenings();
+    public function getDailyScreenings() {
+        return $this->screening->getDailyScreenings();
     }
 }

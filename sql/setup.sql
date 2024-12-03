@@ -51,7 +51,8 @@ CREATE TABLE Movie (
 
 CREATE TABLE Actor (
     ActorID INT AUTO_INCREMENT PRIMARY KEY,
-    FullName VARCHAR(100) NOT NULL,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
     `Role` VARCHAR(255)
 );
 
@@ -176,3 +177,197 @@ CREATE TABLE NewsImage (
     NewsID INT NOT NULL,
     FOREIGN KEY (NewsID) REFERENCES News(NewsID) ON DELETE CASCADE
 );
+
+CREATE VIEW CinemaDetails AS
+SELECT 
+    c.*,
+    ci.ImageURL
+FROM 
+    Cinema c
+LEFT JOIN 
+    CinemaImage ci ON c.CinemaID = ci.CinemaID;
+
+CREATE VIEW CustomerDetails AS
+SELECT
+    c.CustomerID,
+    c.FirstName,
+    c.LastName,
+    c.Email,
+    c.Password,
+    c.PhoneNumber,
+    c.SuiteNumber,
+    c.Street,
+    c.Country,
+    c.PostalCodeID,
+    p.PostalCode,
+    p.City
+FROM
+    Customer c
+INNER JOIN
+    PostalCode p ON c.PostalCodeID = p.PostalCodeID;
+
+CREATE VIEW MovieDetails AS
+SELECT
+    m.MovieID,
+    m.Title,
+    m.Subtitle,
+    m.Duration,
+    m.Genre,
+    m.ReleaseYear,
+    m.Director,
+    m.MovieDescription,
+    mi.ImageURL
+FROM 
+    Movie m
+LEFT JOIN 
+    MovieImage mi ON m.MovieID = mi.MovieID;
+
+    CREATE VIEW NewsDetails AS
+SELECT 
+    n.NewsID,
+    n.Title,
+    n.Content,
+    n.DatePublished,
+    n.Category,
+    ni.ImageURL
+FROM 
+    News n
+LEFT JOIN 
+    NewsImage ni ON n.NewsID = ni.NewsID;
+
+CREATE VIEW ReservationDetails AS
+SELECT
+    r.ReservationID,
+    r.NumberOfSeats,
+    r.CreatedAt,
+    r.GuestFirstName,
+    r.GuestLastName,
+    r.GuestEmail,
+    r.GuestPhoneNumber,
+    r.ScreeningID,
+    r.CustomerID,
+    s.ScreeningDate,
+    s.ScreeningTime,
+    s.Price,
+    m.Title AS MovieTitle,
+    c.FirstName AS CustomerFirstName,
+    c.LastName AS CustomerLastName,
+    c.Email AS CustomerEmail
+FROM 
+    Reservation r
+JOIN 
+    Screening s ON r.ScreeningID = s.ScreeningID
+JOIN 
+    Movie m ON s.MovieID = m.MovieID
+LEFT JOIN 
+    Customer c ON r.CustomerID = c.CustomerID;
+
+CREATE VIEW DailyScreenings AS
+SELECT 
+    s.ScreeningID,
+    s.ScreeningTime,
+    m.MovieID,
+    m.Title AS MovieTitle,
+    mi.ImageURL
+FROM 
+    Screening s
+JOIN 
+    Movie m ON s.MovieID = m.MovieID
+LEFT JOIN 
+    MovieImage mi ON m.MovieID = mi.MovieID
+WHERE 
+    s.ScreeningDate = CURDATE();
+
+DELIMITER $$
+CREATE TRIGGER trg_after_allocations_insert
+AFTER INSERT ON Allocations
+FOR EACH ROW
+BEGIN
+    UPDATE Seat 
+    SET SeatStatus = 'Reserved' 
+    WHERE SeatID = NEW.SeatID;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER trg_after_allocations_delete
+AFTER DELETE ON Allocations
+FOR EACH ROW
+BEGIN
+    UPDATE Seat 
+    SET SeatStatus = 'Available' 
+    WHERE SeatID = OLD.SeatID;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER trg_after_customer_update
+AFTER UPDATE ON Customer
+FOR EACH ROW
+BEGIN
+    DECLARE postalCodeUsage INT;
+    IF NEW.PostalCodeID <> OLD.PostalCodeID THEN
+        SELECT COUNT(*) INTO postalCodeUsage 
+        FROM Customer 
+        WHERE PostalCodeID = OLD.PostalCodeID;
+        IF postalCodeUsage = 0 THEN
+            DELETE FROM PostalCode WHERE PostalCodeID = OLD.PostalCodeID;
+        END IF;
+    END IF;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER trg_before_screening_insert
+BEFORE INSERT ON Screening
+FOR EACH ROW
+BEGIN
+    DECLARE overlapCount INT;
+    DECLARE buffer_time INT DEFAULT 15;
+
+    SELECT COUNT(*) INTO overlapCount
+    FROM Screening s
+    JOIN Movie m ON s.MovieID = m.MovieID
+    JOIN Movie new_m ON NEW.MovieID = new_m.MovieID
+    WHERE 
+        s.RoomID = NEW.RoomID
+        AND s.ScreeningDate = NEW.ScreeningDate
+        AND (
+            NEW.ScreeningTime < ADDTIME(s.ScreeningTime, SEC_TO_TIME(m.Duration * 60 + buffer_time * 60))
+            AND ADDTIME(NEW.ScreeningTime, SEC_TO_TIME(new_m.Duration * 60 + buffer_time * 60)) > s.ScreeningTime
+        );
+    
+    IF overlapCount > 0 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Screening time overlaps with an existing screening or does not allow enough buffer time.';
+    END IF;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER trg_before_screening_update
+BEFORE UPDATE ON Screening
+FOR EACH ROW
+BEGIN
+    DECLARE overlapCount INT;
+    DECLARE buffer_time INT DEFAULT 15;
+
+    SELECT COUNT(*) INTO overlapCount
+    FROM Screening s
+    JOIN Movie m ON s.MovieID = m.MovieID
+    JOIN Movie new_m ON NEW.MovieID = new_m.MovieID
+    WHERE 
+        s.RoomID = NEW.RoomID
+        AND s.ScreeningDate = NEW.ScreeningDate
+        AND s.ScreeningID <> NEW.ScreeningID
+        AND (
+            NEW.ScreeningTime < ADDTIME(s.ScreeningTime, SEC_TO_TIME(m.Duration * 60 + buffer_time * 60))
+            AND ADDTIME(NEW.ScreeningTime, SEC_TO_TIME(new_m.Duration * 60 + buffer_time * 60)) > s.ScreeningTime
+        );
+    
+    IF overlapCount > 0 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Screening time overlaps with an existing screening or does not allow enough buffer time.';
+    END IF;
+END$$
+DELIMITER ;

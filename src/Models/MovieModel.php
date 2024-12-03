@@ -7,20 +7,14 @@ class Movie {
     }
 
     public function getAllMovies() {
-        $query = "SELECT m.*, mi.ImageURL 
-                  FROM Movie m 
-                  LEFT JOIN MovieImage mi ON m.MovieID = mi.MovieID
-                  ORDER BY m.MovieID ASC";
+        $query = "SELECT * FROM MovieDetails ORDER BY MovieID ASC";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getMovieById($id) {
-        $query = "SELECT m.*, mi.ImageURL 
-                  FROM Movie m 
-                  LEFT JOIN MovieImage mi ON m.MovieID = mi.MovieID 
-                  WHERE m.MovieID = :id";
+        $query = "SELECT * FROM MovieDetails WHERE MovieID = :id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -103,18 +97,20 @@ class Movie {
         return $stmt->execute();
     }
 
-    public function addActorToMovie($movieID, $fullName, $role) {
-        $checkQuery = "SELECT ActorID FROM Actor WHERE FullName = :fullName AND Role = :role";
+    public function addActorToMovie($movieID, $firstName, $lastName, $role) {
+        $checkQuery = "SELECT ActorID FROM Actor WHERE FirstName = :firstName AND LastName = :lastName AND Role = :role";
         $checkStmt = $this->db->prepare($checkQuery);
-        $checkStmt->bindParam(':fullName', $fullName, PDO::PARAM_STR);
+        $checkStmt->bindParam(':firstName', $firstName, PDO::PARAM_STR);
+        $checkStmt->bindParam(':lastName', $lastName, PDO::PARAM_STR);
         $checkStmt->bindParam(':role', $role, PDO::PARAM_STR);
         $checkStmt->execute();
         $actorID = $checkStmt->fetchColumn();
     
         if (!$actorID) {
-            $insertQuery = "INSERT INTO Actor (FullName, Role) VALUES (:fullName, :role)";
+            $insertQuery = "INSERT INTO Actor (FirstName, LastName, Role) VALUES (:firstName, :lastName, :role)";
             $insertStmt = $this->db->prepare($insertQuery);
-            $insertStmt->bindParam(':fullName', $fullName, PDO::PARAM_STR);
+            $insertStmt->bindParam(':firstName', $firstName, PDO::PARAM_STR);
+            $insertStmt->bindParam(':lastName', $lastName, PDO::PARAM_STR);
             $insertStmt->bindParam(':role', $role, PDO::PARAM_STR);
             $insertStmt->execute();
             $actorID = $this->db->lastInsertId();
@@ -136,8 +132,8 @@ class Movie {
     }
 
     public function getActorsByMovieId($movieID) {
-        $query = "SELECT a.FullName, a.Role 
-                  FROM Actor a 
+        $query = "SELECT a.FirstName, a.LastName, a.Role 
+                  FROM Actor a
                   INNER JOIN Features f ON a.ActorID = f.ActorID 
                   WHERE f.MovieID = :movieID";
         $stmt = $this->db->prepare($query);

@@ -18,7 +18,7 @@ class MovieController {
     public function index() {
         $movies = $this->movie->getAllMovies();
         foreach ($movies as &$movie) {
-            if ($movie['ImageURL']) {
+            if (isset($movie['ImageURL']) && $movie['ImageURL']) {
                 $movie['ImageURL'] = '/DWP-project/uploads/' . basename($movie['ImageURL']);
             }
             $movie['Actors'] = $this->movie->getActorsByMovieId($movie['MovieID']);
@@ -28,7 +28,7 @@ class MovieController {
 
     public function getMovieById($id) {
         $movie = $this->movie->getMovieById($id);
-        if ($movie && $movie['ImageURL']) {
+        if ($movie && isset($movie['ImageURL']) && $movie['ImageURL']) {
             $movie['ImageURL'] = '/DWP-project/uploads/' . basename($movie['ImageURL']);
         }
         $movie['Actors'] = $this->movie->getActorsByMovieId($id);
@@ -44,8 +44,8 @@ class MovieController {
     
         if (isset($data['Actors'])) {
             foreach ($data['Actors'] as $actor) {
-                if (!empty($actor['FullName']) && !empty($actor['Role'])) {
-                    $this->movie->addActorToMovie($movieID, $actor['FullName'], $actor['Role']);
+                if (!empty($actor['FirstName']) && !empty($actor['LastName']) && !empty($actor['Role'])) {
+                    $this->movie->addActorToMovie($movieID, $actor['FirstName'], $actor['LastName'], $actor['Role']);
                 }
             }
         }
@@ -65,8 +65,8 @@ class MovieController {
             $this->movie->removeActorsFromMovie($id);
     
             foreach ($data['Actors'] as $actor) {
-                if (!empty($actor['FullName']) && !empty($actor['Role'])) {
-                    $this->movie->addActorToMovie($id, $actor['FullName'], $actor['Role']);
+                if (!empty($actor['FirstName']) && !empty($actor['LastName']) && !empty($actor['Role'])) {
+                    $this->movie->addActorToMovie($id, $actor['FirstName'], $actor['LastName'], $actor['Role']);
                 }
             }
         }

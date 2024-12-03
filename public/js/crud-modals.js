@@ -44,7 +44,8 @@ function hideModal(modalId) {
 
 function addActorField(
   containerId,
-  fullName = "",
+  firstName = "",
+  lastName = "",
   role = "",
   showAddButton = false,
   limitMessageId = "actorLimitMessage"
@@ -66,7 +67,8 @@ function addActorField(
   actorEntry.classList.add("actor-entry", "flex", "gap-2");
 
   actorEntry.innerHTML = `
-    <input type="text" name="ActorNames[]" value="${fullName}" placeholder="Name" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+    <input type="text" name="ActorFirstNames[]" value="${firstName}" placeholder="First Name" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+    <input type="text" name="ActorLastNames[]" value="${lastName}" placeholder="Last Name" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
     <input type="text" name="ActorRoles[]" value="${role}" placeholder="Role" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
     <button type="button" class="actor-btn text-zinc-600 hover:text-zinc-900 transition ease-in-out duration-300">
       <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -84,7 +86,7 @@ function addActorField(
   const actorBtn = actorEntry.querySelector(".actor-btn");
   if (showAddButton) {
     actorBtn.addEventListener("click", () =>
-      addActorField(containerId, "", "", false, limitMessageId)
+      addActorField(containerId, "", "", "", false, limitMessageId)
     );
   } else {
     actorBtn.addEventListener("click", () => {
@@ -120,7 +122,8 @@ function showPreviewMovieModal(movie) {
   castList.innerHTML =
     movie.Actors && movie.Actors.length > 0
       ? movie.Actors.map(
-          (actor) => `<li>${actor.FullName} as ${actor.Role}</li>`
+          (actor) =>
+            `<li>${actor.FirstName} ${actor.LastName} as ${actor.Role}</li>`
         ).join("")
       : "<li>No cast information available.</li>";
 
@@ -152,14 +155,22 @@ function showEditMovieModal(movie) {
     movie.Actors.forEach((actor, index) => {
       addActorField(
         "actorContainerEdit",
-        actor.FullName,
-        actor.Role,
+        actor.FirstName || "",
+        actor.LastName || "",
+        actor.Role || "",
         index === 0,
         "actorLimitMessageEdit"
       );
     });
   } else {
-    addActorField("actorContainerEdit", "", "", true, "actorLimitMessageEdit");
+    addActorField(
+      "actorContainerEdit",
+      "",
+      "",
+      "",
+      true,
+      "actorLimitMessageEdit"
+    );
   }
 
   showModal("editMovieModal");
@@ -177,7 +188,7 @@ function showAddMovieModal() {
   if (addMovieForm) addMovieForm.reset();
   const actorContainer = document.getElementById("actorContainer");
   actorContainer.innerHTML = "";
-  addActorField("actorContainer", "", "", true);
+  addActorField("actorContainer", "", "", "", true);
   showModal("addMovieModal");
 }
 
@@ -282,16 +293,20 @@ function showAddNewsModal() {
 }
 
 function showEditCinemaModal(cinema) {
-  ["Tagline", "Description", "PhoneNumber", "Email", "OpeningHours"].forEach((field) => {
+  ["Tagline", "Description", "PhoneNumber", "Email", "OpeningHours"].forEach(
+    (field) => {
       cinema[field] = decodeHtmlEntities(cinema[field] || "");
-  });
+    }
+  );
 
   document.getElementById("editCinemaID").value = cinema.CinemaID || "";
   document.getElementById("editCinemaTitle").value = cinema.Tagline || "";
-  document.getElementById("editCinemaDescription").value = cinema.Description || "";
+  document.getElementById("editCinemaDescription").value =
+    cinema.Description || "";
   document.getElementById("editCinemaPhone").value = cinema.PhoneNumber || "";
   document.getElementById("editCinemaEmail").value = cinema.Email || "";
-  document.getElementById("editCinemaOpeningHours").value = cinema.OpeningHours || "";
+  document.getElementById("editCinemaOpeningHours").value =
+    cinema.OpeningHours || "";
 
   showModal("editCinemaModal");
 }
@@ -350,7 +365,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const addActorButton = document.getElementById("addActorBtn");
   if (addActorButton) {
     addActorButton.addEventListener("click", () =>
-      addActorField("actorContainer", "", "", true)
+      addActorField("actorContainer", "", "", "", true)
     );
   }
 });

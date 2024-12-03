@@ -7,20 +7,14 @@ class Cinema {
     }
 
     public function getAllCinemas() {
-        $query = "SELECT c.*, ci.ImageURL 
-                  FROM Cinema c 
-                  LEFT JOIN CinemaImage ci ON c.CinemaID = ci.CinemaID
-                  ORDER BY c.CinemaID ASC";
+        $query = "SELECT * FROM CinemaDetails ORDER BY CinemaID ASC";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getCinemaById($id) {
-        $query = "SELECT c.*, ci.ImageURL 
-                  FROM Cinema c 
-                  LEFT JOIN CinemaImage ci ON c.CinemaID = ci.CinemaID
-                  WHERE c.CinemaID = :id";
+        $query = "SELECT * FROM CinemaDetails WHERE CinemaID = :id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();

@@ -10,7 +10,7 @@ $screeningController = new ScreeningController();
 
 $movies = $movieController->index();
 $newsList = $newsController->index();
-$todaysScreenings = $screeningController->getTodayScreenings();
+$todaysScreenings = $screeningController->getDailyScreenings();
 ?>
 
 <!DOCTYPE html>
