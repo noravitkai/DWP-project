@@ -44,22 +44,22 @@ $totalPrice = $ticketPrice * $numberOfSeats;
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <h2 class="text-xl font-semibold text-orange-400 mb-2">Movie Information</h2>
-                        <p><strong>Movie:</strong> <?php echo $screeningDetails['MovieTitle']; ?></p>
-                        <p><strong>Date:</strong> <?php echo $screeningDetails['ScreeningDate']; ?></p>
-                        <p><strong>Starting Time:</strong> <?php echo $screeningDetails['ScreeningTime']; ?></p>
+                        <p>Movie: <?php echo $screeningDetails['MovieTitle']; ?></p>
+                        <p>Date: <?php echo $screeningDetails['ScreeningDate']; ?></p>
+                        <p>Starting Time: <?php echo $screeningDetails['ScreeningTime']; ?></p>
                     </div>
                     <div>
                         <h2 class="text-xl font-semibold text-orange-400 mb-2">Reservation Details</h2>
-                        <p><strong>Seats:</strong> 
+                        <p>Seats: 
                             <?php 
                                 echo implode(', ', array_map(function ($seat) {
                                     return $seat['RowLabel'] . $seat['SeatNumber'];
                                 }, $selectedSeats)); 
                             ?>
                         </p>
-                        <p><strong>Number of Seats:</strong> <?php echo $numberOfSeats; ?></p>
-                        <p><strong>Ticket Price: </strong><?php echo number_format($ticketPrice, 2); ?> DKK</p>
-                        <p class="mt-2 text-lg"><strong class="text-orange-500">Total Price:</strong> <span class="text-xl font-bold"><?php echo number_format($totalPrice, 2); ?> DKK</span></p>
+                        <p>Number of Seats: <?php echo $numberOfSeats; ?></p>
+                        <p>Ticket Price: <?php echo number_format($ticketPrice, 2); ?> DKK</p>
+                        <p class="mt-2 text-lg text-orange-500">Total Price:<span class="text-xl font-bold"><?php echo number_format($totalPrice, 2); ?> DKK</span></p>
                     </div>
                 </div>
             </section>

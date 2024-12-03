@@ -1,5 +1,5 @@
 node_modules/
 public/css/tailwind.css
-config/*.env
 uploads/
 stripe-php/
+config/.env
