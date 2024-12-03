@@ -70,14 +70,8 @@ class CustomerModel {
     }
 
     public function updateCustomerById($customerId, $data) {
-        $query = "SELECT PostalCodeID FROM Customer WHERE CustomerID = :customerId";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':customerId', $customerId, PDO::PARAM_INT);
-        $stmt->execute();
-        $oldPostalCodeID = $stmt->fetchColumn();
-
         $newPostalCodeID = $this->getPostalCodeID($data['PostalCode'], $data['City']);
-    
+
         $query = "UPDATE Customer SET 
                     FirstName = :firstName,
                     LastName = :lastName,
@@ -101,24 +95,7 @@ class CustomerModel {
         $stmt->bindParam(':postalCodeID', $newPostalCodeID, PDO::PARAM_INT);
         $stmt->bindParam(':customerId', $customerId, PDO::PARAM_INT);
         
-        $updateResult = $stmt->execute();
-    
-        if ($oldPostalCodeID && $oldPostalCodeID != $newPostalCodeID) {
-            $query = "SELECT COUNT(*) FROM Customer WHERE PostalCodeID = :oldPostalCodeID";
-            $stmt = $this->db->prepare($query);
-            $stmt->bindParam(':oldPostalCodeID', $oldPostalCodeID, PDO::PARAM_INT);
-            $stmt->execute();
-            $count = $stmt->fetchColumn();
-    
-            if ($count == 0) {
-                $query = "DELETE FROM PostalCode WHERE PostalCodeID = :oldPostalCodeID";
-                $stmt = $this->db->prepare($query);
-                $stmt->bindParam(':oldPostalCodeID', $oldPostalCodeID, PDO::PARAM_INT);
-                $stmt->execute();
-            }
-        }
-    
-        return $updateResult;
+        return $stmt->execute();
     }
 
     public function updateCustomerPassword($customerId, $hashedPassword) {

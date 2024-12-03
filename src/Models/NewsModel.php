@@ -7,20 +7,14 @@ class News {
     }
 
     public function getAllNews() {
-        $query = "SELECT n.*, ni.ImageURL 
-                  FROM News n 
-                  LEFT JOIN NewsImage ni ON n.NewsID = ni.NewsID
-                  ORDER BY n.NewsID ASC";
+        $query = "SELECT * FROM NewsDetails ORDER BY NewsID ASC";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
     public function getNewsById($id) {
-        $query = "SELECT n.*, ni.ImageURL 
-                  FROM News n 
-                  LEFT JOIN NewsImage ni ON n.NewsID = ni.NewsID 
-                  WHERE n.NewsID = :id";
+        $query = "SELECT * FROM NewsDetails WHERE NewsID = :id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();

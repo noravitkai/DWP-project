@@ -7,20 +7,14 @@ class Movie {
     }
 
     public function getAllMovies() {
-        $query = "SELECT m.*, mi.ImageURL 
-                  FROM Movie m 
-                  LEFT JOIN MovieImage mi ON m.MovieID = mi.MovieID
-                  ORDER BY m.MovieID ASC";
+        $query = "SELECT * FROM MovieDetails ORDER BY MovieID ASC";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getMovieById($id) {
-        $query = "SELECT m.*, mi.ImageURL 
-                  FROM Movie m 
-                  LEFT JOIN MovieImage mi ON m.MovieID = mi.MovieID 
-                  WHERE m.MovieID = :id";
+        $query = "SELECT * FROM MovieDetails WHERE MovieID = :id";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();

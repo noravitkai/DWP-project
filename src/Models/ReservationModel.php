@@ -26,8 +26,7 @@ class Reservation {
             FROM Seat
             INNER JOIN Allocations ON Seat.SeatID = Allocations.SeatID
             INNER JOIN Reservation ON Allocations.ReservationID = Reservation.ReservationID
-            WHERE Reservation.ScreeningID = :screeningId 
-              AND Seat.SeatStatus = 'Reserved'
+            WHERE Reservation.ScreeningID = :screeningId
         ";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':screeningId', $screeningId, PDO::PARAM_INT);
@@ -36,7 +35,7 @@ class Reservation {
     }
 
     public function getReservationById($reservationId) {
-        $query = "SELECT * FROM Reservation WHERE ReservationID = :reservationId";
+        $query = "SELECT * FROM ReservationDetails WHERE ReservationID = :reservationId";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':reservationId', $reservationId, PDO::PARAM_INT);
         $stmt->execute();
@@ -104,13 +103,6 @@ class Reservation {
 
             $reservationId = $this->db->lastInsertId();
 
-            $query = "UPDATE Seat SET SeatStatus = 'Reserved' WHERE SeatID = :seatId";
-            $stmt = $this->db->prepare($query);
-            foreach ($seatIDs as $seatId) {
-                $stmt->bindValue(':seatId', $seatId, PDO::PARAM_INT);
-                $stmt->execute();
-            }
-
             $query = "INSERT INTO Allocations (ReservationID, SeatID) VALUES (:reservationId, :seatId)";
             $stmt = $this->db->prepare($query);
             foreach ($seatIDs as $seatId) {
@@ -131,22 +123,6 @@ class Reservation {
     public function cancelReservation($reservationId) {
         try {
             $this->db->beginTransaction();
-
-            $query = "SELECT SeatID FROM Allocations WHERE ReservationID = :reservationId";
-            $stmt = $this->db->prepare($query);
-            $stmt->bindParam(':reservationId', $reservationId, PDO::PARAM_INT);
-            $stmt->execute();
-            $allocatedSeats = $stmt->fetchAll(PDO::FETCH_COLUMN);
-
-            if (!empty($allocatedSeats)) {
-                $placeholders = implode(',', array_fill(0, count($allocatedSeats), '?'));
-                $query = "UPDATE Seat SET SeatStatus = 'Available' WHERE SeatID IN ($placeholders)";
-                $stmt = $this->db->prepare($query);
-                foreach ($allocatedSeats as $index => $seatId) {
-                    $stmt->bindValue($index + 1, $seatId, PDO::PARAM_INT);
-                }
-                $stmt->execute();
-            }
 
             $query = "DELETE FROM Allocations WHERE ReservationID = :reservationId";
             $stmt = $this->db->prepare($query);
