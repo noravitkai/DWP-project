@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../../stripe-php/init.php';
 require_once '../../../config/session.php';
+require_once '../../../config/functions.php';
 require_once '../../../config/env_loader.php';
 require_once '../../Controllers/PaymentController.php';
 require_once '../../Controllers/ReservationController.php';
@@ -10,6 +11,13 @@ use Stripe\Stripe;
 use Stripe\Checkout\Session as StripeSession;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $csrfToken = $_POST['csrf_token'] ?? '';
+
+    if (!verifyCsrfToken($csrfToken)) {
+        http_response_code(403);
+        die('Invalid CSRF token.');
+    }
+
     $stripeSecretKey = getenv('STRIPE_SECRET_KEY');
 
     if (!$stripeSecretKey) {
@@ -18,11 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     Stripe::setApiKey($stripeSecretKey);
 
-    $reservationId = $_POST['reservation_id'];
-    $amount = $_POST['amount'];
-    $currency = $_POST['currency'];
+    $reservationId = isset($_POST['reservation_id']) ? intval($_POST['reservation_id']) : 0;
+    $amount = isset($_POST['amount']) ? intval($_POST['amount']) : 0;
+    $currency = isset($_POST['currency']) ? strtoupper(trim($_POST['currency'])) : '';
 
-    if (!is_numeric($reservationId) || !is_numeric($amount) || !in_array($currency, ['DKK'])) {
+    if ($reservationId <= 0 || $amount <= 0 || !in_array($currency, ['DKK'])) {
+        http_response_code(400);
         die("Invalid input data.");
     }
 
@@ -32,11 +41,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $reservationDetails = $reservationController->getReservationById($reservationId);
     if (!$reservationDetails) {
+        http_response_code(404);
         die("Reservation not found.");
     }
 
     $screeningDetails = $screeningController->getScreeningById($reservationDetails['ScreeningID']);
     if (!$screeningDetails) {
+        http_response_code(404);
         die("Screening details not found.");
     }
 
@@ -44,7 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $numberOfSeats = $reservationDetails['NumberOfSeats'];
     $totalPrice = $ticketPrice * $numberOfSeats;
 
-    if ($amount != $totalPrice * 100) {
+    if ($amount != ($totalPrice * 100)) {
+        http_response_code(400);
         die("Invalid payment amount.");
     }
 
@@ -67,17 +79,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'success_url' => $protocol . $host . $basePath . 'success_page.php?reservation_id=' . $reservationId . '&session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => $protocol . $host . $basePath . 'cancel_page.php?reservation_id=' . $reservationId,
+            'success_url' => $protocol . $host . $basePath . 'success_page.php?reservation_id=' . urlencode($reservationId) . '&session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => $protocol . $host . $basePath . 'cancel_page.php?reservation_id=' . urlencode($reservationId),
         ]);
 
         $paymentController->createPaymentRecord($reservationId, $checkoutSession->id, $totalPrice);
 
+        regenerateCsrfToken();
+
         header('Location: ' . $checkoutSession->url);
         exit;
     } catch (Exception $e) {
-        error_log("Stripe Checkout Error: " . $e->getMessage());
+        error_log("Stripe Checkout Error for Reservation ID $reservationId: " . $e->getMessage());
+
         die('An error occurred while processing your payment. Please try again.');
     }
 }
-?>

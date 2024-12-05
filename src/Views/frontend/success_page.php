@@ -94,7 +94,7 @@ $seatList = array_map(function ($seat) {
                 Return to Home
             </a>
         </div>
-        <div class="bg-zinc-800 shadow-lg border-2 border-zinc-300 p-6">
+        <div class="bg-zinc-800 p-6">
             <h2 class="text-semibold sm:text-lg text-zinc-200 uppercase mb-2 text-left">Invoice</h2>
             <p class="mb-6 text-sm sm:text-base text-zinc-300">Review and keep this information. If any data is incorrect or missing, please contact us!</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">

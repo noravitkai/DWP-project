@@ -14,18 +14,22 @@ class ReservationController {
     }
 
     public function getSeatsByRoomId($roomId) {
+        $this->cancelExpiredReservations();
         return $this->reservation->getSeatsByRoomId($roomId);
     }
 
     public function getReservedSeatsByScreeningId($screeningId) {
+        $this->cancelExpiredReservations();
         return $this->reservation->getReservedSeatsByScreeningId($screeningId);
     }
 
     public function getReservationById($reservationId) {
+        $this->cancelExpiredReservations();
         return $this->reservation->getReservationById($reservationId);
     }
     
     public function getSeatsByReservationId($reservationId) {
+        $this->cancelExpiredReservations();
         return $this->reservation->getSeatsByReservationId($reservationId);
     }
 
@@ -56,6 +60,10 @@ class ReservationController {
         } else {
             return false;
         }
+    }
+
+    private function cancelExpiredReservations() {
+        $this->reservation->cancelExpiredReservations();
     }
 }
 ?>

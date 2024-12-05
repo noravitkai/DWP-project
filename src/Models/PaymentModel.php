@@ -61,4 +61,3 @@ class PaymentModel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
-?>

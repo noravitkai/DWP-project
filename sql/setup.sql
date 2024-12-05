@@ -106,7 +106,8 @@ CREATE TABLE Reservation (
     GuestPhoneNumber VARCHAR(20),
     ScreeningID INT NOT NULL,
     CustomerID INT,
-    Status ENUM('Pending', 'Confirmed', 'Canceled') NOT NULL DEFAULT 'Pending',
+    `Status` ENUM('Pending', 'Confirmed', 'Canceled') NOT NULL DEFAULT 'Pending',
+    ReservationToken VARCHAR(64) UNIQUE NULL,
     FOREIGN KEY (ScreeningID) REFERENCES Screening(ScreeningID) ON DELETE CASCADE,
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE CASCADE,
     CHECK (
@@ -145,7 +146,7 @@ CREATE TABLE Ticket (
 
 CREATE TABLE Payment (
     PaymentID INT AUTO_INCREMENT PRIMARY KEY,
-    PaymentStatus VARCHAR(50) NOT NULL,
+    PaymentStatus ENUM('Pending', 'Canceled', 'Completed') NOT NULL DEFAULT 'Pending',
     TransactionAmount DECIMAL(10, 2) NOT NULL CHECK (TransactionAmount > 0),
     TransactionDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     StripeSessionID VARCHAR(255) UNIQUE,
