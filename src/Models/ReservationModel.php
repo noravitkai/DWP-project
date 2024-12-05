@@ -81,9 +81,9 @@ class Reservation {
 
             $query = "
                 INSERT INTO Reservation 
-                (NumberOfSeats, ScreeningID, CustomerID, GuestFirstName, GuestLastName, GuestEmail, GuestPhoneNumber)
+                (NumberOfSeats, ScreeningID, CustomerID, GuestFirstName, GuestLastName, GuestEmail, GuestPhoneNumber, Status)
                 VALUES 
-                (:numberOfSeats, :screeningId, :customerId, :guestFirstName, :guestLastName, :guestEmail, :guestPhone)
+                (:numberOfSeats, :screeningId, :customerId, :guestFirstName, :guestLastName, :guestEmail, :guestPhone, :status)
             ";
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':numberOfSeats', $data['NumberOfSeats'], PDO::PARAM_INT);
@@ -99,6 +99,7 @@ class Reservation {
             $stmt->bindValue(':guestLastName', $data['GuestLastName'], PDO::PARAM_STR);
             $stmt->bindValue(':guestEmail', $data['GuestEmail'], PDO::PARAM_STR);
             $stmt->bindValue(':guestPhone', $data['GuestPhoneNumber'], PDO::PARAM_STR);
+            $stmt->bindValue(':status', 'Pending', PDO::PARAM_STR);
             $stmt->execute();
 
             $reservationId = $this->db->lastInsertId();
@@ -141,6 +142,14 @@ class Reservation {
             error_log("Error cancelling reservation: " . $e->getMessage());
             throw $e;
         }
+    }
+
+    public function updateReservationStatus($reservationId, $status) {
+        $query = "UPDATE Reservation SET Status = :status WHERE ReservationID = :reservationId";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':status', $status, PDO::PARAM_STR);
+        $stmt->bindParam(':reservationId', $reservationId, PDO::PARAM_INT);
+        $stmt->execute();
     }
 }
 ?>

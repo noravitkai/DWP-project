@@ -1,50 +1,73 @@
 <?php
 require_once '../../../config/session.php';
+require_once '../../../config/env_loader.php';
 require_once '../../Controllers/ReservationController.php';
 require_once '../../Controllers/ScreeningController.php';
+require_once '../../Controllers/PaymentController.php';
+require_once '../../../stripe-php/init.php';
+
+use Stripe\Stripe;
+use Stripe\Checkout\Session as StripeSession;
 
 $reservationId = $_GET['reservation_id'] ?? null;
+$sessionId = $_GET['session_id'] ?? null;
 
-if (!$reservationId || !is_numeric($reservationId)) {
-    die("Invalid reservation ID.");
+if (!$reservationId || !is_numeric($reservationId) || !$sessionId) {
+    die("Invalid reservation or session ID.");
+}
+
+$stripeSecretKey = getenv('STRIPE_SECRET_KEY');
+if (!$stripeSecretKey) {
+    die('Stripe secret key is not set. Please check your .env file.');
+}
+Stripe::setApiKey($stripeSecretKey);
+
+try {
+    $checkoutSession = StripeSession::retrieve($sessionId);
+
+    if ($checkoutSession->payment_status === 'paid') {
+        $paymentController = new PaymentController();
+        $paymentController->updatePaymentStatus($sessionId, 'Completed', $checkoutSession->payment_intent);
+
+        $reservationController = new ReservationController();
+        $confirmation = $reservationController->confirmReservation($reservationId);
+    } else {
+        $paymentController = new PaymentController();
+        $paymentController->updatePaymentStatus($sessionId, 'Pending');
+        $confirmation = false;
+    }
+} catch (Exception $e) {
+    die('Error retrieving Stripe session: ' . htmlspecialchars($e->getMessage()));
 }
 
 $reservationController = new ReservationController();
-$screeningController = new ScreeningController();
-
 $reservationDetails = $reservationController->getReservationById($reservationId);
-if (!$reservationDetails) {
-    die("Reservation not found.");
-}
-
+$screeningController = new ScreeningController();
 $screeningDetails = $screeningController->getScreeningById($reservationDetails['ScreeningID']);
-if (!$screeningDetails) {
-    die("Screening details not found.");
-}
-
 $selectedSeats = $reservationController->getSeatsByReservationId($reservationId);
-$seatList = array_map(function ($seat) {
-    return $seat['RowLabel'] . $seat['SeatNumber'];
-}, $selectedSeats);
 
 if (!empty($reservationDetails['CustomerID'])) {
     require_once '../../Controllers/CustomerController.php';
     $customerId = $reservationDetails['CustomerID'];
     $customerController = new CustomerController();
     $customerDetails = $customerController->getCustomerProfile($customerId);
-    $customerName = $customerDetails['FirstName'] . ' ' . $customerDetails['LastName'];
-    $customerEmail = $customerDetails['Email'];
+    $customerName = htmlspecialchars($customerDetails['FirstName'] . ' ' . $customerDetails['LastName']);
+    $customerEmail = htmlspecialchars($customerDetails['Email']);
 } else {
-    $customerName = $reservationDetails['GuestFirstName'] . ' ' . $reservationDetails['GuestLastName'];
-    $customerEmail = $reservationDetails['GuestEmail'];
+    $customerName = htmlspecialchars($reservationDetails['GuestFirstName'] . ' ' . $reservationDetails['GuestLastName']);
+    $customerEmail = htmlspecialchars($reservationDetails['GuestEmail']);
 }
 
-$movieTitle = $screeningDetails['MovieTitle'];
+$movieTitle = htmlspecialchars($screeningDetails['MovieTitle']);
 $screeningTime = date("Y-m-d H:i", strtotime($screeningDetails['ScreeningDate'] . ' ' . $screeningDetails['ScreeningTime']));
 $ticketPrice = number_format($screeningDetails['Price'], 2);
-$numberOfSeats = $reservationDetails['NumberOfSeats'];
+$numberOfSeats = htmlspecialchars($reservationDetails['NumberOfSeats']);
 $totalPrice = number_format($numberOfSeats * $screeningDetails['Price'], 2);
+$seatList = array_map(function ($seat) {
+    return htmlspecialchars($seat['RowLabel'] . $seat['SeatNumber']);
+}, $selectedSeats);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

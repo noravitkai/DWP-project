@@ -1,5 +1,18 @@
 <?php
 require_once '../../../config/session.php';
+require_once '../../../config/env_loader.php';
+require_once '../../Controllers/PaymentController.php';
+
+$reservationId = $_GET['reservation_id'] ?? null;
+
+if ($reservationId && is_numeric($reservationId)) {
+    $paymentController = new PaymentController();
+    $payment = $paymentController->getPaymentByReservationId($reservationId);
+
+    if ($payment) {
+        $paymentController->updatePaymentStatus($payment['StripeSessionID'], 'Canceled');
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

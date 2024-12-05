@@ -106,11 +106,12 @@ CREATE TABLE Reservation (
     GuestPhoneNumber VARCHAR(20),
     ScreeningID INT NOT NULL,
     CustomerID INT,
+    Status ENUM('Pending', 'Confirmed', 'Canceled') NOT NULL DEFAULT 'Pending',
     FOREIGN KEY (ScreeningID) REFERENCES Screening(ScreeningID) ON DELETE CASCADE,
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE CASCADE,
     CHECK (
         (CustomerID IS NOT NULL AND GuestFirstName IS NULL AND GuestLastName IS NULL AND GuestEmail IS NULL AND GuestPhoneNumber IS NULL) OR
-        (CustomerID IS NULL AND GuestFirstName IS NOT NULL AND GuestLastName IS NOT NULL AND GuestEmail IS NOT NULL)
+        (CustomerID IS NULL AND GuestFirstName IS NOT NULL AND GuestLastName IS NOT NULL AND GuestEmail IS NOT NULL AND GuestPhoneNumber IS NOT NULL)
     )
 );
 
@@ -146,10 +147,12 @@ CREATE TABLE Payment (
     PaymentID INT AUTO_INCREMENT PRIMARY KEY,
     PaymentStatus VARCHAR(50) NOT NULL,
     TransactionAmount DECIMAL(10, 2) NOT NULL CHECK (TransactionAmount > 0),
-    TransactionDate DATE NOT NULL,
+    TransactionDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    StripeSessionID VARCHAR(255) UNIQUE,
+    StripePaymentIntentID VARCHAR(255) UNIQUE,
     CustomerID INT,
     ReservationID INT NOT NULL,
-    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE CASCADE,
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE SET NULL,
     FOREIGN KEY (ReservationID) REFERENCES Reservation(ReservationID) ON DELETE CASCADE
 );
 

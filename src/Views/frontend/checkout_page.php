@@ -1,5 +1,6 @@
 <?php
 require_once '../../../config/session.php';
+require_once '../../../config/env_loader.php';
 require_once '../../Controllers/ReservationController.php';
 require_once '../../Controllers/ScreeningController.php';
 
@@ -23,7 +24,6 @@ $selectedSeats = $reservationController->getSeatsByReservationId($reservationId)
 $ticketPrice = $screeningDetails['Price'];
 $numberOfSeats = $reservationDetails['NumberOfSeats'];
 $totalPrice = $ticketPrice * $numberOfSeats;
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,20 +44,20 @@ $totalPrice = $ticketPrice * $numberOfSeats;
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <h2 class="text-xl font-semibold text-orange-400 mb-2">Movie Information</h2>
-                        <p>Movie: <?php echo $screeningDetails['MovieTitle']; ?></p>
-                        <p>Date: <?php echo $screeningDetails['ScreeningDate']; ?></p>
-                        <p>Starting Time: <?php echo $screeningDetails['ScreeningTime']; ?></p>
+                        <p>Movie: <?php echo htmlspecialchars($screeningDetails['MovieTitle']); ?></p>
+                        <p>Date: <?php echo htmlspecialchars($screeningDetails['ScreeningDate']); ?></p>
+                        <p>Starting Time: <?php echo htmlspecialchars($screeningDetails['ScreeningTime']); ?></p>
                     </div>
                     <div>
                         <h2 class="text-xl font-semibold text-orange-400 mb-2">Reservation Details</h2>
                         <p>Seats: 
                             <?php 
                                 echo implode(', ', array_map(function ($seat) {
-                                    return $seat['RowLabel'] . $seat['SeatNumber'];
+                                    return htmlspecialchars($seat['RowLabel'] . $seat['SeatNumber']);
                                 }, $selectedSeats)); 
                             ?>
                         </p>
-                        <p>Number of Seats: <?php echo $numberOfSeats; ?></p>
+                        <p>Number of Seats: <?php echo htmlspecialchars($numberOfSeats); ?></p>
                         <p>Ticket Price: <?php echo number_format($ticketPrice, 2); ?> DKK</p>
                         <p class="mt-2 text-lg text-orange-500">Total Price:<span class="text-xl font-bold"><?php echo number_format($totalPrice, 2); ?> DKK</span></p>
                     </div>
@@ -72,8 +72,8 @@ $totalPrice = $ticketPrice * $numberOfSeats;
                     Back to Home
                 </a>
                 <form action="payment_page.php" method="POST">
-                    <input type="hidden" name="reservation_id" value="<?php echo $reservationId; ?>">
-                    <input type="hidden" name="amount" value="<?php echo $totalPrice * 100; ?>">
+                    <input type="hidden" name="reservation_id" value="<?php echo htmlspecialchars($reservationId); ?>">
+                    <input type="hidden" name="amount" value="<?php echo htmlspecialchars($totalPrice * 100); ?>"> <!-- Amount in Øre -->
                     <input type="hidden" name="currency" value="DKK">
                     <button type="submit" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                         Proceed to Payment
