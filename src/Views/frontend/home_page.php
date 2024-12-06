@@ -272,5 +272,6 @@ $todaysScreenings = $screeningController->getDailyScreenings();
             ?>
         </div>
     </section>
+    <?php include '../frontend/footer.php'; ?>
 </body>
 </html>
