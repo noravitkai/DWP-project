@@ -25,4 +25,6 @@ function loadEnv($filePath)
         }
     }
 }
+
+loadEnv(__DIR__ . '/.env');
 ?>
