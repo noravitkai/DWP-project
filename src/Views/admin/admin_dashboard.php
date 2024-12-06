@@ -978,7 +978,6 @@ $cinemas = $cinemaController->index();
             </main>
         </div>
     </div>
-    <script src="../../../public/js/dashboard-navigation.js"></script>
     <script src="../../../public/js/crud-modals.js"></script>
 </body>
 </html>
