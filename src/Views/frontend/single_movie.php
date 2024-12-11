@@ -34,17 +34,17 @@ $screenings = $screeningController->getScreeningsByMovieId($movie['MovieID']);
     <link href="../../../public/css/tailwind.css" rel="stylesheet">
 </head>
 <body class="bg-zinc-800">
-<?php include '../frontend/frontend_navigation.php'; ?>
+    <?php include '../frontend/frontend_navigation.php'; ?>
     <main class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
         <section class="flex flex-col md:flex-row items-start gap-8">
             <div class="relative w-1/2 md:w-1/3 aspect-[2/3] overflow-hidden">
-                <img src="<?php echo $movie['ImageURL']; ?>" alt="<?php echo $movie['Title']; ?>" class="object-cover h-full w-full"/>
+                <img src="<?php echo $movie['ImageURL']; ?>" alt="<?php echo $movie['Title']; ?>" class="object-cover h-full w-full" loading="lazy"/>
             </div>
             <div class="w-full md:w-2/3">
                 <h1 class="text-2xl sm:text-3xl font-bold text-orange-600 mb-2"><?php echo $movie['Title']; ?></h1>
                 <h2 class="text-base sm:text-lg text-zinc-200 italic mb-6"><?php echo $movie['Subtitle']; ?></h2>
                 <p class="text-sm sm:text-base text-zinc-300 mb-10"><?php echo $movie['MovieDescription']; ?></p>
-                <div class="grid gap-4 sm:grid-cols-2 mb-4">
+                <section class="grid gap-4 sm:grid-cols-2 mb-4">
                     <div>
                         <h3 class="block text-xs sm:text-sm text-orange-600 uppercase mb-0.5">Duration:</h3>
                         <p class="text-sm sm:text-base text-zinc-300"><?php echo $movie['Duration']; ?> mins</p>
@@ -61,8 +61,8 @@ $screenings = $screeningController->getScreeningsByMovieId($movie['MovieID']);
                         <h3 class="block text-xs sm:text-sm text-orange-600 uppercase mb-0.5">Director:</h3>
                         <p class="text-sm sm:text-base text-zinc-300"><?php echo $movie['Director']; ?></p>
                     </div>
-                </div>
-                <div class="sm:col-span-2 mt-6">
+                </section>
+                <section class="sm:col-span-2 mt-6">
                     <h3 class="block text-xs sm:text-sm text-orange-600 uppercase mb-0.5">Cast:</h3>
                     <?php if (!empty($movie['Actors'])): ?>
                         <ul>
@@ -80,8 +80,8 @@ $screenings = $screeningController->getScreeningsByMovieId($movie['MovieID']);
                     <?php else: ?>
                         <p class="text-sm sm:text-base text-zinc-300 italic">No cast information available.</p>
                     <?php endif; ?>
-                </div>
-                <div class="sm:col-span-2 mt-10">
+                </section>
+                <section class="sm:col-span-2 mt-10">
                     <h3 class="block text-xs sm:text-sm text-orange-600 uppercase mb-0.5">Screenings:</h3>
                     <?php if (!empty($screenings)): ?>
                         <form action="seat_reservation.php" method="GET" class="flex flex-col sm:flex-row items-start sm:items-center gap-y-2 sm:gap-y-0 sm:gap-x-2">
@@ -101,7 +101,7 @@ $screenings = $screeningController->getScreeningsByMovieId($movie['MovieID']);
                             </div>
                             <button type="submit" class="inline-flex items-center rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300 w-auto">
                                 <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25-2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
                                 </svg>
                                 Reserve
                             </button>
@@ -109,7 +109,7 @@ $screenings = $screeningController->getScreeningsByMovieId($movie['MovieID']);
                     <?php else: ?>
                         <p class="text-sm sm:text-base text-zinc-300 italic">No screenings available for this movie.</p>
                     <?php endif; ?>
-                </div>
+                </section>
             </div>
         </section>
     </main>

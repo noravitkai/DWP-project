@@ -42,6 +42,11 @@ try {
 
 $reservationController = new ReservationController();
 $reservationDetails = $reservationController->getReservationById($reservationId);
+
+if (!$reservationDetails) {
+    die("Reservation not found.");
+}
+
 $screeningController = new ScreeningController();
 $screeningDetails = $screeningController->getScreeningById($reservationDetails['ScreeningID']);
 $selectedSeats = $reservationController->getSeatsByReservationId($reservationId);
@@ -51,20 +56,20 @@ if (!empty($reservationDetails['CustomerID'])) {
     $customerId = $reservationDetails['CustomerID'];
     $customerController = new CustomerController();
     $customerDetails = $customerController->getCustomerProfile($customerId);
-    $customerName = htmlspecialchars($customerDetails['FirstName'] . ' ' . $customerDetails['LastName']);
-    $customerEmail = htmlspecialchars($customerDetails['Email']);
+    $customerName = $customerDetails['FirstName'] . ' ' . $customerDetails['LastName'];
+    $customerEmail = $customerDetails['Email'];
 } else {
-    $customerName = htmlspecialchars($reservationDetails['GuestFirstName'] . ' ' . $reservationDetails['GuestLastName']);
-    $customerEmail = htmlspecialchars($reservationDetails['GuestEmail']);
+    $customerName = $reservationDetails['GuestFirstName'] . ' ' . $reservationDetails['GuestLastName'];
+    $customerEmail = $reservationDetails['GuestEmail'];
 }
 
-$movieTitle = htmlspecialchars($screeningDetails['MovieTitle']);
+$movieTitle = $screeningDetails['MovieTitle'];
 $screeningTime = date("Y-m-d H:i", strtotime($screeningDetails['ScreeningDate'] . ' ' . $screeningDetails['ScreeningTime']));
 $ticketPrice = number_format($screeningDetails['Price'], 2);
-$numberOfSeats = htmlspecialchars($reservationDetails['NumberOfSeats']);
+$numberOfSeats = $reservationDetails['NumberOfSeats'];
 $totalPrice = number_format($numberOfSeats * $screeningDetails['Price'], 2);
 $seatList = array_map(function ($seat) {
-    return htmlspecialchars($seat['RowLabel'] . $seat['SeatNumber']);
+    return $seat['RowLabel'] . $seat['SeatNumber'];
 }, $selectedSeats);
 ?>
 
@@ -75,94 +80,72 @@ $seatList = array_map(function ($seat) {
     <title>Payment Successful</title>
     <link href="../../../public/css/tailwind.css" rel="stylesheet">
 </head>
-<body class="bg-zinc-900 text-zinc-200 min-h-screen flex flex-col" 
-      data-reservation-id="<?php echo htmlspecialchars($reservationId, ENT_QUOTES, 'UTF-8'); ?>"
-      data-screening-id="<?php echo htmlspecialchars($screeningDetails['ScreeningID'], ENT_QUOTES, 'UTF-8'); ?>">
-      
+<body class="bg-zinc-800 text-zinc-200"
+      data-reservation-id="<?php echo $reservationId; ?>"
+      data-screening-id="<?php echo $screeningDetails['ScreeningID']; ?>">
     <?php include '../frontend/frontend_navigation.php'; ?>
-
-    <main class="flex-grow container max-w-4xl mx-auto p-6">
-        <div class="bg-zinc-800 shadow-md p-8 mb-8 rounded-lg">
-            <div class="flex items-center mb-6">
+    <main class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+        <header class="mb-8">
+            <div class="flex items-center gap-2 mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" 
-                     viewBox="0 0 24 24" stroke="currentColor" 
-                     class="h-8 w-8 text-orange-600 mr-2">
+                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                     class="h-8 w-8 text-orange-600">
                     <path stroke-linecap="round" stroke-linejoin="round" 
-                          stroke-width="2" 
-                          d="M9 12.75L11.25 15 15 9.75M21 12A9 9 0 11 3 12a9 9 0 0 1 18 0z" />
+                          d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
                 </svg>
-                <h1 class="text-2xl sm:text-3xl font-bold text-orange-600">Payment Successful</h1>
+                <h1 class="text-xl font-bold text-orange-600 sm:text-3xl">Payment Successful</h1>
             </div>
-            <p class="text-sm sm:text-base text-zinc-300">
-                Thank you! Your payment for the movie <span class="font-bold text-zinc-100"><?php echo $movieTitle; ?></span> was successful.
-            </p>
-            <p class="text-sm sm:text-base text-zinc-300 mb-6">
+            <p class="max-w-4xl text-sm sm:text-base text-zinc-300">
+                Thank you! Your payment for the movie <span class="font-bold text-zinc-100"><?php echo $movieTitle; ?></span> was successful.  
                 You paid a total of <span class="font-bold"><?php echo $totalPrice; ?> DKK</span>.
             </p>
+        </header>
+        <div class="mb-8">
             <a href="home_page.php" class="inline-block rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                 Return to Home
             </a>
         </div>
-
-        <div class="bg-zinc-800 p-6 rounded-lg">
-            <h2 class="font-semibold sm:text-lg text-zinc-200 uppercase mb-2 text-left">Invoice</h2>
-            <p class="mb-6 text-sm sm:text-base text-zinc-300">Review and keep this information. If any data is incorrect or missing, please contact us!</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
-                <div class="mb-4">
-                    <p>
-                        <span class="block text-xs sm:text-sm text-zinc-100 uppercase">Customer's Name:</span>
-                        <span class="text-sm sm:text-base text-zinc-300"><?php echo $customerName; ?></span>
-                    </p>
+        <div class="bg-zinc-800 p-6 border border-zinc-700">
+            <h2 class="text-base font-semibold text-orange-600 sm:text-lg uppercase mb-4">Invoice</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6 text-sm sm:text-base text-zinc-300">
+                <div>
+                    <span class="block text-xs sm:text-sm text-zinc-100 uppercase">Customer's Name:</span>
+                    <span><?php echo $customerName; ?></span>
                 </div>
-                <div class="mb-4">
-                    <p>
-                        <span class="block text-xs sm:text-sm text-zinc-100 uppercase">Email:</span>
-                        <span class="text-sm sm:text-base text-zinc-300"><?php echo $customerEmail; ?></span>
-                    </p>
+                <div>
+                    <span class="block text-xs sm:text-sm text-zinc-100 uppercase">Email:</span>
+                    <span><?php echo $customerEmail; ?></span>
                 </div>
-                <div class="mb-4">
-                    <p>
-                        <span class="block text-xs sm:text-sm text-zinc-100 uppercase">Movie Title:</span>
-                        <span class="text-sm sm:text-base text-zinc-300"><?php echo $movieTitle; ?></span>
-                    </p>
+                <div>
+                    <span class="block text-xs sm:text-sm text-zinc-100 uppercase">Movie Title:</span>
+                    <span><?php echo $movieTitle; ?></span>
                 </div>
-                <div class="mb-4">
-                    <p>
-                        <span class="block text-xs sm:text-sm text-zinc-100 uppercase">Reserved Seats:</span>
-                        <span class="text-sm sm:text-base text-zinc-300"><?php echo implode(', ', $seatList); ?></span>
-                    </p>
+                <div>
+                    <span class="block text-xs sm:text-sm text-zinc-100 uppercase">Reserved Seats:</span>
+                    <span><?php echo implode(', ', $seatList); ?></span>
                 </div>
-                <div class="mb-4">
-                    <p>
-                        <span class="block text-xs sm:text-sm text-zinc-100 uppercase">Date:</span>
-                        <span class="text-sm sm:text-base text-zinc-300"><?php echo date("Y-m-d", strtotime($screeningDetails['ScreeningDate'])); ?></span>
-                    </p>
+                <div>
+                    <span class="block text-xs sm:text-sm text-zinc-100 uppercase">Date:</span>
+                    <span><?php echo date("Y-m-d", strtotime($screeningDetails['ScreeningDate'])); ?></span>
                 </div>
-                <div class="mb-4">
-                    <p>
-                        <span class="block text-xs sm:text-sm text-zinc-100 uppercase">Starting Time:</span>
-                        <span class="text-sm sm:text-base text-zinc-300"><?php echo date("H:i", strtotime($screeningDetails['ScreeningTime'])); ?></span>
-                    </p>
+                <div>
+                    <span class="block text-xs sm:text-sm text-zinc-100 uppercase">Starting Time:</span>
+                    <span><?php echo date("H:i", strtotime($screeningDetails['ScreeningTime'])); ?></span>
                 </div>
-                <div class="mb-4">
-                    <p>
-                        <span class="block text-xs sm:text-sm text-zinc-100 uppercase">Number of Seats:</span>
-                        <span class="text-sm sm:text-base text-zinc-300"><?php echo $numberOfSeats; ?></span>
-                    </p>
+                <div>
+                    <span class="block text-xs sm:text-sm text-zinc-100 uppercase">Number of Seats:</span>
+                    <span><?php echo $numberOfSeats; ?></span>
                 </div>
-                <div class="mb-4">
-                    <p>
-                        <span class="block text-xs sm:text-sm text-zinc-100 uppercase">Ticket Price:</span>
-                        <span class="text-sm sm:text-base text-zinc-300"><?php echo $ticketPrice; ?> DKK</span>
-                    </p>
+                <div>
+                    <span class="block text-xs sm:text-sm text-zinc-100 uppercase">Ticket Price:</span>
+                    <span><?php echo $ticketPrice; ?> DKK</span>
                 </div>
             </div>
-            <p class="mt-2 text-lg text-orange-600 font-bold text-left">
-                Total: <span class="text-2xl"><?php echo $totalPrice; ?> DKK</span>
+            <p class="mt-4 text-sm sm:text-base font-medium text-orange-600 uppercase">
+                Total: <span class="text-base sm:text-lg font-bold text-zinc-100"><?php echo $totalPrice; ?> DKK</span>
             </p>
         </div>
     </main>
-
     <?php include '../frontend/footer.php'; ?>
 </body>
 </html>

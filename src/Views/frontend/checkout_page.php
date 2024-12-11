@@ -31,77 +31,89 @@ $reservationToken = $reservationDetails['ReservationToken'] ?? '';
 if (!isset($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
+
+$formMessage = $_SESSION['form_message'] ?? null;
+unset($_SESSION['form_message']);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout</title>
     <link href="../../../public/css/tailwind.css" rel="stylesheet">
 </head>
-<body class="bg-zinc-800 text-zinc-200 min-h-screen flex flex-col" data-reservation-id="<?php echo htmlspecialchars($reservationId, ENT_QUOTES, 'UTF-8'); ?>" data-screening-id="<?php echo htmlspecialchars($screeningDetails['ScreeningID'], ENT_QUOTES, 'UTF-8'); ?>">
+<body class="bg-zinc-800 text-zinc-200">
     <?php include '../frontend/frontend_navigation.php'; ?>
-    
-    <main class="flex-grow container max-w-4xl mx-auto p-6">
-        <div class="bg-zinc-700 shadow-md rounded-lg p-8">
-            <header class="mb-6">
-                <h1 class="text-3xl font-bold text-orange-500">Checkout</h1>
-                <p class="text-zinc-400 mt-2">Review your reservation details below. Please note that you have to arrive at the cinema at least 20 minutes before the movie starts!</p>
-            </header>
-            <section class="mb-8">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <h2 class="text-xl font-semibold text-orange-400 mb-2">Movie Information</h2>
-                        <p>Movie: <?php echo htmlspecialchars($screeningDetails['MovieTitle'], ENT_QUOTES, 'UTF-8'); ?></p>
-                        <p>Date: <?php echo htmlspecialchars($screeningDetails['ScreeningDate'], ENT_QUOTES, 'UTF-8'); ?></p>
-                        <p>Starting Time: <?php echo htmlspecialchars($screeningDetails['ScreeningTime'], ENT_QUOTES, 'UTF-8'); ?></p>
-                    </div>
-                    <div>
-                        <h2 class="text-xl font-semibold text-orange-400 mb-2">Reservation Details</h2>
-                        <p>Seats: 
-                            <?php 
-                                echo implode(', ', array_map(function ($seat) {
-                                    return htmlspecialchars($seat['RowLabel'] . $seat['SeatNumber'], ENT_QUOTES, 'UTF-8');
-                                }, $selectedSeats)); 
-                            ?>
-                        </p>
-                        <p>Number of Seats: <?php echo htmlspecialchars($numberOfSeats, ENT_QUOTES, 'UTF-8'); ?></p>
-                        <p>Ticket Price: <?php echo number_format($ticketPrice, 2); ?> DKK</p>
-                        <p class="mt-2 text-lg text-orange-500">Total Price:<span class="text-xl font-bold"><?php echo number_format($totalPrice, 2); ?> DKK</span></p>
-                    </div>
-                </div>
-            </section>
-            <hr class="border-zinc-700 my-6">
-            <section class="flex items-center justify-between">
-                <a href="home_page.php" id="backToHomeBtn" class="inline-flex items-center gap-1 text-sm font-medium text-orange-600 hover:text-orange-500 transition ease-in-out duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                    </svg>
-                    Back to Home
-                </a>
-                <form action="payment_page.php" method="POST" id="proceedToPaymentForm">
-                    <input type="hidden" name="reservation_id" value="<?php echo htmlspecialchars($reservationId, ENT_QUOTES, 'UTF-8'); ?>">
-                    <input type="hidden" name="amount" value="<?php echo htmlspecialchars($totalPrice * 100, ENT_QUOTES, 'UTF-8'); ?>">
-                    <input type="hidden" name="currency" value="DKK">
-                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
-                    <button type="submit" class="inline-block rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
-                        Proceed to Payment
-                    </button>
-                </form>
-            </section>
+    <main class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+        <?php if ($formMessage && strpos($formMessage, 'successfully') !== false): ?>
+            <div class="mb-4 p-4 bg-green-600 text-white rounded">
+                <?php echo $formMessage; ?>
+            </div>
+        <?php endif; ?>
+        <header>
+            <h1 class="text-xl font-bold text-orange-600 sm:text-3xl">Checkout</h1>
+            <p class="mt-4 max-w-4xl text-sm sm:text-base text-zinc-300">
+                Review the screening and reservation details below. Please note that you must arrive at least 20 minutes before the movie starts.
+            </p>
+        </header>
+        <section class="flex flex-col gap-8 my-8 text-sm sm:text-base text-zinc-300">
+            <div>
+                <h2 class="block text-orange-600 uppercase mb-0.5">Screening Details:</h2>
+                <p>
+                    <span class="font-medium">Movie:</span> <?php echo $screeningDetails['MovieTitle']; ?>
+                </p>
+                <p>
+                    <span class="font-medium">Date:</span> <?php echo $screeningDetails['ScreeningDate']; ?>
+                </p>
+                <p>
+                    <span class="font-medium">Time:</span> <?php echo $screeningDetails['ScreeningTime']; ?>
+                </p>
+            </div>
+            <div>
+                <h2 class="block text-orange-600 uppercase mb-0.5">Reservation Details:</h2>
+                <p>
+                    <span class="font-medium">Seats:</span> 
+                    <?php 
+                        echo implode(', ', array_map(function ($seat) {
+                            return $seat['RowLabel'] . $seat['SeatNumber'];
+                        }, $selectedSeats)); 
+                    ?>
+                </p>
+                <p>
+                    <span class="font-medium">Number of Seats:</span> <?php echo $numberOfSeats; ?>
+                </p>
+                <p>
+                    <span class="font-medium">Ticket Price:</span> <?php echo number_format($ticketPrice, 2); ?> DKK
+                </p>
+                <p class="mt-8">
+                    <span class="font-medium text-orange-600 uppercase">Total Price:</span>
+                    <span class="text-base sm:text-lg font-bold text-zinc-100">
+                        <?php echo number_format($totalPrice, 2); ?> DKK
+                    </span>
+                </p>
+            </div>
+        </section>
+        <hr class="border-zinc-700 mb-8">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <a href="home_page.php" class="inline-flex items-center gap-1 text-sm font-medium text-orange-600 hover:text-orange-500 transition ease-in-out duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+                     stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                </svg>
+                Back to Home
+            </a>
+            <form action="payment_page.php" method="POST" class="inline-block">
+                <input type="hidden" name="reservation_id" value="<?php echo $reservationId; ?>">
+                <input type="hidden" name="amount" value="<?php echo ($totalPrice * 100); ?>">
+                <input type="hidden" name="currency" value="DKK">
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+                <button type="submit" class="inline-flex items-center rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300">
+                    Proceed to Payment
+                </button>
+            </form>
         </div>
     </main>
-    
     <?php include '../frontend/footer.php'; ?>
-    
-    <?php if ($formMessage): ?>
-        <script>
-            <?php if (strpos($formMessage, 'successfully') !== false): ?>
-                alert("<?php echo addslashes($formMessage); ?>");
-            <?php endif; ?>
-        </script>
-    <?php endif; ?>
 </body>
 </html>
