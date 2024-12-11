@@ -34,6 +34,7 @@ $screenings = $screeningController->getScreeningsByMovieId($movie['MovieID']);
     <link href="../../../public/css/tailwind.css" rel="stylesheet">
 </head>
 <body class="bg-zinc-800">
+<?php include '../frontend/frontend_navigation.php'; ?>
     <main class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
         <section class="flex flex-col md:flex-row items-start gap-8">
             <div class="relative w-1/2 md:w-1/3 aspect-[2/3] overflow-hidden">
@@ -112,5 +113,6 @@ $screenings = $screeningController->getScreeningsByMovieId($movie['MovieID']);
             </div>
         </section>
     </main>
+    <?php include '../frontend/footer.php'; ?>
 </body>
 </html>

@@ -27,8 +27,10 @@ if ($reservationId && is_numeric($reservationId)) {
     <title>Payment Canceled</title>
     <link href="../../../public/css/tailwind.css" rel="stylesheet">
 </head>
-<body class="bg-zinc-900 text-zinc-200 min-h-screen flex items-center justify-center">
-    <div class="container max-w-4xl mx-auto p-6">
+<body class="bg-zinc-900 text-zinc-200 min-h-screen flex flex-col">
+    <?php include '../frontend/frontend_navigation.php'; ?>
+    
+    <main class="flex-grow container max-w-4xl mx-auto p-6">
         <div class="bg-zinc-800 shadow-md p-8 mb-8">
             <div class="flex items-center mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-8 w-8 text-red-600 mr-2">
@@ -43,6 +45,16 @@ if ($reservationId && is_numeric($reservationId)) {
                 Return to Home
             </a>
         </div>
-    </div>
+    </main>
+    
+    <?php include '../frontend/footer.php'; ?>
+    
+    <?php if ($formMessage): ?>
+        <script>
+            <?php if (strpos($formMessage, 'successfully') !== false): ?>
+                alert("<?php echo addslashes($formMessage); ?>");
+            <?php endif; ?>
+        </script>
+    <?php endif; ?>
 </body>
 </html>

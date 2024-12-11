@@ -75,12 +75,21 @@ $seatList = array_map(function ($seat) {
     <title>Payment Successful</title>
     <link href="../../../public/css/tailwind.css" rel="stylesheet">
 </head>
-<body class="bg-zinc-900 text-zinc-200 min-h-screen flex items-center justify-center">
-    <div class="container max-w-4xl mx-auto p-6">
-        <div class="bg-zinc-800 shadow-md p-8 mb-8">
+<body class="bg-zinc-900 text-zinc-200 min-h-screen flex flex-col" 
+      data-reservation-id="<?php echo htmlspecialchars($reservationId, ENT_QUOTES, 'UTF-8'); ?>"
+      data-screening-id="<?php echo htmlspecialchars($screeningDetails['ScreeningID'], ENT_QUOTES, 'UTF-8'); ?>">
+      
+    <?php include '../frontend/frontend_navigation.php'; ?>
+
+    <main class="flex-grow container max-w-4xl mx-auto p-6">
+        <div class="bg-zinc-800 shadow-md p-8 mb-8 rounded-lg">
             <div class="flex items-center mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-8 w-8 text-orange-600 mr-2">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12.75L11.25 15 15 9.75M21 12A9 9 0 11 3 12a9 9 0 0118 0z" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" 
+                     viewBox="0 0 24 24" stroke="currentColor" 
+                     class="h-8 w-8 text-orange-600 mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" 
+                          stroke-width="2" 
+                          d="M9 12.75L11.25 15 15 9.75M21 12A9 9 0 11 3 12a9 9 0 0 1 18 0z" />
                 </svg>
                 <h1 class="text-2xl sm:text-3xl font-bold text-orange-600">Payment Successful</h1>
             </div>
@@ -94,8 +103,9 @@ $seatList = array_map(function ($seat) {
                 Return to Home
             </a>
         </div>
-        <div class="bg-zinc-800 p-6">
-            <h2 class="text-semibold sm:text-lg text-zinc-200 uppercase mb-2 text-left">Invoice</h2>
+
+        <div class="bg-zinc-800 p-6 rounded-lg">
+            <h2 class="font-semibold sm:text-lg text-zinc-200 uppercase mb-2 text-left">Invoice</h2>
             <p class="mb-6 text-sm sm:text-base text-zinc-300">Review and keep this information. If any data is incorrect or missing, please contact us!</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
                 <div class="mb-4">
@@ -151,6 +161,8 @@ $seatList = array_map(function ($seat) {
                 Total: <span class="text-2xl"><?php echo $totalPrice; ?> DKK</span>
             </p>
         </div>
-    </div>
+    </main>
+
+    <?php include '../frontend/footer.php'; ?>
 </body>
 </html>

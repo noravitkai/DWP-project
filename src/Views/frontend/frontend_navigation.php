@@ -1,3 +1,21 @@
+<?php
+require_once '../../../config/user_session.php';
+require_once '../../../config/functions.php';
+
+if (!isset($_SESSION['csrf_token'])) {
+    regenerateCsrfToken();
+}
+
+$currentPage = basename($_SERVER['PHP_SELF']);
+$navBase = 'home_page.php#';
+
+if ($currentPage === 'home_page.php') {
+    $navLink = '#';
+} else {
+    $navLink = 'home_page.php#';
+}
+?>
+
 <header class="bg-zinc-900 sticky top-0 z-50">
     <div class="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <button type="button" class="-m-2.5 p-2.5 text-zinc-100 md:hidden" id="frontend-open-menu" aria-label="Open sidebar" aria-expanded="false">
@@ -6,32 +24,32 @@
             </svg>
         </button>
         <a href="home_page.php" class="text-right md:text-left">
-          <h1 class="text-orange-600 font-black text-lg sm:text-3xl tracking-wide drop-shadow-md">
-              FLC
-          </h1>
-      </a>
+            <h1 class="text-orange-600 font-black text-lg sm:text-3xl tracking-wide drop-shadow-md">
+                FLC
+            </h1>
+        </a>
         <div class="hidden md:flex items-center space-x-8">
             <nav aria-label="Global">
                 <ul class="flex items-center gap-6 text-sm">
                     <li>
-                      <a href="#daily-showings" class="text-zinc-300 hover:text-orange-600 transition ease-in-out duration-300">
-                        Screenings
-                      </a>
+                        <a href="<?php echo ($currentPage === 'home_page.php') ? '#screenings' : $navLink . 'screenings'; ?>" class="text-zinc-300 hover:text-orange-600 transition ease-in-out duration-300">
+                            Screenings
+                        </a>
                     </li>
                     <li>
-                      <a href="#news" class="text-zinc-300 hover:text-orange-600 transition ease-in-out duration-300">
-                        News
-                      </a>
+                        <a href="<?php echo ($currentPage === 'home_page.php') ? '#news' : $navLink . 'news'; ?>" class="text-zinc-300 hover:text-orange-600 transition ease-in-out duration-300">
+                            News
+                        </a>
                     </li>
                     <li>
-                      <a href="#movie-collection" class="text-zinc-300 hover:text-orange-600 transition ease-in-out duration-300">
-                        Movies
-                      </a>
+                        <a href="<?php echo ($currentPage === 'home_page.php') ? '#movies' : $navLink . 'movies'; ?>" class="text-zinc-300 hover:text-orange-600 transition ease-in-out duration-300">
+                            Movies
+                        </a>
                     </li>
                     <li>
-                      <a href="#contact" class="text-zinc-300 hover:text-orange-600 transition ease-in-out duration-300">
-                        Contact
-                      </a>
+                        <a href="<?php echo ($currentPage === 'home_page.php') ? '#contact' : $navLink . 'contact'; ?>" class="text-zinc-300 hover:text-orange-600 transition ease-in-out duration-300">
+                            Contact
+                        </a>
                     </li>
                 </ul>
             </nav>
@@ -74,22 +92,22 @@
                         <li>
                             <ul class="-mx-2 space-y-1">
                                 <li>
-                                    <a href="#daily-showings" class="frontend-hamburger-menu-link group flex items-center rounded-md p-1 text-sm font-semibold leading-6 text-zinc-100 hover:text-orange-600 transition duration-200">
+                                    <a href="<?php echo ($currentPage === 'home_page.php') ? '#screenings' : $navLink . 'screenings'; ?>" class="frontend-hamburger-menu-link group flex items-center rounded-md p-1 text-sm font-semibold leading-6 text-zinc-100 hover:text-orange-600 transition duration-200">
                                         Screenings
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#news" class="frontend-hamburger-menu-link group flex items-center rounded-md p-1 text-sm font-semibold leading-6 text-zinc-100 hover:text-orange-600 transition duration-200">
+                                    <a href="<?php echo ($currentPage === 'home_page.php') ? '#news' : $navLink . 'news'; ?>" class="frontend-hamburger-menu-link group flex items-center rounded-md p-1 text-sm font-semibold leading-6 text-zinc-100 hover:text-orange-600 transition duration-200">
                                         News
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#movie-collection" class="frontend-hamburger-menu-link group flex items-center rounded-md p-1 text-sm font-semibold leading-6 text-zinc-100 hover:text-orange-600 transition duration-200">
+                                    <a href="<?php echo ($currentPage === 'home_page.php') ? '#movies' : $navLink . 'movies'; ?>" class="frontend-hamburger-menu-link group flex items-center rounded-md p-1 text-sm font-semibold leading-6 text-zinc-100 hover:text-orange-600 transition duration-200">
                                         Movies
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#contact" class="frontend-hamburger-menu-link group flex items-center rounded-md p-1 text-sm font-semibold leading-6 text-zinc-100 hover:text-orange-600 transition duration-200">
+                                    <a href="<?php echo ($currentPage === 'home_page.php') ? '#contact' : $navLink . 'contact'; ?>" class="frontend-hamburger-menu-link group flex items-center rounded-md p-1 text-sm font-semibold leading-6 text-zinc-100 hover:text-orange-600 transition duration-200">
                                         Contact
                                     </a>
                                 </li>

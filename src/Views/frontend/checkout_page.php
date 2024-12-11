@@ -41,11 +41,11 @@ if (!isset($_SESSION['csrf_token'])) {
     <title>Checkout</title>
     <link href="../../../public/css/tailwind.css" rel="stylesheet">
 </head>
-<body class="bg-zinc-900 text-zinc-200 min-h-screen flex items-center justify-center"
-      data-reservation-id="<?php echo htmlspecialchars($reservationId, ENT_QUOTES, 'UTF-8'); ?>"
-      data-screening-id="<?php echo htmlspecialchars($screeningDetails['ScreeningID'], ENT_QUOTES, 'UTF-8'); ?>">
-    <div class="container max-w-4xl mx-auto p-6">
-        <div class="bg-zinc-800 shadow-md rounded-lg p-8">
+<body class="bg-zinc-800 text-zinc-200 min-h-screen flex flex-col" data-reservation-id="<?php echo htmlspecialchars($reservationId, ENT_QUOTES, 'UTF-8'); ?>" data-screening-id="<?php echo htmlspecialchars($screeningDetails['ScreeningID'], ENT_QUOTES, 'UTF-8'); ?>">
+    <?php include '../frontend/frontend_navigation.php'; ?>
+    
+    <main class="flex-grow container max-w-4xl mx-auto p-6">
+        <div class="bg-zinc-700 shadow-md rounded-lg p-8">
             <header class="mb-6">
                 <h1 class="text-3xl font-bold text-orange-500">Checkout</h1>
                 <p class="text-zinc-400 mt-2">Review your reservation details below. Please note that you have to arrive at the cinema at least 20 minutes before the movie starts!</p>
@@ -86,12 +86,22 @@ if (!isset($_SESSION['csrf_token'])) {
                     <input type="hidden" name="amount" value="<?php echo htmlspecialchars($totalPrice * 100, ENT_QUOTES, 'UTF-8'); ?>">
                     <input type="hidden" name="currency" value="DKK">
                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
-                    <button type="submit" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
+                    <button type="submit" class="inline-block rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                         Proceed to Payment
                     </button>
                 </form>
             </section>
         </div>
-    </div>
+    </main>
+    
+    <?php include '../frontend/footer.php'; ?>
+    
+    <?php if ($formMessage): ?>
+        <script>
+            <?php if (strpos($formMessage, 'successfully') !== false): ?>
+                alert("<?php echo addslashes($formMessage); ?>");
+            <?php endif; ?>
+        </script>
+    <?php endif; ?>
 </body>
 </html>
