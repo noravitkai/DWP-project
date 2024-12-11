@@ -250,13 +250,16 @@ SELECT
     r.GuestPhoneNumber,
     r.ScreeningID,
     r.CustomerID,
+    r.Status,
     s.ScreeningDate,
     s.ScreeningTime,
     s.Price,
     m.Title AS MovieTitle,
     c.FirstName AS CustomerFirstName,
     c.LastName AS CustomerLastName,
-    c.Email AS CustomerEmail
+    c.Email AS CustomerEmail,
+    c.PhoneNumber AS CustomerPhoneNumber,
+    (s.Price * r.NumberOfSeats) AS TotalPrice
 FROM 
     Reservation r
 JOIN 
