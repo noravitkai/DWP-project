@@ -44,7 +44,7 @@ CREATE TABLE Movie (
     Subtitle VARCHAR(255),
     Duration INT UNSIGNED,
     Genre VARCHAR(100),
-    ReleaseYear YEAR,
+    ReleaseYear YEAR NOT NULL,
     Director VARCHAR(255),
     MovieDescription TEXT
 );

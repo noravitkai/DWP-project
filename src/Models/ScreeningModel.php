@@ -8,7 +8,7 @@ class Screening {
 
     public function getAllScreenings() {
         $query = "SELECT s.ScreeningID, s.Price, s.ScreeningDate, s.ScreeningTime, 
-                         m.Title AS MovieTitle, r.RoomLabel, r.RoomID 
+                         m.Title AS MovieTitle, m.Duration AS MovieDuration, r.RoomLabel, r.RoomID 
                   FROM Screening s
                   JOIN Movie m ON s.MovieID = m.MovieID
                   JOIN Room r ON s.RoomID = r.RoomID

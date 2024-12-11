@@ -210,6 +210,7 @@ function showPreviewScreeningModal(screening) {
   populateModalFields("previewScreening", screening, {
     ScreeningID: "ID",
     MovieTitle: "MovieTitle",
+    MovieDuration: "MovieDuration",
     ScreeningDate: "Date",
     ScreeningTime: "Time",
     RoomLabel: "Room",
