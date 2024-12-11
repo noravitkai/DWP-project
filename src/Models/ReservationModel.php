@@ -6,6 +6,30 @@ class Reservation {
         $this->db = $dbConnection;
     }
 
+    public function getAllReservations() {
+        $query = "
+            SELECT 
+                * 
+            FROM 
+                ReservationDetails
+            ORDER BY 
+                CreatedAt DESC
+        ";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $reservations;
+    }
+
+    public function getReservationById($reservationId) {
+        $query = "SELECT * FROM ReservationDetails WHERE ReservationID = :reservationId";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':reservationId', $reservationId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function getSeatsByRoomId($roomId) {
         $query = "SELECT * FROM Seat WHERE RoomID = :roomId ORDER BY RowLabel, SeatNumber";
         $stmt = $this->db->prepare($query);
@@ -33,14 +57,6 @@ class Reservation {
         $stmt->bindParam(':screeningId', $screeningId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
-    }
-
-    public function getReservationById($reservationId) {
-        $query = "SELECT * FROM Reservation WHERE ReservationID = :reservationId";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':reservationId', $reservationId, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getSeatsByReservationId($reservationId) {
@@ -105,6 +121,7 @@ class Reservation {
             $stmt->bindValue(':guestEmail', $data['GuestEmail'], PDO::PARAM_STR);
             $stmt->bindValue(':guestPhone', $data['GuestPhoneNumber'], PDO::PARAM_STR);
             $stmt->bindValue(':status', 'Pending', PDO::PARAM_STR);
+            $stmt->bindValue(':reservationToken', $reservationToken, PDO::PARAM_STR);
             $stmt->execute();
 
             $reservationId = $this->db->lastInsertId();
@@ -186,3 +203,4 @@ class Reservation {
         $stmt->execute();
     }
 }
+?>

@@ -13,6 +13,16 @@ class ReservationController {
         $this->paymentController = new PaymentController();
     }
 
+    public function index() {
+        $this->cancelExpiredReservations();
+        $reservations = $this->reservation->getAllReservations();
+        foreach ($reservations as &$reservation) {
+            $reservation['Seats'] = $this->reservation->getSeatsByReservationId($reservation['ReservationID']);
+        }
+
+        return $reservations;
+    }
+
     public function getSeatsByRoomId($roomId) {
         $this->cancelExpiredReservations();
         return $this->reservation->getSeatsByRoomId($roomId);
@@ -25,9 +35,13 @@ class ReservationController {
 
     public function getReservationById($reservationId) {
         $this->cancelExpiredReservations();
-        return $this->reservation->getReservationById($reservationId);
+        $reservation = $this->reservation->getReservationById($reservationId);
+        if ($reservation) {
+            $reservation['Seats'] = $this->reservation->getSeatsByReservationId($reservationId);
+        }
+        return $reservation;
     }
-    
+
     public function getSeatsByReservationId($reservationId) {
         $this->cancelExpiredReservations();
         return $this->reservation->getSeatsByReservationId($reservationId);

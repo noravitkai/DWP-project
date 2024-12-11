@@ -311,6 +311,92 @@ function showEditCinemaModal(cinema) {
   showModal("editCinemaModal");
 }
 
+function showPreviewReservationModal(reservation) {
+  ["ReservationID", "NumberOfSeats", "Status"].forEach((field) => {
+    reservation[field] = decodeHtmlEntities(reservation[field] || "");
+  });
+
+  reservation["ScreeningID"] = decodeHtmlEntities(
+    reservation["ScreeningID"] || ""
+  );
+  reservation["CreatedAt"] = decodeHtmlEntities(reservation["CreatedAt"] || "");
+
+  const screeningInfoHTML = `
+    <p><span class="text-xs font-semibold text-zinc-600 uppercase">ID:</span> ${
+      reservation["ScreeningID"]
+    }</p>
+    <p><span class="text-xs font-semibold text-zinc-600 uppercase">Movie:</span> ${decodeHtmlEntities(
+      reservation["MovieTitle"] || "N/A"
+    )}</p>
+  `;
+  document.getElementById("previewReservationScreeningInfo").innerHTML =
+    screeningInfoHTML;
+
+  let customerInfoHTML = "";
+  if (reservation["CustomerID"]) {
+    customerInfoHTML = `
+          <p><span class="text-xs font-semibold text-zinc-600 uppercase">Name:</span> ${decodeHtmlEntities(
+            reservation["CustomerFirstName"] || ""
+          )} ${decodeHtmlEntities(reservation["CustomerLastName"] || "")}</p>
+          <p><span class="text-xs font-semibold text-zinc-600 uppercase">Email:</span> ${decodeHtmlEntities(
+            reservation["CustomerEmail"] || ""
+          )}</p>
+          <p><span class="text-xs font-semibold text-zinc-600 uppercase">Phone:</span> ${decodeHtmlEntities(
+            reservation["CustomerPhoneNumber"] || ""
+          )}</p>
+      `;
+  } else {
+    customerInfoHTML = `
+          <p><span class="text-xs font-semibold text-zinc-600 uppercase">Guest Name:</span> ${decodeHtmlEntities(
+            reservation["GuestFirstName"] || ""
+          )} ${decodeHtmlEntities(reservation["GuestLastName"] || "")}</p>
+          <p><span class="text-xs font-semibold text-zinc-600 uppercase">Guest Email:</span> ${decodeHtmlEntities(
+            reservation["GuestEmail"] || ""
+          )}</p>
+          <p><span class="text-xs font-semibold text-zinc-600 uppercase">Guest Phone:</span> ${decodeHtmlEntities(
+            reservation["GuestPhoneNumber"] || ""
+          )}</p>
+      `;
+  }
+
+  document.getElementById("previewReservationID").textContent =
+    reservation["ReservationID"];
+  document.getElementById("previewReservationNumberOfSeats").textContent =
+    reservation["NumberOfSeats"];
+  document.getElementById("previewReservationCreatedAt").textContent =
+    reservation["CreatedAt"];
+  document.getElementById("previewReservationStatus").textContent =
+    reservation["Status"];
+  document.getElementById("previewReservationCustomerInfo").innerHTML =
+    customerInfoHTML;
+
+  const pricePerSeat = parseFloat(reservation["Price"]) || 0;
+  const numberOfSeats = parseInt(reservation["NumberOfSeats"]) || 0;
+  const totalPrice = pricePerSeat * numberOfSeats;
+
+  document.getElementById(
+    "previewReservationTotalPrice"
+  ).textContent = `${totalPrice.toFixed(2)} DKK`;
+
+  const seatsList = document.getElementById("previewReservationSeats");
+  seatsList.innerHTML = "";
+  if (
+    reservation["Seats"] &&
+    Array.isArray(reservation["Seats"]) &&
+    reservation["Seats"].length > 0
+  ) {
+    reservation["Seats"].forEach((seat) => {
+      seatsList.innerHTML += `<li>Row ${decodeHtmlEntities(
+        seat["RowLabel"] || ""
+      )}, Seat ${decodeHtmlEntities(seat["SeatNumber"] || "")}</li>`;
+    });
+  } else {
+    seatsList.innerHTML = "<li>No seat information available.</li>";
+  }
+
+  showModal("previewReservationModal");
+}
+
 function showEditProfileModal(customer) {
   [
     "FirstName",
