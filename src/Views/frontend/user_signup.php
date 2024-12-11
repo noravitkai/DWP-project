@@ -7,7 +7,7 @@
     <link href="../../../public/css/tailwind.css" rel="stylesheet">
 </head>
 <body class="bg-zinc-900 text-zinc-100">
-    <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+    <main class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-2xl">
             <h1 class="text-center text-2xl font-bold text-orange-600 sm:text-3xl">User Sign-up</h1>
             <p class="mx-auto mt-4 max-w-lg text-center text-zinc-300">
@@ -65,6 +65,6 @@
                 </div>
             </form>
         </div>
-    </div>
+    </main>
 </body>
 </html>
