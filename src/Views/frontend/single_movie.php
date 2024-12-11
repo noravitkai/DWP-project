@@ -1,9 +1,27 @@
 <?php
 require_once '../../Controllers/MovieController.php';
 require_once '../../Controllers/ScreeningController.php';
+require_once '../../../config/functions.php';
+
+if (isset($_GET['id'])) {
+    $movieId = sanitizeInput($_GET['id']);
+} else {
+    $movieId = null;
+}
+
+if (!$movieId || !is_numeric($movieId)) {
+    header("Location: index.php");
+    exit();
+}
 
 $movieController = new MovieController();
-$movie = $movieController->getMovieById($_GET['id']);
+$movie = $movieController->getMovieById((int)$movieId);
+
+if (!$movie) {
+    header("Location: home_page.php");
+    exit();
+}
+
 $screeningController = new ScreeningController();
 $screenings = $screeningController->getScreeningsByMovieId($movie['MovieID']);
 ?>
@@ -17,13 +35,9 @@ $screenings = $screeningController->getScreeningsByMovieId($movie['MovieID']);
 </head>
 <body class="bg-zinc-800">
     <main class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-        <section class="flex flex-col md:flex-row items-center md:items-start gap-8">
-            <div class="w-full md:w-1/3">
-                <img 
-                    src="<?php echo $movie['ImageURL']; ?>" 
-                    alt="<?php echo $movie['Title']; ?>" 
-                    class="w-auto max-h-80 md:max-h-full shadow-md"
-                />
+        <section class="flex flex-col md:flex-row items-start gap-8">
+            <div class="relative w-1/2 md:w-1/3 aspect-[2/3] overflow-hidden">
+                <img src="<?php echo $movie['ImageURL']; ?>" alt="<?php echo $movie['Title']; ?>" class="object-cover h-full w-full"/>
             </div>
             <div class="w-full md:w-2/3">
                 <h1 class="text-2xl sm:text-3xl font-bold text-orange-600 mb-2"><?php echo $movie['Title']; ?></h1>
@@ -86,7 +100,7 @@ $screenings = $screeningController->getScreeningsByMovieId($movie['MovieID']);
                             </div>
                             <button type="submit" class="inline-flex items-center rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300 w-auto">
                                 <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25-2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
                                 </svg>
                                 Reserve
                             </button>
