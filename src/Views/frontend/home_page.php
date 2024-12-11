@@ -22,7 +22,7 @@ $todaysScreenings = $screeningController->getDailyScreenings();
 </head>
 <body class="bg-zinc-800">
     <?php include '../frontend/frontend_navigation.php'; ?>
-    <section id="daily-showings">
+    <section id="screenings">
         <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
             <header>
                 <h2 class="text-xl font-bold text-orange-600 sm:text-3xl">Daily Showings</h2>
@@ -143,7 +143,7 @@ $todaysScreenings = $screeningController->getDailyScreenings();
             </ul>
         </div>
     </section>
-    <section id="movie-collection">
+    <section id="movies">
         <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
             <header>
                 <h2 class="text-xl font-bold text-orange-600 sm:text-3xl">Movie Collection</h2>

@@ -1,6 +1,7 @@
 <?php
 require_once '../../../config/user_session.php';
 require_once '../../../config/functions.php';
+require_once __DIR__ . '/../../Controllers/CinemaController.php';
 
 if (!isset($_SESSION['csrf_token'])) {
     regenerateCsrfToken();
@@ -15,6 +16,10 @@ function isHeaderInjected($str) {
 function sanitizeForHTML($data) {
     return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
 }
+
+$cinemaController = new CinemaController();
+$cinemas = $cinemaController->index();
+$cinema = $cinemas[0] ?? null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name'] ?? '');
@@ -50,6 +55,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $formMessage = "Failed to send your message. Please try again later.";
         }
     }
+}
+
+$currentPage = basename($_SERVER['PHP_SELF']);
+$navBase = 'home_page.php#';
+
+if ($currentPage === 'home_page.php') {
+    $navLink = '#';
+} else {
+    $navLink = 'home_page.php#';
 }
 ?>
 
@@ -130,48 +144,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="hidden text-orange-600 lg:block">
             <a href="home_page.php">
                 <h1 class="text-orange-600 font-black sm:text-3xl tracking-wide drop-shadow-md">
-                    Fast Lane Cinema
+                    Fast Lane Cine
                 </h1>
             </a>
         </div>
 
         <div class="sm:mt-8 grid grid-cols-1 gap-8 sm:grid-cols-3">
           <div>
-            <p class="max-w-lg text-sm sm:text-base text-orange-600">Site Map</p>
+            <p class="max-w-lg text-sm sm:text-base text-orange-600">Sitemap</p>
             <ul class="mt-6 space-y-4 text-sm">
-              <li><a href="#daily-showings" class="text-zinc-300 transition hover:opacity-75">Daily Showings</a></li>
-              <li><a href="#news" class="text-zinc-300 transition hover:opacity-75">News</a></li>
-              <li><a href="#movie-collection" class="text-zinc-300 transition hover:opacity-75">Movie Collection</a></li>
-              <li><a href="#about" class="text-zinc-300 transition hover:opacity-75">About</a></li>
+              <li><a href="<?php echo ($currentPage === 'home_page.php') ? '#screenings' : $navLink . 'screenings'; ?>" class="text-zinc-300 transition ease-in-out duration-300 hover:opacity-75">Screenings</a></li>
+              <li><a href="<?php echo ($currentPage === 'home_page.php') ? '#news' : $navLink . 'news'; ?>" class="text-zinc-300 transition ease-in-out duration-300 hover:opacity-75">News</a></li>
+              <li><a href="<?php echo ($currentPage === 'home_page.php') ? '#movies' : $navLink . 'movies'; ?>" class="text-zinc-300 transition ease-in-out duration-300 hover:opacity-75">Movies</a></li>
+              <li><a href="<?php echo ($currentPage === 'home_page.php') ? '#contact' : $navLink . 'contact'; ?>" class="text-zinc-300 transition ease-in-out duration-300 hover:opacity-75">Contact</a></li>
             </ul>
           </div>
 
           <div>
             <p class="max-w-lg text-sm sm:text-base text-orange-600">Profile</p>
             <ul class="mt-6 space-y-4 text-sm">
-              <li><a href="user_login.php" class="text-zinc-300 transition hover:opacity-75">Login</a></li>
-              <li><a href="user_signup.php" class="text-zinc-300 transition hover:opacity-75">Signup</a></li>
+              <li><a href="user_login.php" class="text-zinc-300 transition ease-in-out duration-300 hover:opacity-75">Login</a></li>
+              <li><a href="user_signup.php" class="text-zinc-300 transition ease-in-out duration-300 hover:opacity-75">Signup</a></li>
             </ul>
           </div>
 
           <div>
             <p class="max-w-lg text-sm sm:text-base text-orange-600">Contact Info</p>
             <ul class="mt-6 space-y-4 text-sm">
-                <li>                                                        
-                        <a href="tel:<?php echo htmlspecialchars($cinema['PhoneNumber']); ?>" class="text-zinc-300 hover:underline hover:opacity-75">
-                            <?php echo htmlspecialchars($cinema['PhoneNumber']); ?>
-                        </a></li>
                 <li>
-                        <a href="mailto:<?php echo htmlspecialchars($cinema['Email']); ?>" class="text-zinc-300 hover:underline hover:opacity-75">
-                            <?php echo htmlspecialchars($cinema['Email']); ?>
-                        </a>
+                    <a href="tel:<?php echo htmlspecialchars($cinema['PhoneNumber']); ?>" class="text-zinc-300 transition ease-in-out duration-300 hover:opacity-75">
+                        <?php echo htmlspecialchars($cinema['PhoneNumber']); ?>
+                    </a>
+                </li>
+                <li>
+                    <a href="mailto:<?php echo htmlspecialchars($cinema['Email']); ?>" class="text-zinc-300 transition ease-in-out duration-300 hover:opacity-75">
+                        <?php echo htmlspecialchars($cinema['Email']); ?>
+                    </a>
                 </li>
             </ul>
           </div>
         </div>
 
         <div class="mt-8 border-t border-zinc-800 pt-8">
-            <p class="text-xs text-zinc-600">&copy; <?php echo date('Y'); ?>. Fast Lane Cinema. All rights reserved.</p>
+            <p class="text-xs text-zinc-600">&copy; <?php echo date('Y'); ?>. Fast Lane Cine. All rights reserved.</p>
         </div>
       </div>
     </div>

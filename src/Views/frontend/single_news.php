@@ -19,6 +19,7 @@ if (!$news) {
         <title><?php echo $news['Title']; ?> - Fast Lane Cine News</title>
         <link href="../../../public/css/tailwind.css" rel="stylesheet">
     </head>
+    <?php include '../frontend/frontend_navigation.php'; ?>
     <body class="bg-zinc-800 text-zinc-100">
         <div class="mx-auto max-w-screen-lg px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
             <?php if ($news['ImageURL']): ?>
@@ -45,6 +46,7 @@ if (!$news) {
                 Back to Home
             </a>
         </div>
+        <?php include '../frontend/footer.php'; ?>
     </body>
 </html>
 

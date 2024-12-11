@@ -125,6 +125,7 @@ $customerData = $isLoggedIn ? $customerController->fetchLoggedInCustomerData() :
     <link href="../../../public/css/tailwind.css" rel="stylesheet">
 </head>
 <body class="bg-zinc-800">
+<?php include '../frontend/frontend_navigation.php'; ?>
     <main class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
         <?php
         if (isset($_SESSION['error_message'])) {
@@ -291,6 +292,7 @@ $customerData = $isLoggedIn ? $customerController->fetchLoggedInCustomerData() :
             </div>
         </form>
     </main>
+    <?php include '../frontend/footer.php'; ?>
     <script src="../../../public/js/seat-reservation.js"></script>
 </body>
 </html>
