@@ -96,6 +96,7 @@ class Screening {
                   FROM Screening s
                   JOIN Room r ON s.RoomID = r.RoomID
                   WHERE s.MovieID = :movieId
+                  AND CONCAT(s.ScreeningDate, ' ', s.ScreeningTime) >= NOW()
                   ORDER BY s.ScreeningDate, s.ScreeningTime";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':movieId', $movieId, PDO::PARAM_INT);
@@ -104,8 +105,21 @@ class Screening {
     }
 
     public function getDailyScreenings() {
-        $query = "SELECT * FROM DailyScreenings ORDER BY ScreeningTime";
+        $query = "SELECT * 
+                  FROM DailyScreenings 
+                  WHERE CONCAT(CURDATE(), ' ', ScreeningTime) >= NOW()
+                  ORDER BY ScreeningTime";
         $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getDailyScreeningsByMovieId($movieId) {
+        $query = "SELECT * FROM DailyScreenings 
+                  WHERE MovieID = :movieId 
+                  ORDER BY ScreeningTime";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':movieId', $movieId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

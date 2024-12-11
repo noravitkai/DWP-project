@@ -128,21 +128,21 @@ $customerData = $isLoggedIn ? $customerController->fetchLoggedInCustomerData() :
     <main class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
         <?php
         if (isset($_SESSION['error_message'])) {
-            echo "<div class='mb-4 p-4 bg-red-500 text-white rounded'>" . htmlspecialchars($_SESSION['error_message'], ENT_QUOTES, 'UTF-8') . "</div>";
+            echo "<div class='mb-4 p-4 bg-red-500 text-white rounded'>" . $_SESSION['error_message'] . "</div>";
             unset($_SESSION['error_message']);
         }
         ?>
-        <form action="seat_reservation.php?screening_id=<?php echo htmlspecialchars($screeningId, ENT_QUOTES, 'UTF-8'); ?>" method="POST" id="seatReservationForm">
-            <input type="hidden" name="screening_id" value="<?php echo htmlspecialchars($screeningId, ENT_QUOTES, 'UTF-8'); ?>">
-            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8'); ?>">
+        <form action="seat_reservation.php?screening_id=<?php echo $screeningId; ?>" method="POST" id="seatReservationForm">
+            <input type="hidden" name="screening_id" value="<?php echo $screeningId; ?>">
+            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
             <div class="flex flex-col lg:flex-row lg:justify-between gap-8">
                 <div class="w-full lg:w-auto lg:flex-1 flex flex-col">
                     <h1 class="text-2xl sm:text-3xl font-bold text-orange-600 mb-6">Reserve Your Seats</h1>
                     <div class="mb-6 text-sm sm:text-base text-zinc-300">
-                        <p><span class="font-semibold">Movie:</span> <?php echo htmlspecialchars($screeningDetails['MovieTitle'], ENT_QUOTES, 'UTF-8'); ?></p>
-                        <p><span class="font-semibold">Date:</span> <?php echo htmlspecialchars($screeningDetails['ScreeningDate'], ENT_QUOTES, 'UTF-8'); ?></p>
-                        <p><span class="font-semibold">Time:</span> <?php echo htmlspecialchars($screeningDetails['ScreeningTime'], ENT_QUOTES, 'UTF-8'); ?></p>
-                        <p><span class="font-semibold">Room:</span> <?php echo htmlspecialchars($screeningDetails['RoomLabel'], ENT_QUOTES, 'UTF-8'); ?></p>
+                        <p><span class="font-semibold">Movie:</span> <?php echo $screeningDetails['MovieTitle']; ?></p>
+                        <p><span class="font-semibold">Date:</span> <?php echo $screeningDetails['ScreeningDate']; ?></p>
+                        <p><span class="font-semibold">Time:</span> <?php echo $screeningDetails['ScreeningTime']; ?></p>
+                        <p><span class="font-semibold">Room:</span> <?php echo $screeningDetails['RoomLabel']; ?></p>
                         <p class="mt-4">Select your seats by clicking on the ones you prefer. You can choose up to 5 seats for screenings.</p>
                     </div>
                     <div class="space-y-2 text-xs sm:text-sm text-zinc-300">
@@ -166,20 +166,20 @@ $customerData = $isLoggedIn ? $customerController->fetchLoggedInCustomerData() :
                             </div>
                             <?php foreach ($roomSeats as $rowLabel => $seats): ?>
                                 <div class="flex items-center mb-2 text-xs sm:text-sm">
-                                    <span class="text-orange-600 font-bold mr-4 w-6 text-center"><?php echo htmlspecialchars($rowLabel, ENT_QUOTES, 'UTF-8'); ?></span>
+                                    <span class="text-orange-600 font-bold mr-4 w-6 text-center"><?php echo $rowLabel; ?></span>
                                     <div class="flex flex-wrap gap-2">
                                         <?php foreach ($seats as $seat): ?>
                                             <?php 
                                                 $isReserved = in_array($seat['SeatID'], $reservedSeats);
                                             ?>
                                             <label class="relative">
-                                                <input type="checkbox" name="seat_ids[]" value="<?php echo htmlspecialchars($seat['SeatID'], ENT_QUOTES, 'UTF-8'); ?>"
+                                                <input type="checkbox" name="seat_ids[]" value="<?php echo $seat['SeatID']; ?>"
                                                        class="hidden peer seat-checkbox" <?php echo $isReserved ? 'disabled' : ''; ?>>
                                                 <span class="w-8 h-8 flex items-center justify-center rounded-md border
                                                     <?php echo $isReserved
                                                         ? 'bg-red-500 text-zinc-200 border-red-500 cursor-not-allowed'
                                                         : 'bg-zinc-700 text-orange-600 border-orange-600 hover:bg-orange-600 hover:text-zinc-200 cursor-pointer peer-checked:bg-orange-600 peer-checked:text-zinc-200'; ?>">
-                                                    <?php echo htmlspecialchars($seat['SeatNumber'], ENT_QUOTES, 'UTF-8'); ?>
+                                                    <?php echo $seat['SeatNumber']; ?>
                                                 </span>
                                             </label>
                                         <?php endforeach; ?>
@@ -265,20 +265,20 @@ $customerData = $isLoggedIn ? $customerController->fetchLoggedInCustomerData() :
                             </div>
                             <?php foreach ($roomSeats as $rowLabel => $seats): ?>
                                 <div class="flex items-center mb-2 text-xs sm:text-sm">
-                                    <span class="text-orange-600 font-bold mr-4 w-6 text-center"><?php echo htmlspecialchars($rowLabel, ENT_QUOTES, 'UTF-8'); ?></span>
+                                    <span class="text-orange-600 font-bold mr-4 w-6 text-center"><?php echo $rowLabel; ?></span>
                                     <div class="flex flex-wrap gap-2">
                                         <?php foreach ($seats as $seat): ?>
                                             <?php 
                                                 $isReserved = in_array($seat['SeatID'], $reservedSeats);
                                             ?>
                                             <label class="relative">
-                                                <input type="checkbox" name="seat_ids[]" value="<?php echo htmlspecialchars($seat['SeatID'], ENT_QUOTES, 'UTF-8'); ?>"
+                                                <input type="checkbox" name="seat_ids[]" value="<?php echo $seat['SeatID']; ?>"
                                                        class="hidden peer seat-checkbox" <?php echo $isReserved ? 'disabled' : ''; ?>>
                                                 <span class="w-8 h-8 flex items-center justify-center rounded-md border
                                                     <?php echo $isReserved
                                                         ? 'bg-red-500 text-zinc-200 border-red-500 cursor-not-allowed'
                                                         : 'bg-zinc-700 text-orange-600 border-orange-600 hover:bg-orange-600 hover:text-zinc-200 cursor-pointer peer-checked:bg-orange-600 peer-checked:text-zinc-200'; ?>">
-                                                    <?php echo htmlspecialchars($seat['SeatNumber'], ENT_QUOTES, 'UTF-8'); ?>
+                                                    <?php echo $seat['SeatNumber']; ?>
                                                 </span>
                                             </label>
                                         <?php endforeach; ?>
