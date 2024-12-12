@@ -1,14 +1,25 @@
 <?php
 include '../../../config/user_session.php';
 require_once '../../Controllers/NewsController.php';
+require_once '../../../config/functions.php';
+
+if (isset($_GET['id'])) {
+    $newsId = sanitizeInput($_GET['id']);
+} else {
+    $newsId = null;
+}
+
+if (!$newsId || !is_numeric($newsId)) {
+    header("Location: home_page.php");
+    exit();
+}
 
 $newsController = new NewsController();
-$newsId = $_GET['id'] ?? null;
-$news = $newsController->getNewsById($newsId);
+$news = $newsController->getNewsById((int)$newsId);
 
 if (!$news) {
     header("Location: home_page.php");
-    exit;
+    exit();
 }
 
 function getCategoryClass($category) {

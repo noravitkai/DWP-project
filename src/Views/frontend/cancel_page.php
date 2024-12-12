@@ -3,20 +3,28 @@ require_once '../../../config/session.php';
 require_once '../../../config/env_loader.php';
 require_once '../../Controllers/PaymentController.php';
 require_once '../../Controllers/ReservationController.php';
+require_once '../../../config/functions.php';
 
-$reservationId = $_GET['reservation_id'] ?? null;
-
-if ($reservationId && is_numeric($reservationId)) {
-    $paymentController = new PaymentController();
-    $payment = $paymentController->getPaymentByReservationId($reservationId);
-
-    if ($payment) {
-        $paymentController->updatePaymentStatus($payment['StripeSessionID'], 'Canceled');
-    }
-
-    $reservationController = new ReservationController();
-    $reservationController->cancelReservation($reservationId);
+if (isset($_GET['reservation_id'])) {
+    $reservationId = sanitizeInput($_GET['reservation_id']);
+} else {
+    $reservationId = null;
 }
+
+if (!$reservationId || !is_numeric($reservationId)) {
+    header("Location: home_page.php");
+    exit();
+}
+
+$paymentController = new PaymentController();
+$payment = $paymentController->getPaymentByReservationId((int)$reservationId);
+
+if ($payment) {
+    $paymentController->updatePaymentStatus($payment['StripeSessionID'], 'Canceled');
+}
+
+$reservationController = new ReservationController();
+$reservationController->cancelReservation((int)$reservationId);
 
 $formMessage = $_SESSION['form_message'] ?? null;
 unset($_SESSION['form_message']);

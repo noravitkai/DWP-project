@@ -8,15 +8,23 @@ require_once '../../Controllers/ScreeningController.php';
 $reservationController = new ReservationController();
 $screeningController = new ScreeningController();
 
-if (!isset($_GET['reservation_id']) || !is_numeric($_GET['reservation_id'])) {
-    die("Invalid reservation ID.");
+if (isset($_GET['reservation_id'])) {
+    $reservationId = sanitizeInput($_GET['reservation_id']);
+} else {
+    $reservationId = null;
 }
 
-$reservationId = intval($_GET['reservation_id']);
+if (!$reservationId || !is_numeric($reservationId)) {
+    header("Location: home_page.php");
+    exit();
+}
+
+$reservationId = intval($reservationId);
 $reservationDetails = $reservationController->getReservationById($reservationId);
 
 if (!$reservationDetails) {
-    die("Reservation not found.");
+    header("Location: home_page.php");
+    exit();
 }
 
 $screeningDetails = $screeningController->getScreeningById($reservationDetails['ScreeningID']);

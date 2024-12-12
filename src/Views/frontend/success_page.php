@@ -5,15 +5,26 @@ require_once '../../Controllers/ReservationController.php';
 require_once '../../Controllers/ScreeningController.php';
 require_once '../../Controllers/PaymentController.php';
 require_once '../../../stripe-php/init.php';
+require_once '../../../config/functions.php';
 
 use Stripe\Stripe;
 use Stripe\Checkout\Session as StripeSession;
 
-$reservationId = $_GET['reservation_id'] ?? null;
-$sessionId = $_GET['session_id'] ?? null;
+if (isset($_GET['reservation_id'])) {
+    $reservationId = sanitizeInput($_GET['reservation_id']);
+} else {
+    $reservationId = null;
+}
+
+if (isset($_GET['session_id'])) {
+    $sessionId = sanitizeInput($_GET['session_id']);
+} else {
+    $sessionId = null;
+}
 
 if (!$reservationId || !is_numeric($reservationId) || !$sessionId) {
-    die("Invalid reservation or session ID.");
+    header("Location: home_page.php");
+    exit();
 }
 
 $stripeSecretKey = getenv('STRIPE_SECRET_KEY');
@@ -30,7 +41,7 @@ try {
         $paymentController->updatePaymentStatus($sessionId, 'Completed', $checkoutSession->payment_intent);
 
         $reservationController = new ReservationController();
-        $confirmation = $reservationController->confirmReservation($reservationId);
+        $confirmation = $reservationController->confirmReservation((int)$reservationId);
     } else {
         $paymentController = new PaymentController();
         $paymentController->updatePaymentStatus($sessionId, 'Pending');
@@ -41,15 +52,16 @@ try {
 }
 
 $reservationController = new ReservationController();
-$reservationDetails = $reservationController->getReservationById($reservationId);
+$reservationDetails = $reservationController->getReservationById((int)$reservationId);
 
 if (!$reservationDetails) {
-    die("Reservation not found.");
+    header("Location: home_page.php");
+    exit();
 }
 
 $screeningController = new ScreeningController();
 $screeningDetails = $screeningController->getScreeningById($reservationDetails['ScreeningID']);
-$selectedSeats = $reservationController->getSeatsByReservationId($reservationId);
+$selectedSeats = $reservationController->getSeatsByReservationId((int)$reservationId);
 
 if (!empty($reservationDetails['CustomerID'])) {
     require_once '../../Controllers/CustomerController.php';
