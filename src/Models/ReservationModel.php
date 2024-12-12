@@ -8,12 +8,9 @@ class Reservation {
 
     public function getAllReservations() {
         $query = "
-            SELECT 
-                * 
-            FROM 
-                ReservationDetails
-            ORDER BY 
-                CreatedAt DESC
+            SELECT * 
+            FROM ReservationDetails
+            ORDER BY CreatedAt DESC
         ";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
@@ -70,6 +67,20 @@ class Reservation {
         $stmt->bindParam(':reservationId', $reservationId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getReservationsByCustomerId($customerId) {
+        $query = "SELECT * FROM ReservationDetails WHERE CustomerID = :customerId ORDER BY CreatedAt DESC";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':customerId', $customerId, PDO::PARAM_INT);
+        $stmt->execute();
+        $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($reservations as &$reservation) {
+            $reservation['Seats'] = $this->getSeatsByReservationId($reservation['ReservationID']);
+        }
+
+        return $reservations;
     }
 
     public function createReservation($data) {
