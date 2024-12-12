@@ -134,16 +134,6 @@ CREATE TABLE Allocations (
     FOREIGN KEY (SeatID) REFERENCES Seat(SeatID) ON DELETE CASCADE
 );
 
-CREATE TABLE Ticket (
-    TicketID INT AUTO_INCREMENT PRIMARY KEY,
-    SeatID INT NOT NULL,
-    ReservationID INT NOT NULL,
-    ScreeningID INT NOT NULL,
-    FOREIGN KEY (SeatID) REFERENCES Seat(SeatID) ON DELETE RESTRICT,
-    FOREIGN KEY (ReservationID) REFERENCES Reservation(ReservationID) ON DELETE RESTRICT,
-    FOREIGN KEY (ScreeningID) REFERENCES Screening(ScreeningID) ON DELETE RESTRICT
-);
-
 CREATE TABLE Payment (
     PaymentID INT AUTO_INCREMENT PRIMARY KEY,
     PaymentStatus ENUM('Pending', 'Canceled', 'Completed') NOT NULL DEFAULT 'Pending',
@@ -163,16 +153,6 @@ CREATE TABLE News (
     Content TEXT NOT NULL,
     DatePublished DATE NOT NULL,
     Category ENUM('Event', 'Announcement', 'Update') DEFAULT 'Announcement'
-);
-
-CREATE TABLE Event (
-    EventID INT AUTO_INCREMENT PRIMARY KEY,
-    EventName VARCHAR(255) NOT NULL,
-    EventDate DATE NOT NULL,
-    EventDescription TEXT,
-    Discount DECIMAL(5,2) CHECK (Discount >= 0),
-    ScreeningID INT NOT NULL,
-    FOREIGN KEY (ScreeningID) REFERENCES Screening(ScreeningID) ON DELETE RESTRICT
 );
 
 CREATE TABLE NewsImage (
