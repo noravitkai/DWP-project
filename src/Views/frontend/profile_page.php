@@ -1,8 +1,13 @@
 <?php
 require_once '../../../config/user_session.php';
 require_once '../../Controllers/CustomerController.php';
+require_once '../../Controllers/ReservationController.php';
 require_once '../../../config/functions.php';
 requireLogin();
+
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
 define('PASSWORD_CHANGE_LIMIT', 5);
 define('PASSWORD_CHANGE_TIME_WINDOW', 900);
@@ -10,6 +15,8 @@ define('PASSWORD_CHANGE_TIME_WINDOW', 900);
 $userName = $_SESSION['user_name'] ?? 'User';
 $customerController = new CustomerController();
 $customerData = $customerController->getCustomerProfile($_SESSION['user_id']);
+$reservationController = new ReservationController();
+$reservations = $reservationController->getReservationsByCustomerId($_SESSION['user_id']);
 $statusMessage = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -93,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h2 class="text-xl">Profile</h2>
                 <p class="mt-2 text-base text-zinc-300">Manage your profile details here.</p>
                 <div class="mt-6 flex flex-row gap-3">
-                    <button type="button" onclick="showEditProfileModal(<?php echo htmlspecialchars(json_encode($customerData)); ?>)" class="inline-flex items-center rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300">
+                    <button type="button" onclick="showEditProfileModal(<?php echo htmlspecialchars(json_encode($customerData), ENT_QUOTES, 'UTF-8'); ?>)" class="inline-flex items-center rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300">
                         Update Profile
                     </button>
                     <button type="button" onclick="showModal('updatePasswordModal')" class="inline-flex items-center rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300">
@@ -103,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="mt-6">
                     <?php if ($statusMessage): ?>
                         <p class="text-sm <?php echo strpos($statusMessage, 'successfully') !== false ? 'text-green-500' : 'text-red-500'; ?>">
-                            <?php echo htmlspecialchars($statusMessage); ?>
+                            <?php echo $statusMessage; ?>
                         </p>
                     <?php endif; ?>
                 </div>
@@ -130,15 +137,73 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </dl>
                 </div>
             </section>
+            <section class="mt-8 sm:mt-12">
+                <h2 class="text-xl">Reservations</h2>
+                <p class="mt-2 text-base text-zinc-300">Review your reservation details here.</p>
+                <div class="overflow-x-auto">
+                    <div class="max-h-96">
+                        <table class="min-w-full my-10 text-zinc-400 overflow-y-scroll">
+                            <thead>
+                                <tr>
+                                    <th class="px-2 py-1 sm:px-4 sm:py-2 border-b-2 border-zinc-700 text-left text-xs font-semibold text-zinc-300 uppercase">Movie Title</th>
+                                    <th class="px-2 py-1 sm:px-4 sm:py-2 border-b-2 border-zinc-700 text-left text-xs font-semibold text-zinc-300 uppercase">Created At</th>
+                                    <th class="px-2 py-1 sm:px-4 sm:py-2 border-b-2 border-zinc-700 text-left text-xs font-semibold text-zinc-300 uppercase">Number of Seats</th>
+                                    <th class="px-2 py-1 sm:px-4 sm:py-2 border-b-2 border-zinc-700 text-left text-xs font-semibold text-zinc-300 uppercase">Status</th>
+                                    <th class="px-2 py-1 sm:px-4 sm:py-2 border-b-2 border-zinc-700 text-left text-xs font-semibold text-zinc-300 uppercase">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (!empty($reservations)): ?>
+                                    <?php foreach ($reservations as $reservation): ?>
+                                        <tr>
+                                            <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-700 text-sm">
+                                                <?php echo $reservation['MovieTitle']; ?>
+                                            </td>
+                                            <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-700 text-sm">
+                                                <?php echo $reservation['CreatedAt']; ?>
+                                            </td>
+                                            <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-700 text-sm">
+                                                <?php echo $reservation['NumberOfSeats']; ?>
+                                            </td>
+                                            <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-700 text-sm">
+                                                <?php echo $reservation['Status']; ?>
+                                            </td>
+                                            <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-700 text-sm">
+                                                <?php if (strtolower($reservation['Status']) === 'confirmed'): ?>
+                                                    <a href="ticket.php?reservationId=<?php echo urlencode($reservation['ReservationID']); ?>" 
+                                                    class="flex items-center py-1 mt-2 text-orange-600 hover:text-orange-500 transition ease-in-out duration-300" 
+                                                    target="_blank"
+                                                    aria-label="View Ticket for Reservation ID <?php echo $reservation['ReservationID']; ?>">
+                                                        <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                                                        </svg>
+                                                        Ticket
+                                                    </a>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="5" class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-700 text-sm text-center text-zinc-400">
+                                            No reservations found.
+                                        </td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
             <a href="../../../src/Controllers/CustomerController.php?action=logout" 
-            class="inline-block mt-6 rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
+            class="inline-block mt-8 sm:mt-12 rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                 Log Out
             </a>
         </div>
         <div id="modalBackdrop" class="hidden fixed inset-0 z-40 bg-zinc-900 bg-opacity-50"></div>
         <div id="editProfileModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center p-4">
             <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
-                <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
+                <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-700">
                     <h3 class="text-lg font-semibold text-zinc-900">Edit Profile</h3>
                     <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900" onclick="hideModal('editProfileModal')">
                         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -200,7 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div id="updatePasswordModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center p-4">
             <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
-                <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
+                <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-700">
                     <h3 class="text-lg font-semibold text-zinc-900">Update Password</h3>
                     <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900" onclick="hideModal('updatePasswordModal')">
                         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">

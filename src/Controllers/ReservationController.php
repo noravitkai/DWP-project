@@ -47,6 +47,12 @@ class ReservationController {
         return $this->reservation->getSeatsByReservationId($reservationId);
     }
 
+    public function getReservationsByCustomerId($customerId) {
+        $this->cancelExpiredReservations();
+        $reservations = $this->reservation->getReservationsByCustomerId($customerId);
+        return $reservations;
+    }
+
     public function createReservation($data) {
         try {
             $reservationId = $this->reservation->createReservation($data);
