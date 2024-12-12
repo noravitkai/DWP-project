@@ -268,31 +268,38 @@ $reservations = $reservationController->index();
                                 <div class="grid gap-4 sm:grid-cols-2">
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Title:</label>
-                                        <input type="text" name="Title" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Fast & Furious X" required>
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 255 characters</span>
+                                        <input type="text" name="Title" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Fast & Furious X" maxlength="255" required>
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Subtitle:</label>
-                                        <input type="text" name="Subtitle" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., A new age begins">
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 255 characters</span>
+                                        <input type="text" name="Subtitle" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., A new age begins" maxlength="255">
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Release Year:</label>
+                                        <span class="text-zinc-500 text-xs block mb-1">Between 1900–2100</span>
                                         <input type="number" name="ReleaseYear" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" min="1900" max="2100" placeholder="e.g., 2024" required>
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Genre:</label>
-                                        <input type="text" name="Genre" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Action">
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 100 characters</span>
+                                        <input type="text" name="Genre" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Action" maxlength="100">
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Director:</label>
-                                        <input type="text" name="Director" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., John Doe">
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 255 characters</span>
+                                        <input type="text" name="Director" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., John Doe" maxlength="255">
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Duration:</label>
+                                        <span class="text-zinc-500 text-xs block mb-1">Min. 1 minute</span>
                                         <input type="number" name="Duration" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600"  min="1" placeholder="e.g., 106">
                                     </div>
                                     <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Description:</label>
-                                        <textarea name="MovieDescription" rows="6" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="Type the movie's description here..."></textarea>
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 500 characters</span>
+                                        <textarea name="MovieDescription" rows="6" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="Type the movie's description here..." maxlength="500"></textarea>
                                     </div>
                                     <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Cast:</label>
@@ -382,31 +389,38 @@ $reservations = $reservationController->index();
                                 <div class="grid gap-4 sm:grid-cols-2">
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Title:</label>
-                                        <input type="text" id="editMovieTitle" name="Title" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Fast & Furious X" required>
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 255 characters</span>
+                                        <input type="text" id="editMovieTitle" name="Title" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Fast & Furious X" maxlength="255" required>
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Subtitle:</label>
-                                        <input type="text" id="editMovieSubtitle" name="Subtitle" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., A new age begins">
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 255 characters</span>
+                                        <input type="text" id="editMovieSubtitle" name="Subtitle" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., A new age begins" maxlength="255">
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Release Year:</label>
+                                        <span class="text-zinc-500 text-xs block mb-1">Between 1900–2100</span>
                                         <input type="number" id="editMovieReleaseYear" name="ReleaseYear" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" min="1900" max="2100" placeholder="e.g., 2024" required>
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Genre:</label>
-                                        <input type="text" id="editMovieGenre" name="Genre" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Action">
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 100 characters</span>
+                                        <input type="text" id="editMovieGenre" name="Genre" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Action" maxlength="100">
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Director:</label>
-                                        <input type="text" id="editMovieDirector" name="Director" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., John Doe">
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 255 characters</span>
+                                        <input type="text" id="editMovieDirector" name="Director" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., John Doe" maxlength="255">
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Duration:</label>
+                                        <span class="text-zinc-500 text-xs block mb-1">Min. 1 minute</span>
                                         <input type="number" id="editMovieDuration" name="Duration" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" min="1" placeholder="e.g., 106">
                                     </div>
                                     <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Description:</label>
-                                        <textarea id="editMovieDescription" name="MovieDescription" rows="6" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="Type the movie's description here..."></textarea>
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 500 characters</span>
+                                        <textarea id="editMovieDescription" name="MovieDescription" rows="6" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="Type the movie's description here..." maxlength="500"></textarea>
                                     </div>
                                     <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Cast:</label>
@@ -527,6 +541,7 @@ $reservations = $reservationController->index();
                                 <div class="grid gap-4 sm:grid-cols-2">
                                     <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Movie:</label>
+                                        <span class="text-zinc-500 text-xs block mb-1">Choose from the list below</span>
                                         <select name="MovieID" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 bg-white focus:outline-none focus:ring-1 focus:ring-orange-600" required>
                                             <option value="" disabled selected>Select movie</option>
                                             <?php foreach ($movies as $movie): ?>
@@ -536,24 +551,28 @@ $reservations = $reservationController->index();
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Screening Date:</label>
+                                        <span class="text-zinc-500 text-xs block mb-1">Select today's or any future date</span>
                                         <input type="date" min="<?php echo date('Y-m-d'); ?>" name="ScreeningDate" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Screening Time:</label>
+                                        <span class="text-zinc-500 text-xs block mb-1">Min. 15-min gap/room/day</span>
                                         <input type="time" name="ScreeningTime" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Room:</label>
+                                        <span class="text-zinc-500 text-xs block mb-1">Choose from the list below</span>
                                         <select name="RoomID" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 bg-white focus:outline-none focus:ring-1 focus:ring-orange-600" required>
                                             <option value="" disabled selected>Select room</option>
                                             <?php foreach ($rooms as $room): ?>
-                                                <option value="<?php echo htmlspecialchars($room['RoomID']); ?>"><?php echo htmlspecialchars($room['RoomLabel']); ?></option>
+                                                <option value="<?php echo $room['RoomID']; ?>"><?php echo $room['RoomLabel']; ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Price:</label>
-                                        <input type="number" step="0.01" name="Price" min="0.01" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., 30" required>
+                                        <span class="text-zinc-500 text-xs block mb-1">Between 0.01–99999999.99</span>
+                                        <input type="number" step="0.01" name="Price" min="0.01" max="99999999.99" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., 30" required>
                                     </div>
                                     <div class="sm:col-span-2 text-right">
                                         <button type="submit" name="addScreeningBtn" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-white hover:bg-orange-500 transition ease-in-out duration-300">
@@ -624,24 +643,28 @@ $reservations = $reservationController->index();
                                 <div class="grid gap-4 sm:grid-cols-2">
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Screening Date:</label>
+                                        <span class="text-zinc-500 text-xs block mb-1">Select today or any future date</span>
                                         <input type="date" id="editScreeningDate" name="ScreeningDate" min="<?php echo date('Y-m-d'); ?>" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Screening Time:</label>
+                                        <span class="text-zinc-500 text-xs block mb-1">Min. 15-min gap/room/day</span>
                                         <input type="time" id="editScreeningTime" name="ScreeningTime" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" required>
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Room:</label>
+                                        <span class="text-zinc-500 text-xs block mb-1">Choose from the list below</span>
                                         <select id="editScreeningRoomID" name="RoomID" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600 bg-white" required>
                                             <option value="" disabled>Select room</option>
                                             <?php foreach ($rooms as $room): ?>
-                                                <option value="<?php echo htmlspecialchars($room['RoomID']); ?>"><?php echo htmlspecialchars($room['RoomLabel']); ?></option>
+                                                <option value="<?php echo $room['RoomID']; ?>"><?php echo $room['RoomLabel']; ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Price:</label>
-                                        <input type="number" step="0.01" min="0.01" id="editScreeningPrice" name="Price" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., 30" required>
+                                        <span class="text-zinc-500 text-xs block mb-1">Between 0.01–99999999.99</span>
+                                        <input type="number" step="0.01" min="0.01" max="99999999.99" id="editScreeningPrice" name="Price" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., 30" required>
                                     </div>
                                     <div class="sm:col-span-2 text-right">
                                         <button type="submit" name="updateScreeningBtn" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
@@ -748,10 +771,12 @@ $reservations = $reservationController->index();
                                 <div class="grid gap-4 sm:grid-cols-2">
                                     <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Title:</label>
-                                        <input type="text" name="Title" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Dom Torretto's secret is revealed!" required>
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 255 characters</span>
+                                        <input type="text" name="Title" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Dom Toretto's secret is revealed!" maxlength="255" required>
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Category:</label>
+                                        <span class="text-zinc-500 text-xs block mb-1">Choose from the list below</span>
                                         <select name="Category" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600 bg-white" required>
                                             <option value="Announcement" selected>Announcement</option>
                                             <option value="Event">Event</option>
@@ -760,11 +785,13 @@ $reservations = $reservationController->index();
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Date Published:</label>
-                                        <input type="date" name="DatePublished" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" max="<?php echo date('Y-m-d'); ?>"  required>
+                                        <span class="text-zinc-500 text-xs block mb-1">Choose any past date if needed</span>
+                                        <input type="date" name="DatePublished" value="<?php echo date('Y-m-d'); ?>" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" max="<?php echo date('Y-m-d'); ?>" required>
                                     </div>
                                     <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Content:</label>
-                                        <textarea name="Content" rows="6" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Dominic Torretto is back again..." required></textarea>
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 5000 characters</span>
+                                        <textarea name="Content" rows="6" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Dominic Toretto is back again..." maxlength="5000" required></textarea>
                                     </div>
                                     <div class="sm:col-span-2">
                                         <label for="newsImage">Upload Image:</label>
@@ -829,10 +856,12 @@ $reservations = $reservationController->index();
                                 <div class="grid gap-4 sm:grid-cols-2">
                                     <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Title:</label>
-                                        <input type="text" id="editNewsTitle" name="Title" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Dom Torretto's secret is revealed!" required>
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 255 characters</span>
+                                        <input type="text" id="editNewsTitle" name="Title" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Dom Toretto's secret is revealed!" maxlength="255" required>
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Category:</label>
+                                        <span class="text-zinc-500 text-xs block mb-1">Choose from the list below</span>
                                         <select id="editNewsCategory" name="Category" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600 bg-white">
                                             <option value="Announcement" selected>Announcement</option>
                                             <option value="Event">Event</option>
@@ -841,11 +870,13 @@ $reservations = $reservationController->index();
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Date Published:</label>
+                                        <span class="text-zinc-500 text-xs block mb-1">Choose any past date if needed</span>
                                         <input type="date" id="editNewsDatePublished" name="DatePublished" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" max="<?php echo date('Y-m-d'); ?>" required>
                                     </div>
                                     <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Content:</label>
-                                        <textarea id="editNewsContent" name="Content" rows="6" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Dominic Torretto is back again..." required></textarea>
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 5000 characters</span>
+                                        <textarea id="editNewsContent" name="Content" rows="6" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Dominic Toretto is back again..." maxlength="5000" required></textarea>
                                     </div>
                                     <div class="sm:col-span-2">
                                         <label for="newsImage">Upload Image:</label>
@@ -903,29 +934,29 @@ $reservations = $reservationController->index();
                                     <div class="divide-y divide-zinc-200">
                                         <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-2">
                                             <dt class="text-xs font-semibold text-zinc-600 uppercase">Title</dt>
-                                            <dd><?php echo htmlspecialchars($cinema['Tagline']); ?></dd>
+                                            <dd><?php echo $cinema['Tagline']; ?></dd>
                                         </div>
                                         <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-2">
                                             <dt class="text-xs font-semibold text-zinc-600 uppercase">Description</dt>
-                                            <dd><?php echo htmlspecialchars($cinema['Description']); ?></dd>
+                                            <dd><?php echo $cinema['Description']; ?></dd>
                                         </div>
                                         <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-2">
                                             <dt class="text-xs font-semibold text-zinc-600 uppercase">Phone</dt>
-                                            <dd><?php echo htmlspecialchars($cinema['PhoneNumber']); ?></dd>
+                                            <dd><?php echo $cinema['PhoneNumber']; ?></dd>
                                         </div>
                                         <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-2">
                                             <dt class="text-xs font-semibold text-zinc-600 uppercase">Email</dt>
-                                            <dd><?php echo htmlspecialchars($cinema['Email']); ?></dd>
+                                            <dd><?php echo $cinema['Email']; ?></dd>
                                         </div>
                                         <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-2">
                                             <dt class="text-xs font-semibold text-zinc-600 uppercase">Opening Hours</dt>
-                                            <dd><?php echo htmlspecialchars($cinema['OpeningHours']); ?></dd>
+                                            <dd><?php echo $cinema['OpeningHours']; ?></dd>
                                         </div>
                                         <div class="grid grid-cols-1 gap-1 py-3 sm:grid-cols-2">
                                             <dt class="text-xs font-semibold text-zinc-600 uppercase">Image</dt>
                                             <dd>
                                                 <?php if (!empty($cinema['ImageURL'])): ?>
-                                                    <img src="<?php echo htmlspecialchars($cinema['ImageURL']); ?>" alt="Cinema Image" class="w-32 h-auto">
+                                                    <img src="<?php echo $cinema['ImageURL']; ?>" alt="Cinema Image" class="w-32 h-auto">
                                                 <?php else: ?>
                                                     <span>No image available.</span>
                                                 <?php endif; ?>
@@ -950,24 +981,29 @@ $reservations = $reservationController->index();
                                 <input type="hidden" id="editCinemaID" name="CinemaID">
                                 <div class="grid gap-4 sm:grid-cols-2">
                                     <div class="sm:col-span-2">
-                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Title:</label>
-                                        <input type="text" id="editCinemaTitle" name="Tagline" required class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Fast cars and much more!" required> 
+                                        <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Tagline:</label>
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 255 characters</span>
+                                        <input type="text" id="editCinemaTitle" name="Tagline" required class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Fast cars and much more!" maxlength="255" required> 
                                     </div>
                                     <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Description:</label>
-                                        <textarea id="editCinemaDescription" name="Description" required class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Family is fast, Family is everything!" required></textarea>
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 500 characters</span>
+                                        <textarea id="editCinemaDescription" name="Description" required class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Family is fast, Family is everything!" maxlength="500" required></textarea>
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Phone:</label>
-                                        <input type="tel" id="editCinemaPhone" name="PhoneNumber" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., +36 30 561 2282">
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 20 characters</span>
+                                        <input type="tel" id="editCinemaPhone" name="PhoneNumber" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., +36 30 561 2282" maxlength="20">
                                     </div>
                                     <div>
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Email:</label>
-                                        <input type="email" id="editCinemaEmail" name="Email" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., fast@furiouscine.com" required>
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 255 characters</span>
+                                        <input type="email" id="editCinemaEmail" name="Email" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., fast@furiouscine.com" maxlength="255" required>
                                     </div>
                                     <div class="sm:col-span-2">
                                         <label class="block mb-1 text-xs font-semibold text-zinc-600 uppercase">Opening Hours:</label>
-                                        <textarea id="editCinemaOpeningHours" name="OpeningHours" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Monday-Friday: 10:00 AM - 10:00 PM" required></textarea>
+                                        <span class="text-zinc-500 text-xs block mb-1">Max. 300 characters</span>
+                                        <textarea id="editCinemaOpeningHours" name="OpeningHours" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600" placeholder="e.g., Monday-Friday: 10:00 AM - 10:00 PM" maxlength="300" required></textarea>
                                     </div>
                                     <div class="sm:col-span-2">
                                         <label for="cinemaImage">Upload Image:</label>
@@ -1001,10 +1037,10 @@ $reservations = $reservationController->index();
                                 <tbody>
                                     <?php foreach ($reservations as $reservation): ?>
                                     <tr>
-                                        <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-200 text-sm"><?php echo htmlspecialchars($reservation['ReservationID']); ?></td>
-                                        <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-200 text-sm"><?php echo htmlspecialchars($reservation['CreatedAt']); ?></td>
-                                        <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-200 text-sm">ID: <?php echo htmlspecialchars($reservation['ScreeningID']); ?>; movie: <?php echo htmlspecialchars($reservation['MovieTitle']); ?></td>
-                                        <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-200 text-sm"><?php echo htmlspecialchars($reservation['Status']); ?></td>
+                                        <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-200 text-sm"><?php echo $reservation['ReservationID']; ?></td>
+                                        <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-200 text-sm"><?php echo $reservation['CreatedAt']; ?></td>
+                                        <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-200 text-sm">ID: <?php echo $reservation['ScreeningID']; ?>; movie: <?php echo $reservation['MovieTitle']; ?></td>
+                                        <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-200 text-sm"><?php echo $reservation['Status']; ?></td>
                                         <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-200 text-sm">
                                             <button type="button" onclick="showPreviewReservationModal(<?php echo htmlspecialchars(json_encode($reservation), ENT_QUOTES, 'UTF-8'); ?>)" class="flex w-full items-center py-1 text-zinc-600 hover:text-zinc-900 transition ease-in-out duration-300">
                                                 <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">

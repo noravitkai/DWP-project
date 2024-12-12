@@ -67,19 +67,28 @@ function addActorField(
   actorEntry.classList.add("actor-entry", "flex", "gap-2");
 
   actorEntry.innerHTML = `
-    <input type="text" name="ActorFirstNames[]" value="${firstName}" placeholder="First Name" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
-    <input type="text" name="ActorLastNames[]" value="${lastName}" placeholder="Last Name" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
-    <input type="text" name="ActorRoles[]" value="${role}" placeholder="Role" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
-    <button type="button" class="actor-btn text-zinc-600 hover:text-zinc-900 transition ease-in-out duration-300">
-      <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-        ${
-          showAddButton
-            ? `<path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z" clip-rule="evenodd" />`
-            : `<path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm3 10.5a.75.75 0 0 0 0-1.5H9a.75.75 0 0 0 0 1.5h6Z" clip-rule="evenodd" />`
-        }
-      </svg>
-    </button>
-  `;
+  <div class="flex flex-col w-full">
+    <span class="text-zinc-500 text-xs block mb-1">Max. 50 characters</span>
+    <input type="text" name="ActorFirstNames[]" value="${firstName}" placeholder="First Name" maxlength="50" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+  </div>
+  <div class="flex flex-col w-full">
+    <span class="text-zinc-500 text-xs block mb-1">Max. 50 characters</span>
+    <input type="text" name="ActorLastNames[]" value="${lastName}" placeholder="Last Name" maxlength="50" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+  </div>
+  <div class="flex flex-col w-full">
+    <span class="text-zinc-500 text-xs block mb-1">Max. 100 characters</span>
+    <input type="text" name="ActorRoles[]" value="${role}" placeholder="Role" maxlength="255" class="w-full p-2 border border-zinc-300 rounded-md text-sm text-zinc-900 focus:outline-none focus:ring-1 focus:ring-orange-600">
+  </div>
+  <button type="button" class="actor-btn pt-5 text-zinc-600 hover:text-zinc-900 transition ease-in-out duration-300">
+    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      ${
+        showAddButton
+          ? `<path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z" clip-rule="evenodd" />`
+          : `<path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm3 10.5a.75.75 0 0 0 0-1.5H9a.75.75 0 0 0 0 1.5h6Z" clip-rule="evenodd" />`
+      }
+    </svg>
+  </button>
+`;
 
   container.appendChild(actorEntry);
 
