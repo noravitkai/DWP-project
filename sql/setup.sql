@@ -82,7 +82,7 @@ CREATE TABLE Customer (
     Street VARCHAR(255),
     Country VARCHAR(100) NOT NULL,
     PostalCodeID INT NOT NULL,
-    FOREIGN KEY (PostalCodeID) REFERENCES PostalCode(PostalCodeID) ON DELETE CASCADE
+    FOREIGN KEY (PostalCodeID) REFERENCES PostalCode(PostalCodeID) ON DELETE RESTRICT
 );
 
 CREATE TABLE Screening (
@@ -92,8 +92,8 @@ CREATE TABLE Screening (
     ScreeningTime TIME NOT NULL,
     MovieID INT NOT NULL,
     RoomID INT NOT NULL,
-    FOREIGN KEY (MovieID) REFERENCES Movie(MovieID) ON DELETE CASCADE,
-    FOREIGN KEY (RoomID) REFERENCES Room(RoomID) ON DELETE CASCADE
+    FOREIGN KEY (MovieID) REFERENCES Movie(MovieID) ON DELETE RESTRICT,
+    FOREIGN KEY (RoomID) REFERENCES Room(RoomID) ON DELETE RESTRICT
 );
 
 CREATE TABLE Reservation (
@@ -108,8 +108,8 @@ CREATE TABLE Reservation (
     CustomerID INT,
     `Status` ENUM('Pending', 'Confirmed', 'Canceled') NOT NULL DEFAULT 'Pending',
     ReservationToken VARCHAR(64) UNIQUE NULL,
-    FOREIGN KEY (ScreeningID) REFERENCES Screening(ScreeningID) ON DELETE CASCADE,
-    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE CASCADE,
+    FOREIGN KEY (ScreeningID) REFERENCES Screening(ScreeningID) ON DELETE RESTRICT,
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE SET NULL,
     CHECK (
         (CustomerID IS NOT NULL AND GuestFirstName IS NULL AND GuestLastName IS NULL AND GuestEmail IS NULL AND GuestPhoneNumber IS NULL) OR
         (CustomerID IS NULL AND GuestFirstName IS NOT NULL AND GuestLastName IS NOT NULL AND GuestEmail IS NOT NULL AND GuestPhoneNumber IS NOT NULL)
@@ -139,9 +139,9 @@ CREATE TABLE Ticket (
     SeatID INT NOT NULL,
     ReservationID INT NOT NULL,
     ScreeningID INT NOT NULL,
-    FOREIGN KEY (SeatID) REFERENCES Seat(SeatID) ON DELETE CASCADE,
-    FOREIGN KEY (ReservationID) REFERENCES Reservation(ReservationID) ON DELETE CASCADE,
-    FOREIGN KEY (ScreeningID) REFERENCES Screening(ScreeningID) ON DELETE CASCADE
+    FOREIGN KEY (SeatID) REFERENCES Seat(SeatID) ON DELETE RESTRICT,
+    FOREIGN KEY (ReservationID) REFERENCES Reservation(ReservationID) ON DELETE RESTRICT,
+    FOREIGN KEY (ScreeningID) REFERENCES Screening(ScreeningID) ON DELETE RESTRICT
 );
 
 CREATE TABLE Payment (
@@ -154,7 +154,7 @@ CREATE TABLE Payment (
     CustomerID INT,
     ReservationID INT NOT NULL,
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE SET NULL,
-    FOREIGN KEY (ReservationID) REFERENCES Reservation(ReservationID) ON DELETE CASCADE
+    FOREIGN KEY (ReservationID) REFERENCES Reservation(ReservationID) ON DELETE RESTRICT
 );
 
 CREATE TABLE News (
@@ -172,7 +172,7 @@ CREATE TABLE Event (
     EventDescription TEXT,
     Discount DECIMAL(5,2) CHECK (Discount >= 0),
     ScreeningID INT NOT NULL,
-    FOREIGN KEY (ScreeningID) REFERENCES Screening(ScreeningID) ON DELETE CASCADE
+    FOREIGN KEY (ScreeningID) REFERENCES Screening(ScreeningID) ON DELETE RESTRICT
 );
 
 CREATE TABLE NewsImage (
