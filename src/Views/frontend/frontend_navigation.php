@@ -59,7 +59,7 @@ if ($currentPage === 'home_page.php') {
                         Profile
                     </a>
                     <a href="../../../src/Controllers/CustomerController.php?action=logout" class="inline-flex items-center justify-center rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
-                        Sign Out
+                        Log out
                     </a>
                 <?php else: ?>
                     <a href="user_login.php" class="inline-flex items-center justify-center rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
@@ -122,7 +122,7 @@ if ($currentPage === 'home_page.php') {
                             <form action="../../Controllers/CustomerController.php?action=logout" method="POST" class="inline">
                                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
                                 <button type="submit" class="inline-flex items-center justify-center rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300 w-full">
-                                    Sign Out
+                                    Log out
                                 </button>
                             </form>
                         <?php else: ?>
