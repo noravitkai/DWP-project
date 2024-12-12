@@ -10,7 +10,7 @@ if (isset($_GET['id'])) {
 }
 
 if (!$movieId || !is_numeric($movieId)) {
-    header("Location: index.php");
+    header("Location: home_page.php");
     exit();
 }
 
