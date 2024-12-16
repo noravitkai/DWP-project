@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/session.php';
 require_once __DIR__ . '/../Models/CustomerModel.php';
 require_once __DIR__ . '/../../config/dbcon.php';
 require_once __DIR__ . '/../../config/functions.php';
@@ -8,9 +9,6 @@ class CustomerController {
 
     public function __construct() {
         $this->customerModel = new CustomerModel();
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
     }
 
     public function fetchLoggedInCustomerData() {
@@ -27,6 +25,10 @@ class CustomerController {
 
     public function register($data) {
         try {
+            if (!isset($data['csrf_token']) || !verifyCsrfToken($data['csrf_token'])) {
+                $this->redirect('../../src/Views/frontend/user_signup.php');
+            }
+
             $result = $this->customerModel->createCustomer(
                 $data['firstName'],
                 $data['lastName'],
@@ -40,28 +42,36 @@ class CustomerController {
                 $data['city']
             );
             if ($result) {
+                regenerateCsrfToken();
                 $this->redirect('../../src/Views/frontend/user_login.php');
             } else {
-                throw new Exception("Registration failed. Please try again.");
+                throw new Exception("Registration failed.");
             }
         } catch (Exception $e) {
-            echo $e->getMessage();
+            error_log("Customer Registration Error: " . $e->getMessage());
+            $this->redirect('../../src/Views/frontend/user_signup.php');
         }
     }
 
     public function login($email, $password) {
+        if (!isset($_POST['csrf_token']) || !verifyCsrfToken($_POST['csrf_token'])) {
+            $this->redirect('../../src/Views/frontend/user_login.php');
+        }
+
         $sanitizedEmail = sanitizeInput($email);
         try {
             $customer = $this->customerModel->getCustomerByEmail($sanitizedEmail);
             if ($customer && password_verify($password, $customer['Password'])) {
                 $_SESSION['user_id'] = $customer['CustomerID'];
                 $_SESSION['user_name'] = $customer['FirstName'];
+                regenerateCsrfToken();
                 $this->redirect('../../src/Views/frontend/profile_page.php');
             } else {
                 $this->redirect('../../src/Views/frontend/user_login.php?error=invalid_credentials');
             }
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            error_log("Customer Login Error: " . $e->getMessage());
+            $this->redirect('../../src/Views/frontend/user_login.php');
         }
     }
 
@@ -103,9 +113,17 @@ class CustomerController {
 }
 
 if (isset($_GET['action'])) {
+    $allowedActions = ['register', 'login', 'logout', 'update'];
+    $action = $_GET['action'];
+
+    if (!in_array($action, $allowedActions, true)) {
+        header('HTTP/1.1 400 Bad Request');
+        exit('Invalid action.');
+    }
+
     $controller = new CustomerController();
 
-    if ($_GET['action'] === 'register' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($action === 'register' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $registrationData = [
             'firstName' => $_POST['first_name'] ?? null,
             'lastName' => $_POST['last_name'] ?? null,
@@ -116,22 +134,23 @@ if (isset($_GET['action'])) {
             'street' => $_POST['street'] ?? null,
             'country' => $_POST['country'] ?? null,
             'postalCode' => $_POST['postal_code'] ?? null,
-            'city' => $_POST['city'] ?? null
+            'city' => $_POST['city'] ?? null,
+            'csrf_token' => $_POST['csrf_token'] ?? null
         ];
         $controller->register($registrationData);
     }
 
-    if ($_GET['action'] === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($action === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = $_POST['email'] ?? null;
         $password = $_POST['password'] ?? null;
         $controller->login($email, $password);
     }
 
-    if ($_GET['action'] === 'logout') {
+    if ($action === 'logout') {
         $controller->logout();
     }
 
-    if ($_GET['action'] === 'update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($action === 'update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $controller->updateCustomer($_POST);
     }
 }
