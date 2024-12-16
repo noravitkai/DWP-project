@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="../../../public/css/tailwind.css" rel="stylesheet">
 </head>
 <body class="bg-zinc-800 text-zinc-100">
-<?php include '../frontend/frontend_navigation.php'; ?>
+    <?php include '../frontend/frontend_navigation.php'; ?>
     <main>
         <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
             <h1 class="text-2xl font-bold text-orange-600 sm:text-3xl">Welcome, <?php echo $userName; ?>!</h1>
@@ -142,18 +142,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p class="mt-2 text-base text-zinc-300">Review your reservation details here.</p>
                 <div class="overflow-x-auto">
                     <div class="max-h-96">
-                        <table class="min-w-full my-10 text-zinc-400 overflow-y-scroll">
-                            <thead>
-                                <tr>
-                                    <th class="px-2 py-1 sm:px-4 sm:py-2 border-b-2 border-zinc-700 text-left text-xs font-semibold text-zinc-300 uppercase">Movie Title</th>
-                                    <th class="px-2 py-1 sm:px-4 sm:py-2 border-b-2 border-zinc-700 text-left text-xs font-semibold text-zinc-300 uppercase">Created At</th>
-                                    <th class="px-2 py-1 sm:px-4 sm:py-2 border-b-2 border-zinc-700 text-left text-xs font-semibold text-zinc-300 uppercase">Number of Seats</th>
-                                    <th class="px-2 py-1 sm:px-4 sm:py-2 border-b-2 border-zinc-700 text-left text-xs font-semibold text-zinc-300 uppercase">Status</th>
-                                    <th class="px-2 py-1 sm:px-4 sm:py-2 border-b-2 border-zinc-700 text-left text-xs font-semibold text-zinc-300 uppercase">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($reservations)): ?>
+                        <?php if (!empty($reservations)): ?>
+                            <table class="min-w-full my-10 text-zinc-400 overflow-y-scroll">
+                                <thead>
+                                    <tr>
+                                        <th class="px-2 py-1 sm:px-4 sm:py-2 border-b-2 border-zinc-700 text-left text-xs font-semibold text-zinc-300 uppercase">Movie Title</th>
+                                        <th class="px-2 py-1 sm:px-4 sm:py-2 border-b-2 border-zinc-700 text-left text-xs font-semibold text-zinc-300 uppercase">Created At</th>
+                                        <th class="px-2 py-1 sm:px-4 sm:py-2 border-b-2 border-zinc-700 text-left text-xs font-semibold text-zinc-300 uppercase">Number of Seats</th>
+                                        <th class="px-2 py-1 sm:px-4 sm:py-2 border-b-2 border-zinc-700 text-left text-xs font-semibold text-zinc-300 uppercase">Status</th>
+                                        <th class="px-2 py-1 sm:px-4 sm:py-2 border-b-2 border-zinc-700 text-left text-xs font-semibold text-zinc-300 uppercase">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                     <?php foreach ($reservations as $reservation): ?>
                                         <tr>
                                             <td class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-700 text-sm">
@@ -183,27 +183,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="5" class="px-2 py-1 sm:px-4 sm:py-2 border-b border-zinc-700 text-sm text-center text-zinc-400">
-                                            No reservations found.
-                                        </td>
-                                    </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <p class="text-left text-sm text-zinc-400 mt-4">No reservations found.</p>
+                        <?php endif; ?>
                     </div>
                 </div>
             </section>
-            <a href="../../../src/Controllers/CustomerController.php?action=logout" 
-            class="inline-block mt-8 sm:mt-12 rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
+            <a href="../../../src/Controllers/CustomerController.php?action=logout" class="inline-block <?php echo empty($reservations) ? 'mt-8 sm:mt-12' : ''; ?> rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                 Log Out
             </a>
         </div>
         <div id="modalBackdrop" class="hidden fixed inset-0 z-40 bg-zinc-900 bg-opacity-50"></div>
         <div id="editProfileModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center p-4">
             <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
-                <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-700">
+                <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
                     <h3 class="text-lg font-semibold text-zinc-900">Edit Profile</h3>
                     <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900" onclick="hideModal('editProfileModal')">
                         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -265,7 +260,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div id="updatePasswordModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center p-4">
             <div class="relative max-w-2xl w-full max-h-[95vh] bg-zinc-100 rounded-lg shadow p-6 sm:p-8 overflow-y-auto">
-                <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-700">
+                <div class="flex justify-between items-center pb-4 mb-4 border-b border-zinc-200">
                     <h3 class="text-lg font-semibold text-zinc-900">Update Password</h3>
                     <button type="button" class="text-zinc-600 text-sm p-1.5 hover:text-zinc-900" onclick="hideModal('updatePasswordModal')">
                         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">

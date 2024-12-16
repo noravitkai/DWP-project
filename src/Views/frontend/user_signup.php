@@ -1,3 +1,8 @@
+<?php
+require_once '../../../config/session.php';
+require_once '../../../config/functions.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +12,7 @@
     <link href="../../../public/css/tailwind.css" rel="stylesheet">
 </head>
 <body class="bg-zinc-900 text-zinc-100">
+<?php include '../frontend/frontend_navigation.php'; ?>
     <main class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-2xl">
             <h1 class="text-center text-2xl font-bold text-orange-600 sm:text-3xl">User Sign-up</h1>
@@ -14,7 +20,7 @@
                 Create an account to make reservations and access your profile.
             </p>
             <form action="../../../src/Controllers/CustomerController.php?action=register" method="post" class="mb-0 mt-6 rounded-lg p-6 shadow-lg sm:p-8 lg:p-10 bg-zinc-800">
-                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token'] ?? '';?>">
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token'] ?? ''; ?>">
                 <p class="text-sm text-zinc-400 mb-4">
                     Fields marked with * are required to complete. Password must be at least 8 characters long.
                 </p>
@@ -62,6 +68,15 @@
                     <button type="submit" class="rounded-lg bg-orange-600 px-6 py-3 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
                         Sign up
                     </button>
+                    <p class="mt-4 text-center text-sm text-zinc-400">
+                        Already have an account?
+                        <a class="inline-flex items-center text-orange-600 hover:text-orange-400 transition ease-in-out duration-300" href="../../Views/frontend/user_login.php">
+                            Log in
+                            <svg class="ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                            </svg>
+                        </a>
+                    </p>
                 </div>
             </form>
         </div>

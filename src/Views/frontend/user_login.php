@@ -1,3 +1,8 @@
+<?php
+require_once '../../../config/session.php';
+require_once '../../../config/functions.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +12,7 @@
     <link href="../../../public/css/tailwind.css" rel="stylesheet">
 </head>
 <body class="bg-zinc-900 text-zinc-100">
+    <?php include '../frontend/frontend_navigation.php'; ?>
     <main class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-lg">
             <h1 class="text-center text-2xl font-bold text-orange-600 sm:text-3xl">User Log-in</h1>
@@ -14,7 +20,7 @@
                 Please sign in to access your profile and make reservations.
             </p>
             <form action="../../../src/Controllers/CustomerController.php?action=login" method="post" class="mb-0 mt-6 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8 bg-zinc-800">
-                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token'] ?? '';?>">
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token'] ?? ''; ?>">
                 <h2 class="text-center text-lg font-medium text-zinc-200 mb-4">Sign in to your account</h2>
                 <div class="space-y-4">
                     <div>

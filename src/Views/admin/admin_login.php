@@ -1,3 +1,8 @@
+<?php
+require_once '../../../config/session.php';
+require_once '../../../config/functions.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,15 +18,16 @@
             <p class="mx-auto mt-4 max-w-md text-center text-zinc-300">
                 Please sign in to access the dashboard.
             </p>
-            <form action="../../../src/Controllers/AdminController.php?action=login" method="post" class="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8 bg-zinc-800">    
+            <form action="../../../src/Controllers/AdminController.php?action=login" method="post" class="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8 bg-zinc-800"> 
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">   
                 <h2 class="text-center text-lg font-medium text-zinc-200">Sign in to your account</h2>
                 <div>
                     <label for="username" class="sr-only">Email</label>
                     <div class="relative">
                         <input
-                            type="text"
-                            name="username"
-                            id="username"
+                            type="email"
+                            name="email"
+                            id="email"
                             class="w-full rounded-lg border-zinc-600 px-5 py-3 text-sm shadow-sm bg-zinc-700 text-zinc-100 placeholder-zinc-300 focus:outline-none focus:ring-1 focus:ring-orange-600"
                             placeholder="Email"
                             required
