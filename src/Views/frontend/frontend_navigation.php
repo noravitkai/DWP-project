@@ -24,7 +24,7 @@ if ($currentPage === 'home_page.php') {
             </svg>
         </button>
         <a href="home_page.php" class="text-right md:text-left">
-            <h1 class="text-orange-600 font-black text-lg sm:text-3xl tracking-wide drop-shadow-md">
+            <h1 class="text-orange-600 font-black text-lg sm:text-3xl tracking-wide drop-shadow-md hidden md:block">
                 FLC
             </h1>
         </a>
