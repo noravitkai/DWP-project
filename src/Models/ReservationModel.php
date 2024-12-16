@@ -43,9 +43,8 @@ class Reservation {
 
     public function getReservedSeatsByScreeningId($screeningId) {
         $query = "
-            SELECT Seat.SeatID 
-            FROM Seat
-            INNER JOIN Allocations ON Seat.SeatID = Allocations.SeatID
+            SELECT Allocations.SeatID 
+            FROM Allocations
             INNER JOIN Reservation ON Allocations.ReservationID = Reservation.ReservationID
             WHERE Reservation.ScreeningID = :screeningId 
               AND Reservation.Status IN ('Pending', 'Confirmed')
@@ -95,15 +94,23 @@ class Reservation {
             }
 
             $placeholders = implode(',', array_fill(0, count($seatIDs), '?'));
-            $query = "SELECT SeatID FROM Seat WHERE SeatID IN ($placeholders) AND SeatStatus = 'Available'";
+            $query = "
+                SELECT SeatID 
+                FROM Allocations
+                INNER JOIN Reservation ON Allocations.ReservationID = Reservation.ReservationID
+                WHERE SeatID IN ($placeholders) 
+                  AND Reservation.ScreeningID = ?
+                  AND Reservation.Status IN ('Pending', 'Confirmed')
+            ";
             $stmt = $this->db->prepare($query);
             foreach ($seatIDs as $index => $seatId) {
                 $stmt->bindValue($index + 1, $seatId, PDO::PARAM_INT);
             }
+            $stmt->bindValue(count($seatIDs) + 1, $screeningID, PDO::PARAM_INT);
             $stmt->execute();
-            $availableSeats = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-            if (count($availableSeats) !== count($seatIDs)) {
+            $reservedSeats = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            if (!empty($reservedSeats)) {
                 throw new Exception("One or more selected seats are no longer available.");
             }
 
@@ -118,15 +125,7 @@ class Reservation {
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(':numberOfSeats', $data['NumberOfSeats'], PDO::PARAM_INT);
             $stmt->bindValue(':screeningId', $data['ScreeningID'], PDO::PARAM_INT);
-
-            if ($data['CustomerID'] !== null) {
-                $stmt->bindValue(':customerId', $data['CustomerID'], PDO::PARAM_INT);
-                $stmt->bindValue(':reservationToken', null, PDO::PARAM_NULL);
-            } else {
-                $stmt->bindValue(':customerId', null, PDO::PARAM_NULL);
-                $stmt->bindValue(':reservationToken', $reservationToken, PDO::PARAM_STR);
-            }
-
+            $stmt->bindValue(':customerId', $data['CustomerID'] ?? null, PDO::PARAM_INT);
             $stmt->bindValue(':guestFirstName', $data['GuestFirstName'], PDO::PARAM_STR);
             $stmt->bindValue(':guestLastName', $data['GuestLastName'], PDO::PARAM_STR);
             $stmt->bindValue(':guestEmail', $data['GuestEmail'], PDO::PARAM_STR);
@@ -143,15 +142,11 @@ class Reservation {
                 $stmt->bindValue(':reservationId', $reservationId, PDO::PARAM_INT);
                 $stmt->bindValue(':seatId', $seatId, PDO::PARAM_INT);
                 $stmt->execute();
-
-                $updateSeatQuery = "UPDATE Seat SET SeatStatus = 'Reserved' WHERE SeatID = :seatId";
-                $updateStmt = $this->db->prepare($updateSeatQuery);
-                $updateStmt->bindValue(':seatId', $seatId, PDO::PARAM_INT);
-                $updateStmt->execute();
             }
 
             $this->db->commit();
             return $reservationId;
+
         } catch (Exception $e) {
             $this->db->rollBack();
             error_log("Error creating reservation: " . $e->getMessage());
@@ -164,17 +159,6 @@ class Reservation {
             $this->db->beginTransaction();
 
             $query = "UPDATE Reservation SET Status = 'Canceled' WHERE ReservationID = :reservationId AND Status = 'Pending'";
-            $stmt = $this->db->prepare($query);
-            $stmt->bindParam(':reservationId', $reservationId, PDO::PARAM_INT);
-            $stmt->execute();
-
-            $query = "
-                UPDATE Seat 
-                SET SeatStatus = 'Available' 
-                WHERE SeatID IN (
-                    SELECT SeatID FROM Allocations WHERE ReservationID = :reservationId
-                )
-            ";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':reservationId', $reservationId, PDO::PARAM_INT);
             $stmt->execute();
@@ -195,12 +179,17 @@ class Reservation {
 
     public function cancelExpiredReservations() {
         $timeout = 900;
-        $query = "SELECT ReservationID FROM Reservation WHERE Status = 'Pending' AND TIMESTAMPDIFF(SECOND, CreatedAt, NOW()) > :timeout";
+        $query = "SELECT ReservationID 
+                  FROM Reservation 
+                  WHERE Status = 'Pending' 
+                  AND TIMESTAMPDIFF(SECOND, CreatedAt, NOW()) > :timeout";
+    
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':timeout', $timeout, PDO::PARAM_INT);
         $stmt->execute();
+    
         $expiredReservations = $stmt->fetchAll(PDO::FETCH_COLUMN);
-
+    
         foreach ($expiredReservations as $reservationId) {
             $this->cancelReservation($reservationId);
         }
