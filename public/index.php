@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Semester Project</title>
-    <link href="css/tailwind.css" rel="stylesheet">
+    <link href="/DWP-project/public/css/tailwind.css" rel="stylesheet">
 </head>
 <body>
     <main class="bg-white">
