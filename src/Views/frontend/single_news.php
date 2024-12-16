@@ -44,11 +44,9 @@ function getCategoryClass($category) {
     <?php include '../frontend/frontend_navigation.php'; ?>
     <body class="bg-zinc-800 text-zinc-100">
         <main class="mx-auto max-w-screen-lg px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-            <?php if ($news['ImageURL']): ?>
-                <div class="aspect-w-16 aspect-h-11 mb-6">
-                    <img src="<?php echo $news['ImageURL']; ?>" alt="<?php echo $news['Title']; ?>" class="w-full h-full object-cover shadow-lg" loading="lazy">
-                </div>
-            <?php endif; ?>
+            <div class="aspect-w-16 aspect-h-11 mb-6">
+                <img src="<?php echo getFallbackImage($news['ImageURL'], '/DWP-project/public/images/news-default.jpg'); ?>" alt="<?php echo $news['Title']; ?>" class="w-full h-full object-cover shadow-lg" loading="lazy"/>
+            </div>
             <div class="flex items-center space-x-4 mb-4">
                 <span class="inline-block <?php echo getCategoryClass($news['Category']); ?> px-2 py-1 text-xs text-zinc-100">
                     <?php echo $news['Category']; ?>

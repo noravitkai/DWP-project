@@ -38,7 +38,7 @@ $screenings = $screeningController->getScreeningsByMovieId($movie['MovieID']);
     <main class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
         <section class="flex flex-col md:flex-row items-start gap-8">
             <div class="relative w-1/2 md:w-1/3 aspect-[2/3] overflow-hidden">
-                <img src="<?php echo $movie['ImageURL']; ?>" alt="<?php echo $movie['Title']; ?>" class="object-cover h-full w-full" loading="lazy"/>
+                <img src="<?php echo getFallbackImage($movie['ImageURL'], '/DWP-project/public/images/movie-default.jpg'); ?>" alt="<?php echo $movie['Title']; ?>" class="object-cover h-full w-full" loading="lazy"/>
             </div>
             <div class="w-full md:w-2/3">
                 <h1 class="text-2xl sm:text-3xl font-bold text-orange-600 mb-2"><?php echo $movie['Title']; ?></h1>

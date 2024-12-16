@@ -172,17 +172,17 @@ if ($currentPage === 'home_page.php') {
                         </ul>
                     </nav>
                     <nav aria-label="Profile" class="col-span-1">
-                        <p class="max-w-lg text-sm sm:text-base text-orange-600">Profile</p>
+                        <p class="max-w-lg text-sm sm:text-base text-orange-600">Address</p>
                         <ul class="mt-6 space-y-4 text-sm">
                             <li>
-                                <a href="user_login.php" class="text-zinc-300 transition ease-in-out duration-300 hover:opacity-75">
-                                    Login
-                                </a>
+                                <div class="text-zinc-300">
+                                    Grådybet 73.
+                                </div>
                             </li>
                             <li>
-                                <a href="user_signup.php" class="text-zinc-300 transition ease-in-out duration-300 hover:opacity-75">
-                                    Signup
-                                </a>
+                                <div class="text-zinc-300">
+                                    6700 Esbjerg
+                                </div>
                             </li>
                         </ul>
                     </nav>
