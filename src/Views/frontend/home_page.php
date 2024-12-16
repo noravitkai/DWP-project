@@ -30,7 +30,7 @@ $cinemas = $cinemaController->index();
         <section id="screenings">
             <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
                 <header>
-                    <h2 class="text-xl font-bold text-orange-600 sm:text-3xl">Daily Showings</h2>
+                    <h2 class="text-xl font-bold text-orange-600 sm:text-3xl">Daily Screenings</h2>
                     <p class="mt-4 max-w-lg text-sm sm:text-base text-zinc-300">See what’s playing today at our cinema and enjoy the best movies!</p>
                 </header>
                 <ul class="mt-8 grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
@@ -50,7 +50,7 @@ $cinemas = $cinemaController->index();
                         <?php endforeach; ?>
                     <?php else: ?>
                         <li class="col-span-5">
-                            <div class="bg-zinc-700 p-6 shadow-lg" role="alert">
+                            <div class="bg-zinc-700 p-6 rounded-lg shadow-lg" role="alert">
                                 <div class="flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-orange-600"><path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M12 18.75H4.5a2.25 2.25 0 0 1-2.25-2.25V9m12.841 9.091L16.5 19.5m-1.409-1.409c.407-.407.659-.97.659-1.591v-9a2.25 2.25 0 0 0-2.25-2.25h-9c-.621 0-1.184.252-1.591.659m12.182 12.182L2.909 5.909M1.5 4.5l1.409 1.409"/></svg>
                                     <p class="text-lg font-medium text-zinc-100">No movies scheduled for today!</p>
@@ -89,18 +89,18 @@ $cinemas = $cinemaController->index();
                         }
                         ?>
                         <li class="h-full">
-                            <article class="h-full flex flex-col overflow-hidden shadow transition hover:shadow-lg group">
+                            <article class="relative h-full flex flex-col overflow-hidden shadow transition hover:shadow-lg group">
                                 <div class="aspect-w-16 aspect-h-11 w-full overflow-hidden">
                                     <img src="<?php echo $news['ImageURL']; ?>" alt="<?php echo $news['Title']; ?>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy"/>
                                 </div>
-                                <div class="bg-zinc-700 p-4 sm:p-6 flex flex-col justify-between h-full">
+                                <div class="bg-zinc-700 rounded-b-lg p-4 sm:p-6 flex flex-col justify-between h-full">
                                     <div class="flex flex-col gap-2">
                                         <span class="inline-block <?php echo $categoryClass; ?> text-xs text-zinc-100 px-2 py-1 self-start"><?php echo $news['Category']; ?></span>
                                         <time datetime="<?php echo $news['DatePublished']; ?>" class="block text-xs text-zinc-300 mt-2"><?php echo date('jS M Y', strtotime($news['DatePublished'])); ?></time>
                                         <h3 class="text-lg text-zinc-200 mt-1 line-clamp-2"><?php echo $news['Title']; ?></h3>
                                         <p class="text-sm sm:text-base text-zinc-200 line-clamp-2"><?php echo $news['Content']; ?></p>
                                     </div>
-                                    <a href="single_news.php?id=<?php echo $news['NewsID']; ?>" class="inline-flex items-center gap-1 mt-4 text-orange-600 hover:text-orange-500 text-sm font-medium transition ease-in-out duration-300">
+                                    <a href="single_news.php?id=<?php echo $news['NewsID']; ?>" class="clickable-parent inline-flex items-center gap-1 mt-4 text-orange-600 hover:text-orange-500 text-sm font-medium transition ease-in-out duration-300">
                                         Read more 
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
@@ -155,8 +155,8 @@ $cinemas = $cinemaController->index();
                                     <img src="<?php echo $cinema['ImageURL'] ?? '/DWP-project/assets/images/default-cinema.jpg'; ?>" alt="Cinema Image" class="absolute inset-0 h-full w-full object-cover" loading="lazy"/>
                                 </div>
                             </div>
-                            <div class="relative flex items-center bg-zinc-700">
-                                <span class="hidden lg:absolute lg:inset-y-0 lg:-start-16 lg:block lg:w-16 bg-zinc-700"></span>
+                            <div class="relative flex items-center bg-zinc-700 rounded-b-lg lg:rounded-b-none lg:rounded-r-lg overflow-hidden lg:overflow-visible">
+                                <span class="hidden lg:absolute lg:inset-y-0 lg:-start-16 lg:block lg:w-16 bg-zinc-700 rounded-l-lg"></span>
                                 <div class="relative flex items-center bg-zinc-700">
                                     <span class="hidden lg:absolute lg:inset-y-0 lg:-start-16 lg:block lg:w-16 bg-zinc-700"></span>
                                     <div class="p-8 sm:p-12 lg:p-12">
