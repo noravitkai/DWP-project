@@ -89,6 +89,7 @@ $seatList = array_map(function ($seat) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Successful</title>
     <link href="../../../public/css/tailwind.css" rel="stylesheet">
 </head>
