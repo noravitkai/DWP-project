@@ -4,6 +4,7 @@ require_once '../../Controllers/MovieController.php';
 require_once '../../Controllers/NewsController.php';
 require_once '../../Controllers/ScreeningController.php';
 require_once '../../Controllers/CinemaController.php';
+require_once '../../../config/functions.php';
 
 $movieController = new MovieController();
 $newsController = new NewsController();
@@ -39,7 +40,7 @@ $cinemas = $cinemaController->index();
                             <li>
                                 <a href="seat_reservation.php?screening_id=<?php echo urlencode($screening['ScreeningID']); ?>" class="group block">
                                     <div class="aspect-w-2 aspect-h-3 w-full overflow-hidden">
-                                        <img src="<?php echo $screening['ImageURL']; ?>" alt="<?php echo $screening['MovieTitle']; ?>" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" loading="lazy"/>
+                                        <img src="<?php echo getFallbackImage($screening['ImageURL'], '/DWP-project/public/images/movie-default.jpg'); ?>" alt="<?php echo $screening['MovieTitle']; ?>" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" loading="lazy"/>
                                     </div>
                                     <div class="relative bg-zinc-800 pt-3">
                                         <h3 class="text-base text-orange-600 group-hover:text-orange-500"><?php echo $screening['MovieTitle']; ?></h3>
@@ -91,7 +92,7 @@ $cinemas = $cinemaController->index();
                         <li class="h-full">
                             <article class="relative h-full flex flex-col overflow-hidden shadow transition hover:shadow-lg group">
                                 <div class="aspect-w-16 aspect-h-11 w-full overflow-hidden">
-                                    <img src="<?php echo $news['ImageURL']; ?>" alt="<?php echo $news['Title']; ?>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy"/>
+                                    <img src="<?php echo getFallbackImage($news['ImageURL'], '/DWP-project/public/images/news-default.jpg'); ?>" alt="<?php echo $news['Title']; ?>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy"/>
                                 </div>
                                 <div class="bg-zinc-700 rounded-b-lg p-4 sm:p-6 flex flex-col justify-between h-full">
                                     <div class="flex flex-col gap-2">
@@ -124,7 +125,7 @@ $cinemas = $cinemaController->index();
                         <li>
                             <a href="single_movie.php?id=<?php echo $movie['MovieID']; ?>" class="group block">
                                 <div class="aspect-w-2 aspect-h-3 w-full overflow-hidden">
-                                    <img src="<?php echo $movie['ImageURL']; ?>" alt="<?php echo $movie['Title']; ?>" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" loading="lazy"/>
+                                    <img src="<?php echo getFallbackImage($movie['ImageURL'], '/DWP-project/public/images/movie-default.jpg'); ?>" alt="<?php echo $movie['Title']; ?>" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" loading="lazy"/>
                                 </div>
                                 <div class="relative bg-zinc-800 pt-3">
                                     <h3 class="text-base text-orange-600 group">
@@ -152,7 +153,7 @@ $cinemas = $cinemaController->index();
                         <div class="grid grid-cols-1 lg:grid-cols-2">
                             <div class="relative z-10 lg:py-16">
                                 <div class="relative h-64 sm:h-80 lg:h-96">
-                                    <img src="<?php echo $cinema['ImageURL'] ?? '/DWP-project/assets/images/default-cinema.jpg'; ?>" alt="Cinema Image" class="absolute inset-0 h-full w-full object-cover" loading="lazy"/>
+                                    <img src="<?php echo getFallbackImage($cinema['ImageURL'], '/DWP-project/public/images/cinema-default.jpg'); ?>" alt="Fast Lane Cine"  class="absolute inset-0 h-full w-full object-cover" loading="lazy"/>
                                 </div>
                             </div>
                             <div class="relative flex items-center bg-zinc-700 rounded-b-lg lg:rounded-b-none lg:rounded-r-lg overflow-hidden lg:overflow-visible">

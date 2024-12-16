@@ -95,7 +95,7 @@
                     </div>
                     <div class="sm:col-span-2">
                         <label for="newsImage">Upload Image:</label>
-                        <input type="file" name="newsImage" id="newsImage" accept="image/jpeg, image/png, image/gif">
+                        <input type="file" name="newsImage" id="newsImage" accept="image/jpeg, image/png, image/gif" required>
                     </div>
                     <div class="sm:col-span-2 text-right">
                         <button type="submit" name="addNewsBtn" class="inline-block rounded-lg bg-orange-600 px-3 py-2 text-sm font-medium text-zinc-100 hover:bg-orange-500 transition ease-in-out duration-300">
