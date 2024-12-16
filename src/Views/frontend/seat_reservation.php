@@ -17,7 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $isLoggedIn = isset($_SESSION['user_id']);
-
     $seatIDsRaw = $_POST['seat_ids'] ?? [];
     $seatIDs = array_map('sanitizeInput', $seatIDsRaw);
 
@@ -54,15 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
 
     if (!$isLoggedIn) {
-        $guestFirstNameRaw = $_POST['guest_first_name'] ?? '';
-        $guestLastNameRaw = $_POST['guest_last_name'] ?? '';
-        $guestEmailRaw = $_POST['guest_email'] ?? '';
-        $guestPhoneRaw = $_POST['guest_phone'] ?? '';
-
-        $guestFirstName = sanitizeInput($guestFirstNameRaw);
-        $guestLastName = sanitizeInput($guestLastNameRaw);
-        $guestEmail = sanitizeInput($guestEmailRaw);
-        $guestPhone = sanitizeInput($guestPhoneRaw);
+        $guestFirstName = sanitizeInput($_POST['guest_first_name'] ?? '');
+        $guestLastName = sanitizeInput($_POST['guest_last_name'] ?? '');
+        $guestEmail = sanitizeInput($_POST['guest_email'] ?? '');
+        $guestPhone = sanitizeInput($_POST['guest_phone'] ?? '');
 
         if (empty($guestFirstName) || empty($guestLastName) || empty($guestEmail)) {
             $_SESSION['error_message'] = "Please fill in all required guest details.";
@@ -104,13 +98,9 @@ if (!isset($_GET['screening_id']) || !is_numeric($screeningId)) {
 }
 
 $screeningDetails = $screeningController->getScreeningById($screeningId);
-
-if (!$screeningDetails) {
-    die("Screening not found.");
-}
+if (!$screeningDetails) die("Screening not found.");
 
 $roomId = $screeningDetails['RoomID'];
-
 $roomSeats = $reservationController->getSeatsByRoomId($roomId);
 $reservedSeats = $reservationController->getReservedSeatsByScreeningId($screeningId);
 

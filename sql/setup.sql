@@ -116,7 +116,6 @@ CREATE TABLE Seat (
     SeatID INT AUTO_INCREMENT PRIMARY KEY,
     RowLabel CHAR(1) NOT NULL,
     SeatNumber INT UNSIGNED NOT NULL,
-    SeatStatus ENUM('Available', 'Reserved') NOT NULL DEFAULT 'Available',
     RoomID INT NOT NULL,
     FOREIGN KEY (RoomID) REFERENCES Room(RoomID) ON DELETE CASCADE,
     UNIQUE (RowLabel, SeatNumber, RoomID)
@@ -260,28 +259,6 @@ LEFT JOIN
     MovieImage mi ON m.MovieID = mi.MovieID
 WHERE 
     s.ScreeningDate = CURDATE();
-
-DELIMITER $$
-CREATE TRIGGER trg_after_allocations_insert
-AFTER INSERT ON Allocations
-FOR EACH ROW
-BEGIN
-    UPDATE Seat 
-    SET SeatStatus = 'Reserved' 
-    WHERE SeatID = NEW.SeatID;
-END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE TRIGGER trg_after_allocations_delete
-AFTER DELETE ON Allocations
-FOR EACH ROW
-BEGIN
-    UPDATE Seat 
-    SET SeatStatus = 'Available' 
-    WHERE SeatID = OLD.SeatID;
-END$$
-DELIMITER ;
 
 DELIMITER $$
 CREATE TRIGGER trg_after_customer_update
