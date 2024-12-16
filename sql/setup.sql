@@ -35,7 +35,7 @@ CREATE TABLE Admin (
 CREATE TABLE Room (
     RoomID INT AUTO_INCREMENT PRIMARY KEY,
     RoomLabel VARCHAR(100) NOT NULL,
-    TotalSeats INT UNSIGNED NOT NULL CHECK (TotalSeats > 0)
+    TotalSeats INT UNSIGNED NOT NULL
 );
 
 CREATE TABLE Movie (
@@ -87,7 +87,7 @@ CREATE TABLE Customer (
 
 CREATE TABLE Screening (
     ScreeningID INT AUTO_INCREMENT PRIMARY KEY,
-    Price DECIMAL(10, 2) NOT NULL CHECK (Price > 0),
+    Price DECIMAL(10, 2) NOT NULL,
     ScreeningDate DATE NOT NULL,
     ScreeningTime TIME NOT NULL,
     MovieID INT NOT NULL,
@@ -98,7 +98,7 @@ CREATE TABLE Screening (
 
 CREATE TABLE Reservation (
     ReservationID INT AUTO_INCREMENT PRIMARY KEY,
-    NumberOfSeats INT UNSIGNED NOT NULL CHECK (NumberOfSeats > 0),
+    NumberOfSeats INT UNSIGNED NOT NULL,
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     GuestFirstName VARCHAR(50),
     GuestLastName VARCHAR(50),
@@ -109,17 +109,13 @@ CREATE TABLE Reservation (
     `Status` ENUM('Pending', 'Confirmed', 'Canceled') NOT NULL DEFAULT 'Pending',
     ReservationToken VARCHAR(64) UNIQUE NULL,
     FOREIGN KEY (ScreeningID) REFERENCES Screening(ScreeningID) ON DELETE RESTRICT,
-    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE SET NULL,
-    CHECK (
-        (CustomerID IS NOT NULL AND GuestFirstName IS NULL AND GuestLastName IS NULL AND GuestEmail IS NULL AND GuestPhoneNumber IS NULL) OR
-        (CustomerID IS NULL AND GuestFirstName IS NOT NULL AND GuestLastName IS NOT NULL AND GuestEmail IS NOT NULL AND GuestPhoneNumber IS NOT NULL)
-    )
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE SET NULL
 );
 
 CREATE TABLE Seat (
     SeatID INT AUTO_INCREMENT PRIMARY KEY,
     RowLabel CHAR(1) NOT NULL,
-    SeatNumber INT UNSIGNED NOT NULL CHECK (SeatNumber > 0),
+    SeatNumber INT UNSIGNED NOT NULL,
     SeatStatus ENUM('Available', 'Reserved') NOT NULL DEFAULT 'Available',
     RoomID INT NOT NULL,
     FOREIGN KEY (RoomID) REFERENCES Room(RoomID) ON DELETE CASCADE,
@@ -137,7 +133,7 @@ CREATE TABLE Allocations (
 CREATE TABLE Payment (
     PaymentID INT AUTO_INCREMENT PRIMARY KEY,
     PaymentStatus ENUM('Pending', 'Canceled', 'Completed') NOT NULL DEFAULT 'Pending',
-    TransactionAmount DECIMAL(10, 2) NOT NULL CHECK (TransactionAmount > 0),
+    TransactionAmount DECIMAL(10, 2) NOT NULL,
     TransactionDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     StripeSessionID VARCHAR(255) UNIQUE,
     StripePaymentIntentID VARCHAR(255) UNIQUE,
@@ -206,7 +202,7 @@ FROM
 LEFT JOIN 
     MovieImage mi ON m.MovieID = mi.MovieID;
 
-    CREATE VIEW NewsDetails AS
+CREATE VIEW NewsDetails AS
 SELECT 
     n.NewsID,
     n.Title,
